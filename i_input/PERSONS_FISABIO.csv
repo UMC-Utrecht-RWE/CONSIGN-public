@@ -1,0 +1,6 @@
+person_id,day_of_birth,month_of_birth,year_of_birth,day_of_death,month_of_death,year_of_death,sex_at_instance_creation,race,country_of_birth,quality
+person_id1,3,9,1986,,,,F,,,reliable
+person_id2,6,5,1987,,,,F,,,reliable
+person_id3,26,7,1985,,,,F,,,reliable
+person_id4,15,7,1987,,,,F,,,reliable
+person_id5,21,3,1985,,,,F,,,reliable

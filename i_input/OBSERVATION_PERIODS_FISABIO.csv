@@ -1,0 +1,6 @@
+person_id,op_start_date,op_end_date,op_meaning,op_origin
+person_id1,20000215,99991231,FISABIO_op_meaning,FISABIO_op_origin
+person_id2,19900607,99991231,FISABIO_op_meaning,FISABIO_op_origin
+person_id3,19951221,99991231,FISABIO_op_meaning,FISABIO_op_origin
+person_id4,20000101,99991231,FISABIO_op_meaning,FISABIO_op_origin
+person_id5,19950209,99991231,FISABIO_op_meaning,FISABIO_op_origin

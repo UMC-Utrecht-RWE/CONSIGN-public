@@ -1,0 +1,6 @@
+person_id,survey_id,survey_date,survey_meaning,survey_origin
+person_id1,1,20180511,CA_Registry,MDR
+person_id2,2,20201224,CA_Registry,MDR
+person_id3,3,20191016,CA_Registry,MDR
+person_id4,4,20190817,CA_Registry,MDR
+person_id5,5,20200226,CA_Registry,MDR
