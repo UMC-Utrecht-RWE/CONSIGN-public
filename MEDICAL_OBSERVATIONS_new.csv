@@ -1,0 +1,8 @@
+person_id;mo_date;visit_occurrence_id;mo_source_column;mo_source_value;mo_code;mo_record_vocabulary;mo_source_table;mo_unit;mo_meaning;mo_origin
+P000a;20210108;;;;13483691000006115;asfasd;;positive;;
+P000a;20210108;;;;13483691000006115;;;;;
+P000a;20210108;;;;;;;positive;;
+P000a;20210108;;;;13483691000006115d;asfasd;;positive;;
+P000a;20000108;;;100;;;;;start_GP;
+P000a;20000508;;;100;;;;;start_gp;
+;;;;;;;;;end_GP;
