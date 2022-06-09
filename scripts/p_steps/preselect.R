@@ -10,30 +10,26 @@ if(!require(data.table)){install.packages("data.table")}
 library(data.table)
 
 #set up folders
-
-# Deletes CDMInstances_preselect folder if it exists
-if ("CDMInstances_preselect" %in% list.files(projectFolder)){unlink(paste0(projectFolder,"/CDMInstances_preselect"), recursive = TRUE)}
-# Creates CDMInstances_preselect folder and sets paths
-dir.create(paste0(projectFolder,"/CDMInstances_preselect"))
-preselect_folder<-(paste0(projectFolder,"/CDMInstances_preselect/"))
+preselect_folder<-paste0(projectFolder,"/CDMInstances_preselect/")
+#make sure it's empty
+do.call(file.remove, list(list.files(preselect_folder, full.names = TRUE)))
 
 
-# READ.ME
 #preselection application onto multiple table subsets (especially MEDICINES)
 
 #get tables 
 #Get EVENTS, MO, SO, MEDICINES, VACCINES tables
 actual_tables_preselect<-list()
-actual_tables_preselect$EVENTS<-list.files(paste0(path_CDM,"/"), pattern="^EVENTS")
-actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(path_CDM,"/"), pattern="^MEDICAL_OBSERVATIONS")
-actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(path_CDM,"/"), pattern="^SURVEY_OBSERVATIONS")
-actual_tables_preselect$MEDICINES<-list.files(paste0(path_CDM,"/"), pattern="^MEDICINES")
-actual_tables_preselect$VACCINES<-list.files(paste0(path_CDM,"/"), pattern="^VACCINES")
-actual_tables_preselect$SURVEY_ID<-list.files(paste0(path_CDM,"/"), pattern="^SURVEY_ID")
-actual_tables_preselect$EUROCAT<-list.files(paste0(path_CDM,"/"), pattern="^EUROCAT")
-actual_tables_preselect$PERSONS<-list.files(paste0(path_CDM,"/"), pattern="^PERSONS")
+actual_tables_preselect$EVENTS<-list.files(path_CDM, pattern="^EVENTS")
+actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(path_CDM, pattern="^MEDICAL_OBSERVATIONS")
+actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(path_CDM, pattern="^SURVEY_OBSERVATIONS")
+actual_tables_preselect$MEDICINES<-list.files(path_CDM, pattern="^MEDICINES")
+actual_tables_preselect$VACCINES<-list.files(path_CDM, pattern="^VACCINES")
+actual_tables_preselect$SURVEY_ID<-list.files(path_CDM, pattern="^SURVEY_ID")
+actual_tables_preselect$EUROCAT<-list.files(path_CDM, pattern="^EUROCAT")
+actual_tables_preselect$PERSONS<-list.files(path_CDM, pattern="^PERSONS")
 
-all_actual_tables<-list.files(paste0(path_CDM,"/"), pattern = "\\.csv$")
+all_actual_tables<-list.files(path_CDM, pattern = "\\.csv$")
 
 ##############
 #get functions
@@ -60,12 +56,12 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 #run personsfilter on PERSONS table (PERSONS USUALLY* one table)
 
 if(length(actual_tables_preselect$PERSONS)>1){
-  PERSONS<-lapply(paste0(path_CDM,"/",actual_tables_preselect$PERSONS), fread)
+  PERSONS<-lapply(paste0(path_CDM,actual_tables_preselect$PERSONS), fread)
   PERSONS<-do.call(rbind,PERSONS)
   PERSONS<-as.data.table(PERSONS)
 
 }else {
-  PERSONS<-fread(paste0(path_CDM,"/",actual_tables_preselect$PERSONS))
+  PERSONS<-fread(paste0(path_CDM,actual_tables_preselect$PERSONS))
   
 }
 
@@ -75,7 +71,8 @@ personsfilter_ID<-personsfilter_output[[1]]
 
 # #write preselected files into new folder
 # 
-person_preselect_tables<-actual_tables_preselect[names(actual_tables_preselect) %in% "MEDICINES" == FALSE]
+person_preselect_tables<-actual_tables_preselect
+# [names(actual_tables_preselect) %in% "MEDICINES" == FALSE]
 tables_df<-as.data.frame(unlist(person_preselect_tables))
 colnames(tables_df)<-"CDMtableName"
 tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
@@ -84,7 +81,7 @@ tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
 #need to name each new table the same as the old table, then write in the new folder
 for(i in 1:length(tables_vec_all)){
   tablename<-(tables_vec_all[i])
-  mytable<-fread(paste0(path_CDM,"/",tablename))
+  mytable<-fread(paste0(path_CDM,tablename))
   preselect_table<-mytable[mytable$person_id%in%personsfilter_ID,]
   fwrite(preselect_table, paste0(preselect_folder, tablename), row.names = F)
 }
@@ -94,7 +91,7 @@ to_be_copied<-setdiff(all_actual_tables,actual_tables_preselect_changed)
 
 for(fil_ind in 1:length(to_be_copied)){
   tablename<-(to_be_copied[fil_ind])
-  mytable<-fread(paste0(path_CDM,"/",tablename))
+  mytable<-fread(paste0(path_CDM,tablename))
   fwrite(mytable, paste0(preselect_folder, tablename), row.names = F)
 }
 
