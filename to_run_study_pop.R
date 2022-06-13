@@ -21,5 +21,8 @@ source(paste0(pre_dir, "/packages.R"))
 source(paste0(pre_dir, "/preselect.R"))
 
 #creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
-source(paste0(pre_dir, "/pregnancy_filter.R"))
+source(paste0(pre_dir, "/pregnancy_filter.R"))   
+
+
+
 

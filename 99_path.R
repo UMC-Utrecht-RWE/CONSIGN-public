@@ -27,9 +27,13 @@ path_CDM<-paste0(projectFolder,"/CDMInstances/")
 invisible(if(dir.exists(path_CDM)==F)
 {dir.create(path_CDM)})
 
-preg_folder<-paste0(projectFolder,"/CDMInstances_pregnant/")
-invisible(if(dir.exists(preg_folder)==F)
-{dir.create(preg_folder)})
+pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/")
+invisible(if(dir.exists(pan_preg_folder)==F)
+{dir.create(pan_preg_folder)})
+
+hist_preg_folder<-paste0(projectFolder,"/CDMInstances_hist_pregnant/")
+invisible(if(dir.exists(hist_preg_folder)==F)
+{dir.create(hist_preg_folder)})
 
 not_preg_folder<-paste0(projectFolder,"/CDMInstances_not_pregnant/")
 invisible(if(dir.exists(not_preg_folder)==F)

@@ -4,21 +4,19 @@
 #Date: 8/4/2022
 
 # filters pregnancy table for 2018-present
-# identifies historical and pandemic pregnancies
-# identifies trimester start and end dates
+# IDentifies historical and pandemic pregnancies
+# IDentifies trimester start and end dates
 
-#filters CDM tables to include only person_ids with a pregnancy record
+#filters CDM tables to include only person_IDs with a pregnancy record
 #IN PROGRESS
 
 load(paste0(path_CDM,"D3_pregnancy_final.RData"))
 
-study_start_date<- as.character("20180101")
 
-start_date<-as.Date(study_start_date, format = "%Y%m%d")
+start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
+historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
 
-covid_start_date<- as.character("20200101")
-
-covid_date<-as.Date(covid_start_date, format = "%Y%m%d")
+covID_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
 
 # help- eimir should this be based on start or end of pregnancy?
@@ -29,9 +27,11 @@ my_PREG<-D3_pregnancy_final[D3_pregnancy_final$pregnancy_start_date>start_date]
 
 my_PREG$cohort<-NA
 
-my_PREG$cohort[(my_PREG$pregnancy_end_date<covid_date)]<-"historical"
+my_PREG$cohort[(my_PREG$pregnancy_end_date<historical_end_date)]<-"historical"
 
-my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_date)]<-"pandemic"
+my_PREG$cohort[(my_PREG$pregnancy_end_date>=covID_date)]<-"pandemic"
+
+my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
 # create trimesters
 
@@ -49,9 +49,9 @@ my_PREG$trim_3_end<- my_PREG$pregnancy_end_date
 my_PREG$trim_3_end[my_PREG$trim_2_end<my_PREG$trim_2_end]<-NA
 
 # filter CDM
-
 preg_id<-unique(my_PREG$person_id)
-
+pan_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="pandemic"])
+hist_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="historical"])
 
 actual_tables_preselect<-list()
 actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS")
@@ -66,19 +66,37 @@ actual_tables_preselect$PERSONS<-list.files(paste0(preselect_folder,"/"), patter
 all_actual_tables<-list.files(paste0(preselect_folder,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_preselect)
 
+all_person_ID<-list()
+for(i in 1:length(actual_tables_preselect$PERSONS)){
+  my_table<-fread(paste0(preselect_folder,actual_tables_preselect$PERSONS[1]))
+  all_person_ID[[i]]<-unique(my_table$person_ID)
+}
+
+all_person_ID<-unlist(all_person_ID)
 
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%preg_id,]
-  fwrite(my_preg_table,paste0(preg_folder,table_list[i]))
+  my_preg_table<- my_table[my_table$person_ID%in%pan_preg_ID,]
+  fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
+}
+
+for (i in 1:length(table_list)){
+  my_table<-fread(paste0(preselect_folder,table_list[i]))
+  my_preg_table<- my_table[my_table$person_ID%in%hist_preg_ID,]
+  fwrite(my_preg_table,paste0(hist_preg_folder,table_list[i]))
 }
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
+non_preg_ID<-all_person_ID[all_person_ID%exclude%preg_ID]
+non_preg_hist_ID<-hist_preg_ID[hist_preg_ID%exclude%pan_preg_ID]
+
+all_non_preg_ID<- unique(c(non_preg_ID, non_preg_hist_ID))
+
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_table_F<-my_table
-  my_preg_table<- my_table[my_table$person_id%exclude%preg_id,]
+  my_preg_table<- my_table[my_table$person_ID%in%all_non_preg_ID,]
   fwrite(my_preg_table,paste0(not_preg_folder,table_list[i]))
 }

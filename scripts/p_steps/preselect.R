@@ -1,9 +1,12 @@
 #Author: Ema Alsina, MSc.
 #email: e.m.alsina-2@umcutrecht.nl
 #Organisation: UMC Utrecht, Utrecht, The Netherlands
-#Date: 26/1/2022
+#Date: 10/6/2022
 
-#this script reduces data size for subsequent scripts by removing those who are inelligible due to age and gender
+#this script is the first step in creating the CONSIGN study populations.
+#1)identifies person_ids with elligible OBS time (2018-present)
+# 2)identifies women of reproductive age 
+#  3)filters out only those IDs that meet the OBS, gender and age criteria and subsets the CDM
 
 
 if(!require(data.table)){install.packages("data.table")}
@@ -14,6 +17,12 @@ preselect_folder<-paste0(projectFolder,"/CDMInstances_preselect/")
 #make sure it's empty
 do.call(file.remove, list(list.files(preselect_folder, full.names = TRUE)))
 
+study_start_date<-as.Date("20180101", format="%Y%m%d")
+
+OBSERVATION_PERIODS <- fread(paste0(path_CDM, "OBSERVATION_PERIODS.csv"))
+OBSERVATION_PERIODS$date_end<-as.Date(as.character(OBSERVATION_PERIODS$op_end_date), format = "%Y%m%d")
+
+OB_P_ID<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
 
 #preselection application onto multiple table subsets (especially MEDICINES)
 
@@ -69,6 +78,9 @@ if(length(actual_tables_preselect$PERSONS)>1){
 personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=1954, dobmax=2008)))
 personsfilter_ID<-personsfilter_output[[1]]
 
+
+OB_PERS_filter_ID<-personsfilter_ID[personsfilter_ID%in%OB_P_ID]
+
 # #write preselected files into new folder
 # 
 person_preselect_tables<-actual_tables_preselect
@@ -82,7 +94,7 @@ tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
 for(i in 1:length(tables_vec_all)){
   tablename<-(tables_vec_all[i])
   mytable<-fread(paste0(path_CDM,tablename))
-  preselect_table<-mytable[mytable$person_id%in%personsfilter_ID,]
+  preselect_table<-mytable[mytable$person_id%in%OB_PERS_filter_ID,]
   fwrite(preselect_table, paste0(preselect_folder, tablename), row.names = F)
 }
 
