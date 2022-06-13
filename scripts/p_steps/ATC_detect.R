@@ -2,10 +2,11 @@
 #e.m.alsina-2@umcutrecht.nl
 #University Medical Center Utrecht
 #8/4/2022
+#update 13/6/2022
 
 #CONSIGN
 
-#identify use of medicines during pregnancy
+#identify use of medicines over time for each cohort
 
 #pregnancy_filter--> CDM only of pregnant women
 
