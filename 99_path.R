@@ -53,6 +53,9 @@ output_dir     <- paste0(projectFolder, "/g_output/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/drugs/")), dir.create(paste0(projectFolder, "/g_output/drugs")), FALSE))
 output_drugs    <- paste0(projectFolder, "/g_output/drugs/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/trimester/")), dir.create(paste0(projectFolder, "/g_output/trimester")), FALSE))
+output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
+
 # Sets path to p_steps (to read codelists)
 pre_dir <- paste0(path_dir,"p_steps")
 invisible(ifelse(!dir.exists(paste0(path_dir, "p_steps")), dir.create(paste0(path_dir, "p_steps")), FALSE))

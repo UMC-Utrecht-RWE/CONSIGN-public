@@ -39,7 +39,7 @@ Antihypertensives_ATC<-unlist(Antihypertensives_ATC)
 Antihypertensives_df<-as.data.frame(cbind(Antihypertensives_ID,Antihypertensives_Date, Antihypertensives_ATC))
 colnames(Antihypertensives_df)<-c("person_id", "date", "ATC")
 
-fwrite(Antihypertensives_df, paste0(output_drugs, "antihypertensives.csv"))
+fwrite(Antihypertensives_df, paste0(output_drugs, "Antihypertensives.csv"))
 
 ##########################################################################################
 
@@ -466,32 +466,6 @@ colnames(Nasal_df)<-c("person_id", "date", "ATC")
 fwrite(Nasal_df, paste0(output_drugs, "Nasal.csv"))
 
 obstructive_airway<-("R03") 
-##########################################################################################
-
-Antithrombotic<- ("B01") 
-
-Antithrombotic_ID<-list()
-Antithrombotic_Date<-list()
-Antithrombotic_ATC<-list()
-
-
-for(j in 1:length(my_MED_tables)){
-  my_dt_MED<-fread(paste0(my_path, my_MED_tables[j]))
-  my_rows<-which(Reduce(`|`, lapply(Antithrombotic, startsWith, x = as.character(my_dt_MED$medicinal_product_atc_code))))
-  Antithrombotic_ID[j]<-list(my_dt_MED$person_id[my_rows])
-  Antithrombotic_Date[j]<- list(my_dt_MED$date_dispensing[my_rows])
-  Antithrombotic_ATC[j]<-list(my_dt_MED$medicinal_product_atc_code[my_rows])
-}
-
-
-Antithrombotic_ID<-unlist(Antithrombotic_ID)
-Antithrombotic_Date<-unlist(Antithrombotic_Date)
-Antithrombotic_ATC<-unlist(Antithrombotic_ATC)
-Antithrombotic_df<-as.data.frame(cbind(Antithrombotic_ID,Antithrombotic_Date, Antithrombotic_ATC))
-colnames(Antithrombotic_df)<-c("person_id", "date", "ATC")
-
-fwrite(Antithrombotic_df, paste0(output_drugs, "Antithrombotic.csv"))
-
 
 ##########################################################################################
 

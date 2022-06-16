@@ -80,12 +80,14 @@ for (i in 1:length(table_list)){
   my_preg_table<- my_table[my_table$person_ID%in%pan_preg_ID,]
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
+fwrite(my_PREG[my_PREG$cohort=="pandemic",],paste0(pan_preg_folder,"my_PREG.csv"))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_preg_table<- my_table[my_table$person_ID%in%hist_preg_ID,]
   fwrite(my_preg_table,paste0(hist_preg_folder,table_list[i]))
 }
+fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.csv"))
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
@@ -100,3 +102,4 @@ for (i in 1:length(table_list)){
   my_preg_table<- my_table[my_table$person_ID%in%all_non_preg_ID,]
   fwrite(my_preg_table,paste0(not_preg_folder,table_list[i]))
 }
+

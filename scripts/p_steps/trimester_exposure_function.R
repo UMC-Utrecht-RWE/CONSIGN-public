@@ -1,5 +1,7 @@
 #detect drug dispensing dates within trimesters
 
+# expos data can be drug or covid diagnosis
+
 during_timester_test<-function(expos_data, preg_data, trimester_start="trim_1_start", trimester_end="trim_1_end"){
   if(nrow(expos_data)>0){
     
@@ -35,6 +37,7 @@ during_timester_test<-function(expos_data, preg_data, trimester_start="trim_1_st
     # for each pregnancy w/i eachperson compare each migraine date and each pregnancy date in a vectorized way...
     alg_diff_start<-list()
     alg_diff_end<-list()
+    
     
     for(i in 2:ncol(preg_start)){
       my_start_dates<-preg_start[,..i]
