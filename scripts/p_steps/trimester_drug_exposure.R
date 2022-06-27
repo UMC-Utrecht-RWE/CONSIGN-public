@@ -6,10 +6,19 @@
 
 my_PREG<-fread(paste0(hist_preg_folder,"my_PREG.csv"))
 
-my_trimester<-"trimester_1"
+#simulate covid diagnosis dates between start and end of pregnancy
+(my_PREG <- my_PREG %>%
+    rowwise() %>%
+    mutate(cov_date = sample(x = seq(from = pregnancy_start_date,
+                                        to = pregnancy_end_date,
+                                        by = "day"),
+                                size = 1)))
 
-my_trim_start<-"trim_1_start"
-my_trim_end<-"trim_1_end"
+#this function identifies the trimester of infection, calculates the covid window + or- 30 days from diagnosis, 
+#and subsets the data by trimester of diagnosis
+#output is a list of 3 dataframes (trim1, trim2, trim3) with the diagnosis date, covid window dates and person_ids
+
+cov_data<-cov_trimester(preg_data = my_PREG)
 
 my_tables<-list.files(path=output_drugs)
 
@@ -25,9 +34,9 @@ my_results[i]<-during_timester_test(expos_data=my_data, preg_data=my_PREG, trime
 
 }
 
-
-
-for (j in 1: length(my_results)){
-  fwrite(A_group[j], paste0(output_trim, "/", "LB_",(-1*my_lookback), "_Mig_A",j,".csv"))
-}
-
+# 
+# 
+# for (j in 1: length(my_results)){
+#   fwrite(A_group[j], paste0(output_trim, "/", "LB_",(-1*my_lookback), "_Mig_A",j,".csv"))
+# }
+# 

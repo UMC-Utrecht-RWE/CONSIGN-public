@@ -1,12 +1,14 @@
 #detect drug dispensing dates within trimesters
 
-# expos data can be drug or covid diagnosis
+# expos data is drug ATC group, many possible dispensing dates
+#preg data is produced by cov_trimester function
 
-during_timester_test<-function(expos_data, preg_data, trimester_start="trim_1_start", trimester_end="trim_1_end"){
+during_timester_test<-function(expos_data, preg_data, start="start_cov_window", end="end_cov_window"){
+  
   if(nrow(expos_data)>0){
     
     
-    # convert mig_dates to numeric
+    # convert expos_dates to numeric
     expos_data$num_date<-as.numeric(expos_data$date)
     #long to wide
     expos_data<-dcast(setDT(expos_data), person_id ~ rowid(person_id), value.var = ("num_date"))
@@ -16,10 +18,10 @@ during_timester_test<-function(expos_data, preg_data, trimester_start="trim_1_st
     # extract pregnancies from same person_ids
     expos_data_preg<- preg_data[preg_data$person_id%in%expos_data$person_id,]
     #select necessary columns
-    expos_data_preg<-expos_data_preg %>% select(c(pregnancy_id,person_id, trimester_start, trimester_end ))
+    expos_data_preg<-expos_data_preg %>% select(c(pregnancy_id,person_id, start, end ))
     # convert dates to numeric
-    expos_data_preg$num_trim_start<- as.numeric(expos_data_preg[,trimester_start])
-    expos_data_preg$num_trim_end<- as.numeric(expos_data_preg[,trimester_end])
+    expos_data_preg$num_trim_start<- as.numeric(expos_data_preg[,start])
+    expos_data_preg$num_trim_end<- as.numeric(expos_data_preg[,end])
     #long to wide
     preg_start<-dcast(setDT(expos_data_preg), person_id ~ rowid(person_id), value.var = ("num_trim_start"))
     preg_start <- preg_start[order(person_id),]
