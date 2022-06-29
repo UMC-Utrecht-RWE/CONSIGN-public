@@ -27,16 +27,11 @@ my_names<-c("Antihypertensives", "Antithrombotic","Antivirals","Antibacterials",
             "Anti_inflammatory", "Nasal", "Cough_cold")
 
 my_results<-list()
-
+for(j in 1:length(cov_data)){
+  my_cov_data<-cov_data[[j]]
 for(i in length(my_tables)){
 my_data<-fread(paste0(output_drugs,my_tables[i]))
-my_results[i]<-during_timester_test(expos_data=my_data, preg_data=my_PREG, trimester_start=my_trim_start, trimester_end= my_trim_end)
+my_results[i]<-
 
 }
 
-# 
-# 
-# for (j in 1: length(my_results)){
-#   fwrite(A_group[j], paste0(output_trim, "/", "LB_",(-1*my_lookback), "_Mig_A",j,".csv"))
-# }
-# 
