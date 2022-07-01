@@ -25,4 +25,8 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 source(paste0(pre_dir, "/ATC_detect.R"))
 
-source(paste0(pre_dir, "/ATC_COVID_dates.R"))
+source(paste0(pre_dir, "/cov_trimester_function.R"))
+
+source(paste0(pre_dir, "/cov_window_exposure_function.R"))
+
+source(paste0(pre_dir, "/trimester_drug_exposure.R"))
