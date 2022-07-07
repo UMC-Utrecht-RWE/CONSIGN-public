@@ -1,0 +1,12 @@
+# matched cohort prevalence
+-- age category
+-- age at start pregnancy
+-- age at covid diagnosis
+
+without replacement
+pool depleted (once matched, removed from matching pool)
+
+1:3 covid+ to covid- all pregnant (prevalence medication) but only to create cohort for group comparrison for medication use around date of covid
+
+1:3 covid+ pregnant vs. non-pregnant  diagnosis match +/- 14 days and then medication exposure (assign same preg_start dates trimester dates same for the matched group)
+

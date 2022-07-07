@@ -83,18 +83,34 @@ if((all(order_cov_PREG$person_id==cov_PREG_long$person_id))==F){print("person_id
 #now combine the formated covid dates with 
 final_cov_dates<-order_cov_PREG %>% select(any_of(cov_vars))
 
+
+# bind the covid diagnoses columns to the pregnancy data in long format: one column per diagnosis, 
+# and repeated in case of multiple pregnancy in the same person
+
 final_cov_PREG<-cbind(cov_PREG_long, final_cov_dates)
 
+#problem to think about: if a person has more than one diagnosis, the second could overwrite the first
+#example: first diagnosis is in 2nd trimester (cov_trimester==2), second diagnosis is after pregnancy (cov_trimester==NA)
+#need to add something to allow NA and 0 to be overwritten but not 1,2,3
 
-final_cov_PREG$cov_trimester<-0
+#define final_cov_preg in the beginning of the loop to remove those already assigned a trimester
+#what if a single pregnancy has 2 infections? HELP (take first? since medicines exposure most important in first)?
+#5/7/22 eimir : take first covid exposure
+
+#HELP covid diagnosis just before LMP (lookback 10 days? quarantine days)
+
+final_cov_PREG$cov_trimester<-NA
+
 
 for(i in 1:length(cov_vars)){
 
-final_cov_PREG$cov_trimester[cov_date$cov_date<=final_cov_PREG$trim_1_start]<-NA
-final_cov_PREG$cov_trimester[(cov_date$cov_date>=final_cov_PREG$trim_1_start)&  (cov_date$cov_date<= final_cov_PREG$trim_1_end)]<-1
-final_cov_PREG$cov_trimester[(cov_date$cov_date>=final_cov_PREG$trim_2_start)&  (cov_date$cov_date<= final_cov_PREG$trim_2_end)]<-2
-final_cov_PREG$cov_trimester[(cov_date$cov_date>=final_cov_PREG$trim_3_start)&  (cov_date$cov_date<= final_cov_PREG$trim_3_end)]<-3
-final_cov_PREG$cov_trimester[cov_date$cov_date>=final_cov_PREG$trim_3_end]<-NA
+  # need to identify the covid date columns
+  
+final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date<=final_cov_PREG$trim_1_start)]<-NA
+final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_1_start)&  (cov_date$cov_date<= final_cov_PREG$trim_1_end)]<-1
+final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_2_start)&  (cov_date$cov_date<= final_cov_PREG$trim_2_end)]<-2
+final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_3_start)&  (cov_date$cov_date<= final_cov_PREG$trim_3_end)]<-3
+final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_3_end)]<-NA
 }
 return(final_cov_PREG)}
 
