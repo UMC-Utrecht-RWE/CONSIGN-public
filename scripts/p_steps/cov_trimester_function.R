@@ -17,100 +17,78 @@ cov_trimester<-function(preg_data=my_PREG, cov_data=cov_data){
   # 3) cov_data long to wide by date
   # 4) for each row check each covid date (in case of multiple diagnoses) to each pregnancy dates (in case of multiple pregnancies)
  
-cov_PREG_long<- preg_data[preg_data$person_id%in%cov_data$person_id,] 
-cov_PREG_long<-cov_PREG_long[order(cov_PREG_long$person_id),]
+PREG_long<- preg_data[preg_data$person_id%in%cov_data$person_id,] 
+PREG_long<-PREG_long[order(PREG_long$person_id),]
 
-cov_PREG<-dcast(setDT(cov_PREG_long), person_id ~ rowid(person_id), value.var = ("pregnancy_id"))
-cov_PREG<-cov_PREG[order(cov_PREG$person_id),]
+PREG_wide<-dcast(setDT(PREG_long), person_id ~ rowid(person_id), value.var = ("pregnancy_id"))
+PREG_wide<-PREG_wide[order(PREG_wide$person_id),]
 
 preg_names<-vector()
-for(i in 2:ncol(cov_PREG)){
+for(i in 2:ncol(PREG_wide)){
   preg_names[i-1]<-paste0("pregnancy_",(i-1))
 }
 
-colnames(cov_PREG)<-c("person_id",preg_names)
+colnames(PREG_wide)<-c("person_id",preg_names)
 
 
-cov_data<-cov_data[cov_data$person_id%in%cov_PREG$person_id,]
+cov_data<-cov_data[cov_data$person_id%in%PREG_wide$person_id,]
 max_cov<-max(table(cov_data$person_id))
-cov_data<-dcast(setDT(cov_data), person_id ~ rowid(person_id), value.var = ("cov_date"))
-cov_data<-cov_data[order(cov_data$person_id),]
+cov_data_wide<-dcast(setDT(cov_data), person_id ~ rowid(person_id), value.var = ("cov_date"))
+cov_data_wide<-cov_data_wide[order(cov_data_wide$person_id),]
 
-id_freq<-(table(cov_PREG_long$person_id))
 
-cov_dates<-cov_data[,2:(ncol(cov_data))]
 
-my_name<-vector()
+if((all(cov_data_wide$person_id==PREG_wide$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
+
+
+cov_num<-vector()
 for(i in 1:max_cov){
-my_name[i]<-paste0("cov_diag_", i)
+  cov_num[i]<-paste0("cov_date_", i)
 }
 
-# cov_diag_long<-df <- data.frame(matrix(ncol = max_cov, nrow = 0))
-# colnames(cov_diag_long)<-my_name
-# 
-# for(i in 1:max_cov){
-#   my_dates<-cov_dates[,..i]
-#   print(my_dates)
-# cov_diag_long[,i]<-rep.int(x = my_dates, times=id_freq)
-# }
-# 
-# rep.int(as.numeric(cov_dates[,1]),1:10)
-# rep.int(c(5,4,3),(1:3))
+colnames(cov_data_wide)<-c("person_id",cov_num)
 
-if((all(cov_data$person_id==cov_PREG$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
+cov_PREG<-cbind(PREG_wide, cov_data_wide[,2:ncol(cov_data_wide)])
 
-cov_vars<-vector()
-
-for (i in 2:ncol(cov_data)){
-  diag_name<-paste0("cov_date_",(i-1))
-  colnames_preg<-c(colnames(cov_PREG), diag_name)
-  cov_PREG<-cbind(cov_PREG, cov_data[,..i])
-  colnames(cov_PREG)<-colnames_preg
-  cov_vars[i-1]<-diag_name
-}
 
 # now I have the covid dates matched to the right person_id and per pregnancy in wide format by PREG_ID- 
-# now I need it back to long to cbind to my_PREG to calculate the trimester (if any) in which diagnosis occurred
+# now I need it back to long to cbind to preg_long to calculate the trimester (if any) in which diagnosis occurred
 # problem: variable column number and column names
 
-interim_cov_PREG<-melt.data.table(cov_PREG, id.vars = c("person_id", cov_vars),
-     measure.vars = c(preg_names),variable.name = "preg_num", value.name = "pregnancy_id", na.rm = T)
-
-order_cov_PREG<-interim_cov_PREG[order(interim_cov_PREG$person_id),]
-
-if((all(order_cov_PREG$person_id==cov_PREG_long$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
-
-#now combine the formated covid dates with 
-final_cov_dates<-order_cov_PREG %>% select(any_of(cov_vars))
+interim_cov_long<-melt.data.table(cov_PREG, id.vars = c("person_id", cov_num ),measure.vars = preg_names, na.rm = T)
 
 
-# bind the covid diagnoses columns to the pregnancy data in long format: one column per diagnosis, 
-# and repeated in case of multiple pregnancy in the same person
+order_cov_long<-interim_cov_long[order(interim_cov_long$person_id),]
 
-final_cov_PREG<-cbind(cov_PREG_long, final_cov_dates)
+#now I have each covid diagnosis date repeated once per pregnancy. Long by pregnancy, wide by covid
+
+if((all(order_cov_long$person_id==PREG_long$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
+
+cov_final<-select(order_cov_long,starts_with("cov_date"))
 
 #problem to think about: if a person has more than one diagnosis, the second could overwrite the first
 #example: first diagnosis is in 2nd trimester (cov_trimester==2), second diagnosis is after pregnancy (cov_trimester==NA)
 #need to add something to allow NA and 0 to be overwritten but not 1,2,3
 
-#define final_cov_preg in the beginning of the loop to remove those already assigned a trimester
+#define final_PREG_wide in the beginning of the loop to remove those already assigned a trimester
 #what if a single pregnancy has 2 infections? HELP (take first? since medicines exposure most important in first)?
 #5/7/22 eimir : take first covid exposure
 
-#HELP covid diagnosis just before LMP (lookback 10 days? quarantine days)
+#HELP 5/7/22 covid diagnosis just before LMP (lookback 10 days? quarantine days)
 
-final_cov_PREG$cov_trimester<-NA
+PREG_long$cov_trimester<-NA
 
 
-for(i in 1:length(cov_vars)){
+for(i in 1:ncol(cov_final)){
 
-  # need to identify the covid date columns
+ cov_date<-as.numeric(cov_final[,..i])
+
   
-final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date<=final_cov_PREG$trim_1_start)]<-NA
-final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_1_start)&  (cov_date$cov_date<= final_cov_PREG$trim_1_end)]<-1
-final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_2_start)&  (cov_date$cov_date<= final_cov_PREG$trim_2_end)]<-2
-final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_3_start)&  (cov_date$cov_date<= final_cov_PREG$trim_3_end)]<-3
-final_cov_PREG$cov_trimester[is.na(final_cov_PREG$cov_trimester) & (cov_date$cov_date>=final_cov_PREG$trim_3_end)]<-NA
+PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date<=as.numeric(PREG_long$trim_1_start))]<-NA
+PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_1_start))&  (cov_date<= as.numeric(PREG_long$trim_1_end))]<-1
+PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_2_start))&  (cov_date<= as.numeric(PREG_long$trim_2_end))]<-2
+PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_3_start))&  (cov_date<= as.numeric(PREG_long$trim_3_end))]<-3
+PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_3_end))]<-NA
 }
-return(final_cov_PREG)}
+return(PREG_long)}
 

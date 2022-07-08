@@ -14,33 +14,9 @@
 
 #test that date of drug dispensing is within trimester
 
-my_PREG<-fread(paste0(hist_preg_folder,"my_PREG.csv"))
+my_PREG<-fread(paste0(pan_preg_folder,"sim_PREG.csv"))
 
-# simulate person_id matching drug exposure table 1
-
-new_id<-sample(my_data$person_id,10)
-sample<-(sample(1:17, 10,replace = T) )
-sample<-my_PREG[sample,]
-sample$person_id<-new_id
-
-my_PREG<-rbind(my_PREG, sample)
-
-#simulate covid diagnosis dates between start and end of pregnancy
-(my_PREG <- my_PREG %>%
-    rowwise() %>%
-    mutate(cov_date = sample(x = seq(from = pregnancy_start_date,
-                                        to = pregnancy_end_date,
-                                        by = "day"),
-                                size = 1)))
-
-# simulate multiple diagnoses within person
-
-sample2<-(sample(1:nrow(my_PREG), 15,replace = F) )
-cov_data<-my_PREG[sample2, c("person_id","cov_date")]
-colnames(cov_data)<-c("person_id", "cov_date")
-
-
-
+cov_data<-fread(paste0(pan_preg_folder,"sim_cov.csv"))
 ##########################################################################
 
 
@@ -49,6 +25,7 @@ colnames(cov_data)<-c("person_id", "cov_date")
 #output is a list of 3 dataframes (trim1, trim2, trim3) with the diagnosis date, covid window dates and person_ids
 
 cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
+fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
 my_tables<-list.files(path=output_drugs)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
@@ -58,7 +35,7 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 # for(j in 1:length(cov_data)){
 #   my_cov_data<-cov_data[[j]]
 # for(i in length(my_tables)){
- my_data<-fread(paste0(output_drugs,my_tables[1]))
+ my_data<-fread(paste0(output_drugs,my_tables[i]))
 # my_results[i]<-
 # 
 # }
