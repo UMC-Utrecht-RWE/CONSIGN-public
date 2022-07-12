@@ -49,3 +49,6 @@ my_PREG$pregnancy_id<-1:nrow(my_PREG)
 
 fwrite(my_PREG, paste0(pan_preg_folder,"sim_PREG.csv") )
 fwrite(cov_data, paste0(pan_preg_folder,"sim_cov.csv") )
+
+my_PREG<-fread(paste0(pan_preg_folder,"sim_PREG.csv") )
+cov_data<-fread(paste0(pan_preg_folder,"sim_cov.csv") )

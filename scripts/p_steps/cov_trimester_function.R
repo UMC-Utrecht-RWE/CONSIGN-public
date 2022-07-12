@@ -66,6 +66,7 @@ if((all(order_cov_long$person_id==PREG_long$person_id))==F){print("person_id mat
 
 cov_final<-select(order_cov_long,starts_with("cov_date"))
 
+
 #problem to think about: if a person has more than one diagnosis, the second could overwrite the first
 #example: first diagnosis is in 2nd trimester (cov_trimester==2), second diagnosis is after pregnancy (cov_trimester==NA)
 #need to add something to allow NA and 0 to be overwritten but not 1,2,3
@@ -78,11 +79,13 @@ cov_final<-select(order_cov_long,starts_with("cov_date"))
 
 PREG_long$cov_trimester<-NA
 
+# Error in as.numeric(cov_final[, ..i]) : 'list' object cannot be coerced to type 'double'
 
 for(i in 1:ncol(cov_final)){
 
- cov_date<-as.numeric(cov_final[,..i])
-
+ cov_date<-(as.numeric(cov_final[,1]))
+# the error is here
+ # Error: 'list' object cannot be coerced to type 'double'
   
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date<=as.numeric(PREG_long$trim_1_start))]<-NA
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_1_start))&  (cov_date<= as.numeric(PREG_long$trim_1_end))]<-1

@@ -16,11 +16,17 @@ load(paste0(path_CDM,"D3_pregnancy_final.RData"))
 start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
 
-covID_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
+covid_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
 
-# help- eimir should this be based on start or end of pregnancy?
+# should this be based on start or end of pregnancy?
+#answer: start
 my_PREG<-D3_pregnancy_final[D3_pregnancy_final$pregnancy_start_date>start_date]
+
+#filter out non-green quality pregnancies
+#HELP: should this be only green or green and yellow?
+
+my_PREG<-my_PREG[my_PREG$pregnancy_id%like%"Green",]
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
@@ -29,7 +35,7 @@ my_PREG$cohort<-NA
 
 my_PREG$cohort[(my_PREG$pregnancy_end_date<historical_end_date)]<-"historical"
 
-my_PREG$cohort[(my_PREG$pregnancy_end_date>=covID_date)]<-"pandemic"
+my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_date)]<-"pandemic"
 
 my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
@@ -46,10 +52,11 @@ my_PREG$trim_2_end[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]<-NA
 
 my_PREG$trim_3_start<- my_PREG$trim_2_end+1
 my_PREG$trim_3_end<- my_PREG$pregnancy_end_date
-my_PREG$trim_3_end[my_PREG$trim_2_end<my_PREG$trim_2_end]<-NA
+my_PREG$trim_3_end[is.na(my_PREG$trim_3_start)]<- NA
+my_PREG$trim_3_end[my_PREG$trim_3_end<my_PREG$trim_2_end]<-NA
 
 # filter CDM
-preg_id<-unique(my_PREG$person_id)
+preg_ID<-unique(my_PREG$person_id)
 pan_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="pandemic"])
 hist_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="historical"])
 
@@ -65,6 +72,8 @@ actual_tables_preselect$PERSONS<-list.files(paste0(preselect_folder,"/"), patter
 
 all_actual_tables<-list.files(paste0(preselect_folder,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_preselect)
+
+fwrite(my_PREG, paste0(path_CDM,"all_PREG.csv"))
 
 all_person_ID<-list()
 for(i in 1:length(actual_tables_preselect$PERSONS)){

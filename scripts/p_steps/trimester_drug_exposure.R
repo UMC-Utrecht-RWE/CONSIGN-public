@@ -25,6 +25,7 @@ cov_data<-fread(paste0(pan_preg_folder,"sim_cov.csv"))
 #output is a list of 3 dataframes (trim1, trim2, trim3) with the diagnosis date, covid window dates and person_ids
 
 cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
+
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
 my_tables<-list.files(path=output_drugs)
