@@ -79,11 +79,9 @@ cov_final<-select(order_cov_long,starts_with("cov_date"))
 
 PREG_long$cov_trimester<-NA
 
-# Error in as.numeric(cov_final[, ..i]) : 'list' object cannot be coerced to type 'double'
-
 for(i in 1:ncol(cov_final)){
 
- cov_date<-(as.numeric(cov_final[,1]))
+ cov_date<-cov_final[,..i]
 # the error is here
  # Error: 'list' object cannot be coerced to type 'double'
   
