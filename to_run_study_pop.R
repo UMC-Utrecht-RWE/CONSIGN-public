@@ -22,9 +22,6 @@ source(paste0(pre_dir, "/preselect.R"))
 
 #creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
 source(paste0(pre_dir, "/pregnancy_filter.R"))
-# revisit trimester start and end dates- 
-# this should not be possible:2018-11-16       <NA>         <NA>       <NA>         <NA> 2019-01-25
-
 
 
 
