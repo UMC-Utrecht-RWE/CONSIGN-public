@@ -75,7 +75,7 @@ during_cov_trimester<-function(atc_data, trim_data){
         start[]
       }
       
-      
+      (cov_atc_end_diff[[1]])[any(cov_atc_end_diff[[1]])<=0,]
      
       return(my_results)}
   

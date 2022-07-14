@@ -20,7 +20,11 @@ source(paste0(pre_dir, "/packages.R"))
 #creates new dataset of only women (sex_at_instance_creation==F, DOB>1954)
 source(paste0(pre_dir, "/preselect.R"))
 
-#creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
+# calculates trimester dates and adds these variables to original pregnancy data
+source(paste0(pre_dir, "/trimester_create.R"))
+
+#filters out red quality pregnancies
+# creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 

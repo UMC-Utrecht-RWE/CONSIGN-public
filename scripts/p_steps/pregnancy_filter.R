@@ -5,13 +5,14 @@
 
 # filters pregnancy table for 2018-present
 # IDentifies historical and pandemic pregnancies
-# IDentifies trimester start and end dates
+
 
 #filters CDM tables to include only person_IDs with a pregnancy record
 #IN PROGRESS
 
-load(paste0(path_CDM,"D3_pregnancy_final.RData"))
+# load(paste0(path_CDM,"D3_pregnancy_final.RData"))
 
+# my_PREG already created by trimester_create.R
 
 start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
@@ -21,12 +22,12 @@ covid_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
 # should this be based on start or end of pregnancy?
 #answer: start
-my_PREG<-D3_pregnancy_final[D3_pregnancy_final$pregnancy_start_date>start_date]
+my_PREG<-my_PREG[my_PREG$pregnancy_start_date>start_date]
 
 #filter out non-green quality pregnancies
-#HELP: should this be only green or green and yellow?
 
-my_PREG<-my_PREG[my_PREG$pregnancy_id%like%"Green",]
+
+my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
@@ -39,21 +40,7 @@ my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_date)]<-"pandemic"
 
 my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
-# create trimesters
 
-my_PREG$trim_1_start<- my_PREG$pregnancy_start_date
-my_PREG$trim_1_end<- my_PREG$pregnancy_start_date+97
-my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-NA
-
-
-my_PREG$trim_2_start<- my_PREG$trim_1_end+1
-my_PREG$trim_2_end<- my_PREG$trim_1_end+97
-my_PREG$trim_2_end[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]<-NA
-
-my_PREG$trim_3_start<- my_PREG$trim_2_end+1
-my_PREG$trim_3_end<- my_PREG$pregnancy_end_date
-my_PREG$trim_3_end[is.na(my_PREG$trim_3_start)]<- NA
-my_PREG$trim_3_end[my_PREG$trim_3_end<my_PREG$trim_2_end]<-NA
 
 # filter CDM
 preg_ID<-unique(my_PREG$person_id)
