@@ -3,7 +3,6 @@
 #University Medical Center Utrecht
 #30/5/2022
 
-#CONSIGN to.run tables 1.a and 1.b
 
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}

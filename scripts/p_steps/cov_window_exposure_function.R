@@ -43,24 +43,33 @@ during_cov_trimester<-function(atc_data, trim_data){
   
       # for each covid diagnosis (sorted by trimester) w/i eachperson compare each dispensing date...
     
-      cov_atc_start_diff<-list()
+    
+  my_cov_window_days<- (my_end_dates)-(my_start_dates)
+  
+  cov_atc_start_diff<-matrix(nrow=nrow(trim_start_wide), ncol=(ncol(trim_start_wide)-1))
+    
+  start_dates<-trim_start_wide[,2:ncol(trim_start_wide)]
       
-      
-      for(i in 2:ncol(trim_start_wide)){
-        my_start_dates<-trim_start_wide[,..i]
+    for(i in 1:ncol(start_dates)){
+        my_start_dates<-start_dates[,..i]
+        # date_dispensing-start_date : want values between 0 and window_days
         cov_expos_days <- as.data.frame(apply(my_start_dates,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
-        cov_atc_start_diff[[i-1]]<-cov_expos_days
-        
+        # need to test: does this row contain a value between 0 and the corresponding cov_window_days
+          for(j in 1:nrow(cov_expos_days)){
+            window<-as.numeric(my_cov_window_days[j,..i])
+              if((any(cov_expos_days[j,]>=0 & cov_expos_days[j,] <= window)))
+              {cov_atc_start_diff[j,i]<-1}else{cov_atc_start_diff[j,i]<-0}
+          }
       }
       
-      cov_atc_end_diff<-list()
-      
-      for(i in 2:ncol(trim_end_wide)){
-        my_end_dates<-trim_end_wide[,..i]
-        cov_expos_days <- as.data.frame(apply(my_end_dates,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
-        cov_atc_end_diff[[i-1]]<-cov_expos_days
-        
-      }
+      # cov_atc_end_diff<-list()
+      # 
+      # for(i in 2:ncol(trim_end_wide)){
+      #   my_end_dates<-trim_end_wide[,..i]
+      #   cov_expos_days <- as.data.frame(apply(my_end_dates,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
+      #   cov_atc_end_diff[[i-1]]<-cov_expos_days
+      #   
+      # }
       
       # we want all rows (pregnancies) where start_diff>=0 AND end_diff<=0
       #in case of mulitple pregnancies/person there will be listed start and end differences
