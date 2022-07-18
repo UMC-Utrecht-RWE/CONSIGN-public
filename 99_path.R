@@ -50,8 +50,11 @@ g_intermediate <- paste0(projectFolder, "/g_intermediate/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/drugs/")), dir.create(paste0(projectFolder, "/g_output/drugs")), FALSE))
-output_drugs    <- paste0(projectFolder, "/g_output/drugs/")
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/atc_counts/")), dir.create(paste0(projectFolder, "/g_output/atc_counts")), FALSE))
+output_drugs    <- paste0(projectFolder, "/g_output/atc_counts/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc")), FALSE))
+output_cov_window_drugs    <- paste0(projectFolder, "/g_output/cov_window_atc/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/trimester/")), dir.create(paste0(projectFolder, "/g_output/trimester")), FALSE))
 output_trimester    <- paste0(projectFolder, "/g_output/trimester/")

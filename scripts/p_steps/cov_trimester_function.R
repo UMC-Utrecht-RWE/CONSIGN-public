@@ -77,19 +77,31 @@ cov_final<-select(order_cov_long,starts_with("cov_date"))
 
 #HELP 5/7/22 covid diagnosis just before LMP (lookback 10 days? quarantine days)
 
+# 15/7: need to retain the specific cov_date that matches the trimester, then the cov_window== +30 days and -30 day separately >_<
+
 PREG_long$cov_trimester<-NA
+PREG_long$cov_date<-NA
 
 for(i in 1:ncol(cov_final)){
 
  cov_date<-cov_final[,..i]
-# the error is here
- # Error: 'list' object cannot be coerced to type 'double'
+ 
   
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date<=as.numeric(PREG_long$trim_1_start))]<-NA
+
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_1_start))&  (cov_date<= as.numeric(PREG_long$trim_1_end))]<-1
+
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_2_start))&  (cov_date<= as.numeric(PREG_long$trim_2_end))]<-2
+
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_3_start))&  (cov_date<= as.numeric(PREG_long$trim_3_end))]<-3
+
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(PREG_long$trim_3_end))]<-NA
-}
+
+
+  for (j in 1:nrow(PREG_long)){
+    if((is.na(PREG_long$cov_trimester[j]))==F) {PREG_long$cov_date[j]<-cov_date[j]}
+      }
+PREG_long$cov_date<-unlist(PREG_long$cov_date)
 return(PREG_long)}
+}
 

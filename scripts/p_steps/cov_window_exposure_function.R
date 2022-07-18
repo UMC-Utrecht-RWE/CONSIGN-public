@@ -3,13 +3,13 @@
 # expos data is drug ATC group, many possible dispensing dates
 #preg data is produced by cov_trimester function
 
-during_cov_trimester<-function(atc_data, trim_data){
+during_cov_window<-function(atc_data, trim_data){
  
   
     # select person IDs in ATC data matching pregnancy cohort 
   atc_data<-atc_data[atc_data$person_id%in%trim_data$person_id]
     
-  if(nrow(atc_data)==0){print("no elligible drug exposures"); break}
+  if(nrow(atc_data)>0){
   
     # convert atc_date to date format
     atc_data$date<- as.Date(as.character(atc_data$date),format="%Y%m%d")
@@ -28,65 +28,40 @@ during_cov_trimester<-function(atc_data, trim_data){
     
     #multiple pregnancies per person possible, need to reshape start and end 
     
-    trim_start_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_start"))
-    trim_start_wide<-trim_start_wide[order(person_id),]
+    trim_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_date"))
+    trim_wide<-trim_wide[order(person_id),]
     
-    trim_end_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_end"))
-    trim_end_wide<-trim_end_wide[order(person_id),]
-    
-    
+   
     #test that person_id for exposure data and pregnancy data are the same
-    if((all(trim_start_wide$person_id==atc_data_wide$person_id))==T){print("person_ids start match start, OK")}else{break}
-    if((all(trim_end_wide$person_id==atc_data_wide$person_id))==T){print("person_ids end match start, OK")}else{break}
+    if((all(trim_wide$person_id==atc_data_wide$person_id))==T){print("person_ids start match start, OK")}
     
     #test if any dispensing dates occurred within covid trimester
   
       # for each covid diagnosis (sorted by trimester) w/i eachperson compare each dispensing date...
     
     
-  my_cov_window_days<- (my_end_dates)-(my_start_dates)
   
-  cov_atc_start_diff<-matrix(nrow=nrow(trim_start_wide), ncol=(ncol(trim_start_wide)-1))
+  cov_30_plus<-list()
+  cov_30_minus<-list()
     
-  start_dates<-trim_start_wide[,2:ncol(trim_start_wide)]
+  cov_trim_date<-trim_wide[,2:ncol(trim_wide)]
       
-    for(i in 1:ncol(start_dates)){
-        my_start_dates<-start_dates[,..i]
+    for(i in 1:ncol(cov_trim_date)){
+        my_date<-cov_trim_date[,..i]
         # date_dispensing-start_date : want values between 0 and window_days
-        cov_expos_days <- as.data.frame(apply(my_start_dates,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
-        # need to test: does this row contain a value between 0 and the corresponding cov_window_days
-          for(j in 1:nrow(cov_expos_days)){
-            window<-as.numeric(my_cov_window_days[j,..i])
-              if((any(cov_expos_days[j,]>=0 & cov_expos_days[j,] <= window)))
-              {cov_atc_start_diff[j,i]<-1}else{cov_atc_start_diff[j,i]<-0}
-          }
+        cov_expos_days <- as.data.frame(apply(my_date,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
+        minus30<-between(cov_expos_days, -30, 0)
+        cov_30_minus[[i]]<-apply(minus30,1,any)
+        plus30<-between(cov_expos_days,  0,30)
+        cov_30_plus[[i]]<-apply(plus30,1,any)
       }
       
-      # cov_atc_end_diff<-list()
-      # 
-      # for(i in 2:ncol(trim_end_wide)){
-      #   my_end_dates<-trim_end_wide[,..i]
-      #   cov_expos_days <- as.data.frame(apply(my_end_dates,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
-      #   cov_atc_end_diff[[i-1]]<-cov_expos_days
-      #   
-      # }
-      
-      # we want all rows (pregnancies) where start_diff>=0 AND end_diff<=0
-      #in case of mulitple pregnancies/person there will be listed start and end differences
-      # need to calculate for each list element
-      
-      my_result<-list()
-      
-      for(i in 1:length(cov_atc_start_diff)){
-        start<-as.data.table(cov_atc_start_diff[[i]])
-        end<-as.data.table(cov_atc_end_diff[[i]])
-        
-        start[]
-      }
-      
-      (cov_atc_end_diff[[1]])[any(cov_atc_end_diff[[1]])<=0,]
+ my_results<-as.data.frame<-cbind(unlist(cov_30_minus), unlist(cov_30_plus)) 
+ my_results[is.na(my_results)]<-FALSE
+ colnames(my_results)<-c("cov_30_minus", "cov_30_plus")
      
-      return(my_results)}
+  return(my_results)}else{return("no matching ATC dispensings")}
+}
   
   
 

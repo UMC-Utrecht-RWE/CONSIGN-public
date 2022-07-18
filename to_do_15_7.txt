@@ -1,0 +1,7 @@
+to do 15/7
+
+cov_trimester function needs to flag WHICH covid diagnosis date matches the pregnancy trimester
+--> add to cov_data cov_ID and severity
+DONE 18/7 phew, what a pain in the butt
+
+then ATC dates are -30 OR +30 days from COVID DIAGNOSIS

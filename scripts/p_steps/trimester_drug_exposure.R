@@ -22,8 +22,11 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
 # now now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis
 
-for(i in length(my_tables)){
- my_data<-fread(paste0(output_drugs,my_tables[1]))
 
-  during_cov_window(expos_data = my_data, cov_data = as.data.frame(cov_data[[1]]))
+for(i in 1:length(my_tables)){
+ my_data<-fread(paste0(output_drugs,my_tables[i]))
+  atc_result<-as.data.frame(during_cov_window(atc_data = my_data, trim_data = cov_trim_data))
+  fwrite(atc_result, paste0(output_cov_window_drugs,my_names[i],"_cov_window_counts.csv" ))
 }
+
+# the result for table 1 group are the sums of each column

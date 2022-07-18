@@ -17,15 +17,11 @@ source("99_path.R")
 
 source(paste0(pre_dir, "/packages.R"))
 
-#creates new dataset of only women (sex_at_instance_creation==F, DOB>1954)
-source(paste0(pre_dir, "/preselect.R"))
-
-#creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
-source(paste0(pre_dir, "/pregnancy_filter.R"))
-
 source(paste0(pre_dir, "/ATC_detect.R"))
 
 source(paste0(pre_dir, "/cov_trimester_function.R"))
+
+source(paste0(pre_dir, "/trimester_covid.R"))
 
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
