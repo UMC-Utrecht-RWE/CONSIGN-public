@@ -28,15 +28,17 @@ for(i in 2:ncol(PREG_wide)){
   preg_names[i-1]<-paste0("pregnancy_",(i-1))
 }
 
+
 colnames(PREG_wide)<-c("person_id",preg_names)
 
 
 cov_data<-cov_data[cov_data$person_id%in%PREG_wide$person_id,]
 max_cov<-max(table(cov_data$person_id))
-cov_data_wide<-dcast(setDT(cov_data), person_id ~ rowid(person_id), value.var = ("cov_date"))
+cov_data_wide<-dcast(setDT(cov_data), person_id ~ rowid(person_id), value.var = c("cov_date"))
 cov_data_wide<-cov_data_wide[order(cov_data_wide$person_id),]
 
-
+sev_data_wide<-dcast(setDT(cov_data), person_id ~ rowid(person_id), value.var = c("severity"))
+sev_data_wide<-sev_data_wide[order(sev_data_wide$person_id),]
 
 if((all(cov_data_wide$person_id==PREG_wide$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
 
@@ -48,14 +50,21 @@ for(i in 1:max_cov){
 
 colnames(cov_data_wide)<-c("person_id",cov_num)
 
-cov_PREG<-cbind(PREG_wide, cov_data_wide[,2:ncol(cov_data_wide)])
+sev_num<-vector()
+for(i in 1:max_cov){
+  sev_num[i]<-paste0("severity_", i)
+}
+
+colnames(sev_data_wide)<-c("person_id",sev_num)
+
+cov_PREG<-cbind(PREG_wide, cov_data_wide[,2:ncol(cov_data_wide)], sev_data_wide[,2:ncol(sev_data_wide)])
 
 
 # now I have the covid dates matched to the right person_id and per pregnancy in wide format by PREG_ID- 
 # now I need it back to long to cbind to preg_long to calculate the trimester (if any) in which diagnosis occurred
 # problem: variable column number and column names
 
-interim_cov_long<-melt.data.table(cov_PREG, id.vars = c("person_id", cov_num ),measure.vars = preg_names, na.rm = T)
+interim_cov_long<-melt.data.table(cov_PREG, id.vars = c("person_id", cov_num, sev_num),measure.vars = preg_names, na.rm = T)
 
 
 order_cov_long<-interim_cov_long[order(interim_cov_long$person_id),]
@@ -65,6 +74,7 @@ order_cov_long<-interim_cov_long[order(interim_cov_long$person_id),]
 if((all(order_cov_long$person_id==PREG_long$person_id))==F){print("person_id match failure");break}else{print("id match OK")}
 
 cov_final<-select(order_cov_long,starts_with("cov_date"))
+sev_final<-select(order_cov_long,starts_with("sev"))
 
 
 #problem to think about: if a person has more than one diagnosis, the second could overwrite the first
@@ -81,10 +91,12 @@ cov_final<-select(order_cov_long,starts_with("cov_date"))
 
 PREG_long$cov_trimester<-NA
 PREG_long$cov_date<-NA
+PREG_long$severity<-NA
 
 for(i in 1:ncol(cov_final)){
 
  cov_date<-cov_final[,..i]
+ my_sev<-sev_final[,..i]
  
   
 PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date<=as.numeric(PREG_long$trim_1_start))]<-NA
@@ -100,6 +112,7 @@ PREG_long$cov_trimester[is.na(PREG_long$cov_trimester) & (cov_date>=as.numeric(P
 
   for (j in 1:nrow(PREG_long)){
     if((is.na(PREG_long$cov_trimester[j]))==F) {PREG_long$cov_date[j]<-cov_date[j]}
+    if((is.na(PREG_long$cov_trimester[j]))==F) {PREG_long$severity[j]<-my_sev[j]}
       }
 PREG_long$cov_date<-unlist(PREG_long$cov_date)
 return(PREG_long)}
