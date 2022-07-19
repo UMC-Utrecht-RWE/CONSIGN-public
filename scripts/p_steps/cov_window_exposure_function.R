@@ -28,7 +28,7 @@ during_cov_window<-function(atc_data, trim_data){
     
     #multiple pregnancies per person possible, need to reshape start and end 
     
-    trim_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_date"))
+    trim_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_date", "cov_trimester", "severity"))
     trim_wide<-trim_wide[order(person_id),]
     
    
@@ -44,7 +44,11 @@ during_cov_window<-function(atc_data, trim_data){
   cov_30_plus<-list()
   cov_30_minus<-list()
     
-  cov_trim_date<-trim_wide[,2:ncol(trim_wide)]
+  cov_trim_date<-select(trim_wide,starts_with("cov_date"))
+  severity<-select(trim_wide,starts_with("sev"))
+  severity <- severity[severity==""]
+  length(unlist(severity, use.names = F))
+  trimester<-select(trim_wide,starts_with("cov_trim"))
       
     for(i in 1:ncol(cov_trim_date)){
         my_date<-cov_trim_date[,..i]
@@ -56,9 +60,9 @@ during_cov_window<-function(atc_data, trim_data){
         cov_30_plus[[i]]<-apply(plus30,1,any)
       }
       
- my_results<-as.data.frame<-cbind(unlist(cov_30_minus), unlist(cov_30_plus)) 
+ my_results<-as.data.frame<-cbind(unlist(cov_30_minus), unlist(cov_30_plus), unlist(severity, use.names = F), unlist(trimester, use.names = F)) 
  my_results[is.na(my_results)]<-FALSE
- colnames(my_results)<-c("cov_30_minus", "cov_30_plus")
+ colnames(my_results)<-c("cov_30_minus", "cov_30_plus", "severity", "trimester")
      
   return(my_results)}else{return("no matching ATC dispensings")}
 }
