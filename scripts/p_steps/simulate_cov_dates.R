@@ -39,16 +39,19 @@ sample2<-(sample(1:nrow(my_PREG), 5,replace = F) )
 cov_dates<-my_PREG_[sample2, "cov_date"]
 sample3<-(sample(1:nrow(my_PREG), 5,replace = F) )
 id_data<-my_PREG_[sample3, "person_id"]
+
 cov_data<-cbind(id_data, cov_dates)
 colnames(cov_data)<-c("person_id", "cov_date")
-cov_data<-rbind(cov_data, my_PREG_[,c("person_id", "cov_date")])
-
-
+cov_data<-as.data.frame(rbind(cov_data, my_PREG_[,c("person_id", "cov_date")]))
+severity<-sample(c("severe", "nonsevere"), nrow(cov_data), replace = T)
+cov_data$severity<-severity
 
 my_PREG$pregnancy_id<-1:nrow(my_PREG)
 
-# fwrite(my_PREG, paste0(pan_preg_folder,"sim_PREG.csv") )
-# fwrite(cov_data, paste0(pan_preg_folder,"sim_cov.csv") )
+
+
+fwrite(my_PREG, paste0(pan_preg_folder,"sim_PREG.csv") )
+fwrite(cov_data, paste0(pan_preg_folder,"sim_cov.csv") )
 
 my_PREG<-fread(paste0(pan_preg_folder,"sim_PREG.csv") )
 cov_data<-fread(paste0(pan_preg_folder,"sim_cov.csv") )

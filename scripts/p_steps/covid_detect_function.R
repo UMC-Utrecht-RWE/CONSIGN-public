@@ -33,12 +33,16 @@ NULL
 # codesheet==all_full_codelist file==EVENTS c.voc== columns for vocabulary (ICD9, 10 etc..)
 
 events_tables<-IMPORT_PATTERN(pat="EVENTS", dir = path_CDM)
+events_tables$event_code<-	"B34.2"
+events_tables$event_record_vocabulary<-"ICD10"
+head(events_tables)
 codesheet<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
-codesheet<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]
+codesheet2<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]
 # filter for narrow? 
 
-CreateConceptDatasets <- function(codesheet=codesheet,file=events_tables, c.voc="", c.concept, c.codes, c.startwith = NULL, f.code, f.voc, path = NULL, method = "loop", group = T, f.name = NULL, db = NULL ){
-  
+CreateConceptDatasets <- function(codesheet=codesheet2,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
+                                  f.code="event_code", f.voc="event_record_vocabulary", path = path_CDM, method = "loop", group = T, f.name = NULL, db = NULL ){
+  # browser()
   #Get data. If not use copy input dataset may be affected (see data.table properties)
   codesheet <- copy(codesheet)
   file <- copy(file)
@@ -206,11 +210,11 @@ CreateConceptDatasets <- function(codesheet=codesheet,file=events_tables, c.voc=
 }
 
 
+CreateConceptDatasets()
 
 
 
-
-
+covid_DX<-readRDS(paste0(path_CDM , "I_COVID19DX_COV.rds"))
 
 
 

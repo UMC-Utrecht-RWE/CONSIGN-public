@@ -39,31 +39,41 @@ during_cov_window<-function(atc_data, trim_data){
   
       # for each covid diagnosis (sorted by trimester) w/i eachperson compare each dispensing date...
     
+   
     
+  #if there are more than 1 covid+ trimesters within same person, there will be multiple cov_date columns, 
+  # each needs to be compared to the ATC dates per person
   
-  cov_30_plus<-list()
-  cov_30_minus<-list()
-    
+  
   cov_trim_date<-select(trim_wide,starts_with("cov_date"))
   severity<-select(trim_wide,starts_with("sev"))
-  severity <- severity[severity==""]
+  # IN CASE THERE ARE MULTIPLE ROWS OF SEVERITY, THERE ARE "BLANK" VALUES FOR THOSE WITHOUT A SECOND COVID+TRIMESTER
+  #THIS CAUSES PROBLEMS
+  # severity <- severity[severity==""]
   length(unlist(severity, use.names = F))
   trimester<-select(trim_wide,starts_with("cov_trim"))
+  
+  
+  # store matrix output in list, one item per max(covid+ trimester)/person_id
+  
+  cov_30_plus_minus<-list()
+ 
       
     for(i in 1:ncol(cov_trim_date)){
         my_date<-cov_trim_date[,..i]
         # date_dispensing-start_date : want values between 0 and window_days
         cov_expos_days <- as.data.frame(apply(my_date,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
+        
         minus30<-between(cov_expos_days, -30, 0)
-        cov_30_minus[[i]]<-apply(minus30,1,any)
         plus30<-between(cov_expos_days,  0,30)
-        cov_30_plus[[i]]<-apply(plus30,1,any)
-      }
+        
+        cov_window_df<-as.data.frame(cbind(trim_wide$person_id, apply(minus30,1,any),apply(plus30,1,any), my_date, severity[,..i], trimester[,..i]))
+        
+        colnames(cov_window_df)<-c("person_id", "minus_30", "plus_30", "cov_date", "severity", "cov_trimester")
+        cov_30_plus_minus[[i]]<- cov_window_df
+        }
       
- my_results<-as.data.frame<-cbind(unlist(cov_30_minus), unlist(cov_30_plus), unlist(severity, use.names = F), unlist(trimester, use.names = F)) 
- my_results[is.na(my_results)]<-FALSE
- colnames(my_results)<-c("cov_30_minus", "cov_30_plus", "severity", "trimester")
-     
+     my_results<-bind_rows(cov_30_plus_minus)
   return(my_results)}else{return("no matching ATC dispensings")}
 }
   

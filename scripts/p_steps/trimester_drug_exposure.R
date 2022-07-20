@@ -15,7 +15,7 @@
 #and subsets the data by trimester of diagnosis
 #output is a list of 3 dataframes (trim1, trim2, trim3) with the diagnosis date, covid window dates and person_ids
 
-cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG_sim.csv"))
+# cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG_sim.csv"))
 
 my_tables<-list.files(path=output_drugs)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
@@ -27,7 +27,7 @@ for(i in 1:length(my_tables)){
  my_data<-fread(paste0(output_drugs,my_tables[i]))
   atc_result<-as.data.frame(during_cov_window(atc_data = my_data, trim_data = cov_trim_data))
   fwrite(atc_result, paste0(output_cov_window_drugs,my_names[i],"_cov_window_counts.csv" ))
-  print(atc_result)
+  # print(atc_result)
 }
 
 # the result for table 1 group are the sums of each column

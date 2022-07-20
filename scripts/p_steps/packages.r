@@ -22,3 +22,5 @@ suppressPackageStartupMessages(library(tidyselect))
 if(!require(reshape)){install.packages("reshape")}
 suppressPackageStartupMessages(library(reshape))
 
+if(!require(rlist)){install.packages("rlist")}
+suppressPackageStartupMessages(library(rlist))
