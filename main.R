@@ -168,6 +168,6 @@ source(paste0(sourceDir, "/cov_window_exposure_function.R"))
 
 #select drug exposure
 # commented due to error: 'list' object cannot be coerced to type 'double'
-source(paste0(sourceDir, "/trimester_drug_exposure.R"))
+#source(paste0(sourceDir, "/trimester_drug_exposure.R"))
 
 #FINISHED WITH SUCCESS
