@@ -50,6 +50,7 @@ during_cov_window<-function(atc_data, trim_data){
   # IN CASE THERE ARE MULTIPLE ROWS OF SEVERITY, THERE ARE "BLANK" VALUES FOR THOSE WITHOUT A SECOND COVID+TRIMESTER
   #THIS CAUSES PROBLEMS
   # severity <- severity[severity==""]
+      #checking this problem with simulated long-->wide data, and getting NAs instead of blanks, which should be fine 22/7
   length(unlist(severity, use.names = F))
   trimester<-select(trim_wide,starts_with("cov_trim"))
   
