@@ -59,63 +59,71 @@
 rm(list=ls())
 studyName <- "CONSIGN"
 if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
+suppressPackageStartupMessages(library(rstudioapi))
 if(!require(data.table)){install.packages("data.table")}
-library(data.table)
-if(!require(magrittr)){install.packages("magrittr")}
-library(magrittr)
+suppressPackageStartupMessages(library(data.table))
 if(!require(dplyr)){install.packages("dplyr")}
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
+if(!require(lubridate)){install.packages("lubridate")}
+suppressPackageStartupMessages(library(lubridate))
+if(!require(tidyverse)){install.packages("tidyverse")}
+suppressPackageStartupMessages(library(tidyverse))
+if(!require(tidyselect)){install.packages("tidyselect")}
+suppressPackageStartupMessages(library(tidyselect))
+if(!require(reshape)){install.packages("reshape")}
+suppressPackageStartupMessages(library(reshape))
+if(!require(rlist)){install.packages("rlist")}
+suppressPackageStartupMessages(library(rlist))
 
-#Sets paths to folders to be used by all other scripts
 
-#Pipeline path to source code folder directory
-dataDir<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(dataDir)
+#Set pipeline path to source code folder directory (to be used by all other folder definition)
+projectDir<-dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(projectDir)
 
-sourceDir<-paste0(dataDir,"/src/")  
+#Set source folder for .R scripts
+sourceDir<-paste0(projectDir,"/src/")  
 if(dir.exists(sourceDir)==F){dir.create(sourceDir)}
 
-#Source Data folder
-pathCDM<-paste0(dataDir,"/data/CDMInstances/")
+#Set source Data folder
+pathCDM<-paste0(projectDir,"/data/CDMInstances/")
 invisible(if(dir.exists(pathCDM)==F)
 {dir.create(pathCDM)})
 
 #Project specific cohorts data folder
 #1 - Pregnancy during pandemics
-pan_preg_folder<-paste0(dataDir,"/data/CDMInstances_pan_pregnant/")
+pan_preg_folder<-paste0(projectDir,"/data/CDMInstances_pan_pregnant/")
 invisible(if(dir.exists(pan_preg_folder)==F)
 {dir.create(pan_preg_folder)})
 #2 - Pregnancy before pandemics
-hist_preg_folder<-paste0(dataDir,"/data/CDMInstances_hist_pregnant/")
+hist_preg_folder<-paste0(projectDir,"/data/CDMInstances_hist_pregnant/")
 invisible(if(dir.exists(hist_preg_folder)==F)
 {dir.create(hist_preg_folder)})
 #3 - Not pregnant women
-not_preg_folder<-paste0(dataDir,"/data/CDMInstances_not_pregnant/")
+not_preg_folder<-paste0(projectDir,"/data/CDMInstances_not_pregnant/")
 invisible(if(dir.exists(not_preg_folder)==F)
 {dir.create(not_preg_folder)})
 #4 - Preselect only women and age group
-preselect_folder<-paste0(dataDir,"/data/CDMInstances_preselect/")
+preselect_folder<-paste0(projectDir,"/data/CDMInstances_preselect/")
 invisible(if(dir.exists(preselect_folder)==F)
 {dir.create(preselect_folder)})
 
 #Intermediate and output folders 
 #Checks if folders exist. If they do not, creates them 
-invisible(ifelse(!dir.exists(paste0(dataDir, "/output/g_intermediate/")), dir.create(paste0(dataDir, "/g_intermediate")), FALSE))
-g_intermediate <- paste0(dataDir, "/output/g_intermediate/")
-invisible(ifelse(!dir.exists(paste0(dataDir, "/output/g_output/")), dir.create(paste0(dataDir, "/g_output")), FALSE))
-output_dir     <- paste0(dataDir, "/output/g_output/")
+invisible(ifelse(!dir.exists(paste0(projectDir, "/output/g_intermediate/")), dir.create(paste0(projectDir, "/g_intermediate")), FALSE))
+g_intermediate <- paste0(projectDir, "/output/g_intermediate/")
+invisible(ifelse(!dir.exists(paste0(projectDir, "/output/g_output/")), dir.create(paste0(projectDir, "/g_output")), FALSE))
+output_dir     <- paste0(projectDir, "/output/g_output/")
 
 #Project specific outputs 
 #-> Declare all new necessary project specific output paths here)
-invisible(ifelse(!dir.exists(paste0(dataDir, "/output/g_output/atc_counts/")), dir.create(paste0(dataDir, "/g_output/atc_counts")), FALSE))
-output_drugs    <- paste0(dataDir, "/output/g_output/atc_counts/")
+invisible(ifelse(!dir.exists(paste0(projectDir, "/output/g_output/atc_counts/")), dir.create(paste0(projectDir, "/g_output/atc_counts")), FALSE))
+output_drugs    <- paste0(projectDir, "/output/g_output/atc_counts/")
 
-invisible(ifelse(!dir.exists(paste0(dataDir, "/output/g_output/cov_window_atc/")), dir.create(paste0(dataDir, "/g_output/cov_window_atc")), FALSE))
-output_cov_window_drugs    <- paste0(dataDir, "/output/g_output/cov_window_atc/")
+invisible(ifelse(!dir.exists(paste0(projectDir, "/output/g_output/cov_window_atc/")), dir.create(paste0(projectDir, "/g_output/cov_window_atc")), FALSE))
+output_cov_window_drugs    <- paste0(projectDir, "/output/g_output/cov_window_atc/")
 
-invisible(ifelse(!dir.exists(paste0(dataDir, "/output/g_output/trimester/")), dir.create(paste0(dataDir, "/g_output/trimester")), FALSE))
-output_trimester    <- paste0(dataDir, "/output/g_output/trimester/")
+invisible(ifelse(!dir.exists(paste0(projectDir, "/output/g_output/trimester/")), dir.create(paste0(projectDir, "/g_output/trimester")), FALSE))
+output_trimester    <- paste0(projectDir, "/output/g_output/trimester/")
 
 #Project specific additional paths in g_intermediate
 invisible(ifelse(!dir.exists(paste0(g_intermediate, "populations")), dir.create(paste0(g_intermediate, "populations")), FALSE))
@@ -159,6 +167,7 @@ source(paste0(sourceDir, "/trimester_covid.R"))
 source(paste0(sourceDir, "/cov_window_exposure_function.R"))
 
 #select drug exposure
+# commented due to error: 'list' object cannot be coerced to type 'double'
 source(paste0(sourceDir, "/trimester_drug_exposure.R"))
 
 #FINISHED WITH SUCCESS

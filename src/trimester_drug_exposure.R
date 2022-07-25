@@ -31,3 +31,4 @@ for(i in 1:length(my_tables)){
 }
 
 # the result for table 1 group are the sums of each column
+
