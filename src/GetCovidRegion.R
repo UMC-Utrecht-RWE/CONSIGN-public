@@ -35,7 +35,7 @@ FILE <- FILE[Outcome %in% c("COVID19DX"),]
 #Going through EVENTS tables and append to database.
 ####
 
-files <- list.files(path_dir, pattern = "EVENTS")
+files <- list.files(sourceDir, pattern = "EVENTS")
 
 #i=files[1]
 for(i in files){
@@ -101,7 +101,7 @@ needed_colls <- unique(c(colnames(FILE)[substr(colnames(FILE),1,3) == "col"], "d
 #j = 2
 for(j in 1:length(scheme)){
 
-  files <- list.files(path_dir, pattern = scheme[j])
+  files <- list.files(sourceDir, pattern = scheme[j])
               
           FILE_TEMP <- FILE[table == scheme[j] ,]
           

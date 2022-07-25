@@ -6,7 +6,7 @@
 
 
 #set up folders
-preselect_folder<-paste0(projectFolder,"/data/CDMInstances_preselect/")
+preselect_folder<-paste0(dataDir,"/data/CDMInstances_preselect/")
 #make sure it's empty
 do.call(file.remove, list(list.files(preselect_folder, full.names = TRUE)))
 

@@ -16,7 +16,7 @@
 #output is a list of 3 dataframes (trim1, trim2, trim3) with the diagnosis date, covid window dates and person_ids
 
 # cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG_sim.csv"))
-
+require(stringr)
 my_tables<-list.files(path=output_drugs)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 

@@ -36,7 +36,7 @@ events_tables<-IMPORT_PATTERN(pat="EVENTS", dir = )
 events_tables$event_code<-	"B34.2"
 events_tables$event_record_vocabulary<-"ICD10"
 head(events_tables)
-codesheet<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
+codesheet<-fread(paste0(dataDir,"/ALL_full_codelist.csv"))
 codesheet2<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]
 # filter for narrow? 
 
