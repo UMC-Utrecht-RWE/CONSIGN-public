@@ -7,9 +7,7 @@
 # create trimester start and end dates
 
 
-load(paste0(path_CDM,"D3_pregnancy_final.RData"))
-
-my_PREG<-D3_pregnancy_final
+my_PREG<-fread(paste0(path_CDM,"pregnancy.csv"))
 
 my_PREG$premature<-0
 
