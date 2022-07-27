@@ -77,7 +77,7 @@ for(i in 1:length(actual_tables_preselect$PERSONS)){
   preselect_person_ID[[i]]<-unique(my_table$person_id)
 }
 
-preselect_person_ID<-length(unique(unlist(preselect_person_ID)))
+preselect_person_ID<-(unique(unlist(preselect_person_ID)))
 
 
 OG_person_ID<-list()
@@ -118,7 +118,7 @@ for (i in 1:length(table_list)){
 }
 
 
-flowchart<-as.data.frame(cbind((OG_person_ID),(preselect_person_ID), OG_preg_id,study_PREG_ID, no_red_preg, length(preg_ID), length(pan_preg_ID), 
+flowchart<-as.data.frame(cbind((OG_person_ID),length(preselect_person_ID), OG_preg_id,study_PREG_ID, no_red_preg, length(pan_preg_ID), 
                                length(hist_preg_ID), length(between_preg_ID), length(non_preg_ID)))
                          
  colnames(flowchart)<-c("Original PERSONS", "preselect (women of reproductive age)", "Women who had at least one pregnancy",
