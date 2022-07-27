@@ -20,7 +20,7 @@ historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
 
 covid_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
-my_PREG<-fread(paste0(path_CDM, "pregnancy.csv"))
+my_PREG<-fread(paste0(path_CDM, "preg_trim.csv"))
 
 
 OG_preg_id<-length(unique(my_PREG$person_id))

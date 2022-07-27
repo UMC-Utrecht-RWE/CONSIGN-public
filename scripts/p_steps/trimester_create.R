@@ -7,27 +7,63 @@
 # create trimester start and end dates
 
 
-my_PREG<-fread(paste0(path_CDM,"pregnancy.csv"))
+my_PREG<-fread(paste0(path_CDM,preg_data))
 
-my_PREG$premature<-0
+summary(my_PREG$pregnancy_start_date)
+
+my_PREG$pregnancy_start_date<-as.numeric(as.Date(my_PREG$pregnancy_start_date, format = "%m/%d/%Y"))
+my_PREG$pregnancy_end_date<-as.numeric(as.Date(my_PREG$pregnancy_end_date, format = "%m/%d/%Y"))
+
+my_PREG<-my_PREG[!is.na(my_PREG$pregnancy_start_date),]
+
+# summary(my_PREG$pregnancy_start_date)
+
+# transform to date format
+
+# my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]
+# my_PREG$premature[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-1
+# 
+# my_PREG_prem<-my_PREG[my_PREG$premature==1,]
+
+# (my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)
+# my_PREG$premature[(my_PREG$trim_2_end)>=my_PREG$pregnancy_end_date]<-1
+# my_PREG$trim_2_end[(my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)==T&my_PREG$premature==0]<-my_PREG$trim_2_end[(my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)==T&my_PREG$premature==0]
+# my_PREG$premature[(my_PREG$trim_2_start+97)>=my_PREG$pregnancy_end_date]<-1
+
+
 
 my_PREG$trim_1_start<- my_PREG$pregnancy_start_date
 my_PREG$trim_1_end<- my_PREG$pregnancy_start_date+97
-my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date
-my_PREG$premature[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-1
 
-my_PREG$trim_2_start<-0
-my_PREG$trim_2_start[my_PREG$premature==1]<-NA
-my_PREG$trim_2_start[my_PREG$premature==0]<-my_PREG$trim_1_end+1
 
-my_PREG$trim_2_end<- my_PREG$trim_1_end+97
-my_PREG$trim_2_end[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date
-my_PREG$premature[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]<-1
+my_PREG$trim_2_start<-(my_PREG$trim_1_end)+1
+my_PREG$trim_2_end<- my_PREG$trim_2_start+97
 
-my_PREG$trim_3_start<-0
-my_PREG$trim_3_start[my_PREG$premature==1]<-NA
-my_PREG$trim_3_start[my_PREG$premature==0]<-my_PREG$trim_2_end+1
 
+my_PREG$trim_3_start<-my_PREG$trim_2_end+1
 my_PREG$trim_3_end<- my_PREG$pregnancy_end_date
-my_PREG$trim_3_end[is.na(my_PREG$trim_3_start)]<- NA
-my_PREG$trim_3_end[my_PREG$trim_3_end<my_PREG$trim_2_end]<-NA
+
+
+trim1_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_1_end)
+
+trim2_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_2_end)
+trim2_diff[trim1_diff>=0]
+
+trim_3_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_3_end)
+
+my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]
+
+my_PREG$trim_2_start[my_PREG$trim_1_end==my_PREG$pregnancy_end_date]<-0
+my_PREG$trim_2_end[my_PREG$trim_2_start==0]<-0
+my_PREG$trim_2_end[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date[my_PREG$trim_2_end>=my_PREG$pregnancy_end_date]
+
+my_PREG$trim_3_start[my_PREG$trim_2_end==my_PREG$pregnancy_end_date]<-0
+my_PREG$trim_3_start[my_PREG$trim_2_end==0]<-0
+my_PREG$trim_3_end[my_PREG$trim_3_start==0]<-0
+
+my_PREG$trim_2_start[my_PREG$trim_2_start==0]<-NA
+my_PREG$trim_2_end[my_PREG$trim_2_end==0]<-NA
+my_PREG$trim_3_start[my_PREG$trim_3_start==0]<-NA
+my_PREG$trim_3_end[my_PREG$trim_3_end==0]<-NA
+
+fwrite(my_PREG, paste0(path_CDM, "preg_trim.csv"))
