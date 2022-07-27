@@ -20,15 +20,14 @@ historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
 
 covid_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
-load(paste0(path_CDM,"D3_pregnancy_final.RData"))
+my_PREG<-fread(paste0(path_CDM, "pregnancy.csv"))
 
-my_PREG<-D3_pregnancy_final
 
 OG_preg_id<-length(unique(my_PREG$person_id))
 
 # should this be based on start or end of pregnancy?
 #answer: start
-my_PREG<-my_PREG[my_PREG$pregnancy_start_date>start_date]
+my_PREG<-my_PREG[my_PREG$pregnancy_start_date>=start_date]
 
 study_PREG_ID<- length(unique(my_PREG$person_id))
 #filter out non-green quality pregnancies
@@ -79,13 +78,13 @@ for(i in 1:length(actual_tables_preselect$PERSONS)){
 
 preselect_person_ID<-(unique(unlist(preselect_person_ID)))
 
-
 OG_person_ID<-list()
 for(i in 1:length(actual_tables_preselect$PERSONS)){
   my_table<-fread(paste0(path_CDM,actual_tables_preselect$PERSONS[i]))
 OG_person_ID[[i]]<-unique(my_table$person_id)
 }
 
+OG_person_ID%in%preg_ID
 OG_person_ID<-length(unique(unlist(OG_person_ID)))
 
 for (i in 1:length(table_list)){

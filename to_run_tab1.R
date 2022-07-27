@@ -21,6 +21,9 @@ source(paste0(pre_dir, "/ATC_detect.R"))
 
 source(paste0(pre_dir, "/simulate_cov_dates.R"))
 
+# integrate detect covid function
+# simulate severity
+
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 
 source(paste0(pre_dir, "/trimester_covid.R"))
