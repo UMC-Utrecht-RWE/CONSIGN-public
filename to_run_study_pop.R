@@ -11,12 +11,15 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
+#user input in params.R
 
 source("99_path.R")
 
 source(paste0(pre_dir, "/packages.R"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
+
+source(paste0(pre_dir,"/params.R"))
 
 #creates new dataset of only women (sex_at_instance_creation==F, DOB>1954)
 source(paste0(pre_dir, "/preselect.R"))
