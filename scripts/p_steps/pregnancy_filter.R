@@ -104,7 +104,7 @@ fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.c
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
-non_preg_ID<-all_person_ID[all_person_ID%exclude%preg_ID]
+non_preg_ID<-preselect_person_ID[preselect_person_ID%exclude%preg_ID]
 # what's this step? #HELP #check 
 non_preg_hist_ID<-hist_preg_ID[hist_preg_ID%exclude%pan_preg_ID]
 
