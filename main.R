@@ -143,6 +143,9 @@ tmp<-paste0(g_intermediate,"tmp/")
 #             |_|                                
 #  REAL WORLD EVIDENCE STEPS TO PROCESS CDM DATA 
 
+#benchmarking starting time 
+start_time <- Sys.time()
+
 #creates new dataset of only women (sex_at_instance_creation==F, DOB>1954)
 source(paste0(sourceDir, "/preselect.R"))
 
@@ -170,4 +173,7 @@ source(paste0(sourceDir, "/cov_window_exposure_function.R"))
 # commented due to error: 'list' object cannot be coerced to type 'double'
 #source(paste0(sourceDir, "/trimester_drug_exposure.R"))
 
+#compute total running time
+end_time <- Sys.time()
+end_time - start_time
 #FINISHED WITH SUCCESS
