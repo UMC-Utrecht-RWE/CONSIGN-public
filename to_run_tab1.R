@@ -17,12 +17,13 @@ source("99_path.R")
 
 source(paste0(pre_dir, "/packages.R"))
 
+source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
+
 source(paste0(pre_dir, "/ATC_detect.R"))
 
-source(paste0(pre_dir, "/simulate_cov_dates.R"))
+source(paste0(pre_dir, "/covid_detect_function.R"))
 
-# integrate detect covid function
-# simulate severity
+source(paste0(pre_dir, "/sim_severity.R"))
 
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 

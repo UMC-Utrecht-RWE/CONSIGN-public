@@ -20,7 +20,9 @@
 my_tables<-list.files(path=output_drugs)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
-# now now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis
+cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
+
+# now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis
 
 
 for(i in 1:length(my_tables)){

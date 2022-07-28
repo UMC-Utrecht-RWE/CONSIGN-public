@@ -32,10 +32,8 @@ NULL
 
 # codesheet==all_full_codelist file==EVENTS c.voc== columns for vocabulary (ICD9, 10 etc..)
 
-events_tables<-IMPORT_PATTERN(pat="EVENTS", dir = path_CDM)
-events_tables$event_code<-	"B34.2"
-events_tables$event_record_vocabulary<-"ICD10"
-head(events_tables)
+events_tables<-IMPORT_PATTERN(pat="EVENTS", dir = preselect_folder)
+
 codesheet<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
 codesheet2<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]
 # filter for narrow? 
@@ -214,7 +212,7 @@ CreateConceptDatasets()
 
 
 
-covid_DX<-readRDS(paste0(path_CDM , "I_COVID19DX_COV.rds"))
+covid_data<-readRDS(paste0(path_CDM , "I_COVID19DX_COV.rds"))
 
 
 
