@@ -39,7 +39,7 @@ codesheet2<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]
 # filter for narrow? 
 
 CreateConceptDatasets <- function(codesheet=codesheet2,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
-                                  f.code="event_code", f.voc="event_record_vocabulary", path = path_CDM, method = "loop", group = T, f.name = NULL, db = NULL ){
+                                  f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder, method = "loop", group = T, f.name = NULL, db = NULL ){
   # browser()
   #Get data. If not use copy input dataset may be affected (see data.table properties)
   codesheet <- copy(codesheet)

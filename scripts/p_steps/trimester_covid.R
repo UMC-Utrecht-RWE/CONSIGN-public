@@ -16,7 +16,7 @@
 
 my_PREG<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
-cov_data<-readRDS(paste0(path_CDM,"covid_data.rds"))
+cov_data<-fread(paste0(preselect_folder,"covid_data.csv"))
 ##########################################################################
 
 

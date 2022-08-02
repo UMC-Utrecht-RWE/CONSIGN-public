@@ -23,6 +23,8 @@ source(paste0(pre_dir, "/ATC_detect.R"))
 
 source(paste0(pre_dir, "/covid_detect_function.R"))
 
+source(paste0(pre_dir, "/DAP_covid_detection.R"))
+
 source(paste0(pre_dir, "/sim_severity.R"))
 
 source(paste0(pre_dir, "/cov_trimester_function.R"))
