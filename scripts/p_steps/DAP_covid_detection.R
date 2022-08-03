@@ -15,7 +15,7 @@ CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 # each DAP has 1)tables to read in 2)diagnosis column(s) 3)desired variable(s) value 4)date column 
-DAP_names<-c("ARS", "FISABIO","SWANSEA","IACS","AARHUS", "BPE","KAROLINSKA", "UiO")
+DAP_names<-c("ARS", "FISABIO","SWANSEA","IACS","AARHUS", "BPE","KAROLINSKA", "UOSL")
 
 cov_dap_data<-as.data.frame(matrix(ncol = 2))
 colnames(cov_dap_data)<-c("person_id", "cov_date")
@@ -72,7 +72,7 @@ if(DAP=="Karolinska"){
 }
 
 
-if(DAP=="UiO"){
+if(DAP=="UOSL"){
   my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='covid19_test'& my_data$mo_source_value=="positive"),]
   
