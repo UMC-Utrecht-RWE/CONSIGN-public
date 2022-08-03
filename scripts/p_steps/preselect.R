@@ -64,16 +64,8 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 ##############################################################
 #run personsfilter on PERSONS table (PERSONS USUALLY* one table)
 
-if(length(actual_tables_preselect$PERSONS)>1){
-  PERSONS<-lapply(paste0(path_CDM,actual_tables_preselect$PERSONS), fread)
-  PERSONS<-do.call(rbind,PERSONS)
-  PERSONS<-as.data.table(PERSONS)
 
-}else {
-  PERSONS<-fread(paste0(path_CDM,actual_tables_preselect$PERSONS))
-  
-}
-
+PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
 
 personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=1954, dobmax=2008)))
 personsfilter_ID<-personsfilter_output[[1]]
