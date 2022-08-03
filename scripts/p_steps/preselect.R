@@ -22,8 +22,10 @@ study_start_date<-as.Date("20180101", format="%Y%m%d")
 OBSERVATION_PERIODS <- fread(paste0(path_CDM, "OBSERVATION_PERIODS.csv"))
 OBSERVATION_PERIODS$date_end<-as.Date(as.character(OBSERVATION_PERIODS$op_end_date), format = "%Y%m%d")
 
-OB_P_ID<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
+OB_P_ID_end<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
+OB_P_ID_NA<-unique(OBSERVATION_PERIODS$person_id[is.na(OBSERVATION_PERIODS$date_end)])
 
+OB_P_ID<-unique(c(OB_P_ID_end, OB_P_ID_NA))
 #preselection application onto multiple table subsets (especially MEDICINES)
 
 #get tables 
