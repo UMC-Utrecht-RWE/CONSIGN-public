@@ -15,7 +15,7 @@ CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 # each DAP has 1)tables to read in 2)diagnosis column(s) 3)desired variable(s) value 4)date column 
-DAP_names<-c("ARS", "FISABIO","SWANSEA","IACS","AARHUS", "BPE","KAROLINSKA", "UOSL")
+DAP_names<-c("ARS", "FISABIO","SWANSEA","IACS","ARHUS", "BPE","KAROLINSKA", "UOSL")
 
 cov_date<-vector()
 person_id<-vector()
@@ -37,7 +37,7 @@ if(DAP=="FISABIO"){
 }
 
 
-if(DAP=="SWANSEA"){
+if(DAP=="USWAN"){
   my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='COVID_LIMS_TESTRESULTS'& my_data$mo_source_value==("ND6"|"ND7")),]
   
@@ -54,16 +54,16 @@ if(DAP=="IACS"){
 }
 
 
-if(DAP=="Arhuis"){
+if(DAP=="Aarhus"){
   print("no DAP specific covid detection, only pfijzer algorithm")
 }
 
-if(DAP=="BPE"){
+if(DAP=="Bordeaux"){
   print("no DAP specific covid detection, only pfijzer algorithm")
 }
 
 
-if(DAP=="Karolinska"){
+if(DAP=="Karolinska Institutet"){
   my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='covid_positive_test'& my_data$mo_source_value=="yes"),]
   
