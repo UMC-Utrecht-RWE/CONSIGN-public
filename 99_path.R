@@ -47,6 +47,8 @@ invisible(if(dir.exists(preselect_folder)==F)
 # Main folders (g_intermediate, g_output)
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/")), dir.create(paste0(projectFolder, "/g_intermediate")), FALSE))
 g_intermediate <- paste0(projectFolder, "/g_intermediate/")
+
+
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
@@ -58,6 +60,10 @@ output_cov_window_drugs    <- paste0(projectFolder, "/g_output/cov_window_atc/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/trimester/")), dir.create(paste0(projectFolder, "/g_output/trimester")), FALSE))
 output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/")), dir.create(paste0(projectFolder, "/g_output/covariates")), FALSE))
+output_cov   <- paste0(projectFolder, "/g_output/covariates/")
+
 
 # Sets path to p_steps (to read codelists)
 pre_dir <- paste0(path_dir,"p_steps")

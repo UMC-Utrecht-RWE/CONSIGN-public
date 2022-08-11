@@ -212,7 +212,7 @@ CreateConceptDatasets()
 
 
 
-covid_data<-readRDS(paste0(path_CDM , "I_COVID19DX_COV.rds"))
+covid_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
 
 
 

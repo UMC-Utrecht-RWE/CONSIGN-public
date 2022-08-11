@@ -6,6 +6,7 @@
 # CONSIGN
 # this script will identify the target codes for each covariate
 
+cohort_folder<-pan_preg_folder
 
 EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
 MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
