@@ -16,21 +16,6 @@ my_PREG$pregnancy_end_date<-as.numeric(as.Date(my_PREG$pregnancy_end_date, forma
 
 my_PREG<-my_PREG[!is.na(my_PREG$pregnancy_start_date),]
 
-# summary(my_PREG$pregnancy_start_date)
-
-# transform to date format
-
-# my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]
-# my_PREG$premature[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-1
-# 
-# my_PREG_prem<-my_PREG[my_PREG$premature==1,]
-
-# (my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)
-# my_PREG$premature[(my_PREG$trim_2_end)>=my_PREG$pregnancy_end_date]<-1
-# my_PREG$trim_2_end[(my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)==T&my_PREG$premature==0]<-my_PREG$trim_2_end[(my_PREG$pregnancy_end_date-my_PREG$trim_2_end<=0)==T&my_PREG$premature==0]
-# my_PREG$premature[(my_PREG$trim_2_start+97)>=my_PREG$pregnancy_end_date]<-1
-
-
 
 my_PREG$trim_1_start<- my_PREG$pregnancy_start_date
 my_PREG$trim_1_end<- my_PREG$pregnancy_start_date+97
