@@ -15,6 +15,7 @@ my_PREG$pregnancy_start_date<-as.numeric(as.Date(my_PREG$pregnancy_start_date, f
 my_PREG$pregnancy_end_date<-as.numeric(as.Date(my_PREG$pregnancy_end_date, format = "%m/%d/%Y"))
 
 my_PREG<-my_PREG[!is.na(my_PREG$pregnancy_start_date),]
+my_PREG<-my_PREG[!is.na(my_PREG$pregnancy_end_date),]
 
 
 my_PREG$trim_1_start<- my_PREG$pregnancy_start_date
