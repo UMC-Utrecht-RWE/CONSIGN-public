@@ -51,9 +51,9 @@ my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
 # filter CDM
 preg_ID<-unique(my_PREG$person_id)
-pan_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="pandemic"])
-hist_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="historical"])
-between_preg_ID<-unique(my_PREG$person_ID[my_PREG$cohort=="between"])
+pan_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="pandemic"])
+hist_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="historical"])
+between_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="between"])
 
 actual_tables_preselect<-list()
 actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS")
@@ -89,14 +89,14 @@ OG_person_ID<-length(unique(unlist(OG_person_ID)))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_ID%in%pan_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%pan_preg_ID,]
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
 fwrite(my_PREG[my_PREG$cohort=="pandemic",],paste0(pan_preg_folder,"my_PREG.csv"))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_ID%in%hist_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%hist_preg_ID,]
   fwrite(my_preg_table,paste0(hist_preg_folder,table_list[i]))
 }
 fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.csv"))
@@ -111,8 +111,7 @@ all_non_preg_ID<- unique(c(non_preg_ID, non_preg_hist_ID))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_table_F<-my_table
-  my_preg_table<- my_table[my_table$person_ID%in%all_non_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%all_non_preg_ID,]
   fwrite(my_preg_table,paste0(not_preg_folder,table_list[i]))
 }
 

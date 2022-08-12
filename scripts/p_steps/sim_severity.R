@@ -1,4 +1,12 @@
-#simulate covid severity (place holder until we decide how to determine severity)
+#Author: Ema Alsina, MSc.
+#email: e.m.alsina-2@umcutrecht.nl
+#Organisation: UMC Utrecht, Utrecht, The Netherlands
+#Date: 8/8/2022
+
+
+# combine Pjijzer standard COVID data with DAP tailored COVID data
+
+# simulate covid severity (place holder until we decide how to determine severity)
 
 covid_ev_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
 

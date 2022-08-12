@@ -31,6 +31,14 @@ pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/")
 invisible(if(dir.exists(pan_preg_folder)==F)
 {dir.create(pan_preg_folder)})
 
+cov_pos_pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_positive/")
+invisible(if(dir.exists(cov_pos_pan_preg_folder)==F)
+{dir.create(cov_pos_pan_preg_folder)})
+
+cov_neg_pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_negative/")
+invisible(if(dir.exists(cov_neg_pan_preg_folder)==F)
+{dir.create(cov_neg_pan_preg_folder)})
+
 hist_preg_folder<-paste0(projectFolder,"/CDMInstances_hist_pregnant/")
 invisible(if(dir.exists(hist_preg_folder)==F)
 {dir.create(hist_preg_folder)})
@@ -38,6 +46,15 @@ invisible(if(dir.exists(hist_preg_folder)==F)
 not_preg_folder<-paste0(projectFolder,"/CDMInstances_not_pregnant/")
 invisible(if(dir.exists(not_preg_folder)==F)
 {dir.create(not_preg_folder)})
+
+cov_pos_not_preg_folder<-paste0(projectFolder,"/CDMInstances_not_pregnant/covid_positive/")
+invisible(if(dir.exists(cov_pos_not_preg_folder)==F)
+{dir.create(cov_pos_not_preg_folder)})
+
+cov_neg_not_preg_folder<-paste0(projectFolder,"/CDMInstances_not_pregnant/covid_negative/")
+invisible(if(dir.exists(cov_neg_not_preg_folder)==F)
+{dir.create(cov_neg_not_preg_folder)})
+
 
 preselect_folder<-paste0(projectFolder,"/CDMInstances_preselect/")
 invisible(if(dir.exists(preselect_folder)==F)

@@ -19,8 +19,6 @@ source(paste0(pre_dir, "/packages.R"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
-source(paste0(pre_dir, "/ATC_detect.R"))
-
 source(paste0(pre_dir, "/covid_detect_function.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
@@ -32,5 +30,9 @@ source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/trimester_covid.R"))
 
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
+
+source(paste0(pre_dir, "/create_covid_cohorts.R"))
+
+source(paste0(pre_dir, "/ATC_detect.R"))
 
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
