@@ -29,13 +29,6 @@ my_PREG$trim_3_start<-my_PREG$trim_2_end+1
 my_PREG$trim_3_end<- my_PREG$pregnancy_end_date
 
 
-trim1_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_1_end)
-
-trim2_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_2_end)
-trim2_diff[trim1_diff>=0]
-
-trim_3_diff<-my_PREG$pregnancy_end_date-(my_PREG$trim_3_end)
-
 my_PREG$trim_1_end[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]<-my_PREG$pregnancy_end_date[my_PREG$trim_1_end>=my_PREG$pregnancy_end_date]
 
 my_PREG$trim_2_start[my_PREG$trim_1_end==my_PREG$pregnancy_end_date]<-0
