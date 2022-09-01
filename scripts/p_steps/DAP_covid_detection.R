@@ -89,6 +89,9 @@ if(DAP=="TEST"){
   cov_date<-c(my_data1$mo_date, my_data2$mo_date)
 }
 
+###################################################
+
+
 cov_dap_data<-as.data.frame(cbind(person_id, cov_date))
 
 fwrite(cov_dap_data, paste0(cohort_folder,"COVID_data_dap.csv"))
