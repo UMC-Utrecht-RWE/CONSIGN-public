@@ -42,7 +42,7 @@ if(DAP=="USWAN"){
   my_data<-my_data[(my_data$mo_meaning=='COVID_LIMS_TESTRESULTS'& my_data$mo_source_value==("ND6"|"ND7")),]
   
   person_id<-my_data$person_id
-  cov_date<-my_data$survey_date
+  cov_date<-my_data$mo_date
 }
 
 if(DAP=="IACS"){
@@ -50,7 +50,7 @@ if(DAP=="IACS"){
   my_data<-my_data[(my_data$mo_meaning=='COVID19 TEST'& my_data$mo_source_value==""),]
   
   person_id<-my_data$person_id
-  cov_date<-my_data$survey_date
+  cov_date<-my_data$mo_date
 }
 
 
@@ -68,7 +68,7 @@ if(DAP=="Karolinska Institutet"){
   my_data<-my_data[(my_data$mo_meaning=='covid_positive_test'& my_data$mo_source_value=="yes"),]
   
   person_id<-my_data$person_id
-  cov_date<-my_data$survey_date
+  cov_date<-my_data$mo_date
 }
 
 
@@ -77,7 +77,7 @@ if(DAP=="UOSL"){
   my_data<-my_data[(my_data$mo_meaning=='covid19_test'& my_data$mo_source_value=="positive"),]
   
   person_id<-my_data$person_id
-  cov_date<-my_data$survey_date
+  cov_date<-my_data$mo_date
 }
 
 if(DAP=="TEST"){
