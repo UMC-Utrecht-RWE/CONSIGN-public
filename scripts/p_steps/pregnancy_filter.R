@@ -10,10 +10,9 @@
 #filters CDM tables to include only person_IDs with a pregnancy record
 #IN PROGRESS
 
-# load(paste0(path_CDM,"D3_pregnancy_final.RData"))
 
-# my_PREG already created by trimester_create.R
 
+my_PREG<-fread(paste0(path_CDM, "preg_trim.csv"))
 
 start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")

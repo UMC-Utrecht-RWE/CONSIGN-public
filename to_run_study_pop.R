@@ -3,6 +3,7 @@
 #University Medical Center Utrecht
 #30/5/2022
 
+# to run this script you must have pregnancy algorithm output and enter the file name in params.r
 
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}
@@ -30,6 +31,15 @@ source(paste0(pre_dir, "/trimester_create.R"))
 #filters out red quality pregnancies
 # creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
 source(paste0(pre_dir, "/pregnancy_filter.R"))
+
+# add follow up after pregnancy criteria
+# DAP meeting: pregnancies ending by Sept 30th 2021 (before age of omicron) AND need to determine observation time for post-natal outcome (3 months)
+# end of data october +3 months (december) for drug utilization
+# -2/9 CONFIRMED
+# -exlcude RED (spontaneous abortion) ARS exception
+
+
+# create spells (check when/if this run)
 
 
 

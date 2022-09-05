@@ -211,9 +211,7 @@ CreateConceptDatasets <- function(codesheet=codesheet2,file=events_tables, c.voc
 CreateConceptDatasets()
 
 
-
 covid_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
-
 
 
 

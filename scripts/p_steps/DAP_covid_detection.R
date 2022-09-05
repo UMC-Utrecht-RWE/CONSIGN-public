@@ -19,12 +19,14 @@ DAP_names<-c("ARS", "FISABIO","SWANSEA","IACS","ARHUS", "BPE","KAROLINSKA", "UOS
 
 cov_date<-vector()
 person_id<-vector()
+meaning<-vector()
 
 if(DAP=="ARS"){
   my_data<-IMPORT_PATTERN(pat="SURVEY_ID", dir=cohort_folder)
   my_data<-my_data[(my_data$survey_meaning=='covid_registry'),]
   person_id<-my_data$person_id
   cov_date<-my_data$survey_date
+  meaning<-my_data$survey_meaning
 }
 
 if(DAP=="FISABIO"){
@@ -34,6 +36,7 @@ if(DAP=="FISABIO"){
 
   person_id<-c(my_data1$person_id, my_data2$person_id)
   cov_date<-c(my_data1$mo_date, my_data2$mo_date)
+  meaning<-my_data$mo_meaning
 }
 
 
@@ -43,6 +46,7 @@ if(DAP=="USWAN"){
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date
+  meaning<-my_data$mo_meaning
 }
 
 if(DAP=="IACS"){
@@ -51,6 +55,7 @@ if(DAP=="IACS"){
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date
+  meaning<-my_data$mo_meaning
 }
 
 
@@ -69,6 +74,7 @@ if(DAP=="Karolinska Institutet"){
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date
+  meaning<-my_data$mo_meaning
 }
 
 
@@ -78,6 +84,7 @@ if(DAP=="UOSL"){
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date
+  meaning<-my_data$mo_meaning
 }
 
 if(DAP=="TEST"){
@@ -87,11 +94,12 @@ if(DAP=="TEST"){
   
   person_id<-c(my_data1$person_id, my_data2$person_id)
   cov_date<-c(my_data1$mo_date, my_data2$mo_date)
+  meaning<-c(my_data1$mo_meaning, my_data2$mo_meaning)
 }
 
 ###################################################
 
 
-cov_dap_data<-as.data.frame(cbind(person_id, cov_date))
+cov_dap_data<-as.data.frame(cbind(person_id, cov_date, meaning))
 
 fwrite(cov_dap_data, paste0(cohort_folder,"COVID_data_dap.csv"))
