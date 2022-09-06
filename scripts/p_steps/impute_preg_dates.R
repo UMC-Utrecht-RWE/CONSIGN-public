@@ -4,6 +4,7 @@
 
 df_preg<- fread(paste0(path_CDM, "pregnancy.csv"))
 
+# summary(df_preg)
 
 df_preg$pregnancy_start_date<-as.Date(df_preg$pregnancy_start_date, format = "%m/%d/%Y")
 df_preg$pregnancy_end_date<-as.Date(df_preg$pregnancy_end_date, format = "%m/%d/%Y")
@@ -29,5 +30,7 @@ df_preg$pregnancy_end_date[is.na(df_preg$pregnancy_end_date)]<-new_end_dates
 hist(df_preg$pregnancy_start_date, breaks=100)
 
 df_preg$pregnancy_id<-1:nrow(df_preg)
+
+df_preg$pregnancy_start_date
 
 fwrite(df_preg, paste0(path_CDM, "imputed_pregnancy.csv"))

@@ -24,3 +24,6 @@ suppressPackageStartupMessages(library(reshape))
 
 if(!require(rlist)){install.packages("rlist")}
 suppressPackageStartupMessages(library(rlist))
+
+if(!require(zoo)){install.packages("zoo")}
+suppressPackageStartupMessages(library(zoo))

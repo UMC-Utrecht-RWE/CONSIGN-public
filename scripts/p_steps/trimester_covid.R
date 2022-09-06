@@ -14,9 +14,11 @@
 
 #test that date of drug dispensing is within trimester
 
-my_PREG<-fread(paste0(hist_preg_folder,"my_PREG.csv"))
+my_PREG<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
 cov_data<-fread(paste0(preselect_folder,"covid_data.csv"))
+
+
 ##########################################################################
 
 
@@ -26,12 +28,13 @@ cov_data<-fread(paste0(preselect_folder,"covid_data.csv"))
 
 
 cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
-# cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG_sim.csv"))
 
-cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
+
+
+# cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
 
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
-cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
+# cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
