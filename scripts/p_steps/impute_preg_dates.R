@@ -28,4 +28,6 @@ df_preg$pregnancy_end_date[is.na(df_preg$pregnancy_end_date)]<-new_end_dates
 
 hist(df_preg$pregnancy_start_date, breaks=100)
 
+df_preg$pregnancy_id<-1:nrow(df_preg)
+
 fwrite(df_preg, paste0(path_CDM, "imputed_pregnancy.csv"))
