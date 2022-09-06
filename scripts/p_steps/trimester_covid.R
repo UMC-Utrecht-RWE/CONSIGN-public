@@ -31,7 +31,7 @@ cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
 
 
 
-# cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
+cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
 
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))

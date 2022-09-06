@@ -13,13 +13,13 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 ###############################################################
 
-
+cov_preg_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
 pan_tables<-list.files(paste0(pan_preg_folder,"/"), pattern = "\\.csv$")
 
 pan_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=pan_preg_folder)
 
-cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_data$person_id,]
+cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_preg_data$person_id,]
 
 for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))

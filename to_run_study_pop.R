@@ -32,6 +32,8 @@ source(paste0(pre_dir, "/trimester_create.R"))
 # creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
+
+
 # add follow up after pregnancy criteria
 # DAP meeting: pregnancies ending by Sept 30th 2021 (before age of omicron) AND need to determine observation time for post-natal outcome (3 months)
 # end of data october +3 months (december) for drug utilization
