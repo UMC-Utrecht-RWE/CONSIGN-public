@@ -6,9 +6,14 @@
 during_cov_window<-function(atc_data, trim_data){
  
   
-    # select person IDs in ATC data matching pregnancy cohort 
-  atc_data<-atc_data[atc_data$person_id%in%trim_data$person_id]
-    
+    # select person IDs in ATC data matching pregnancy cohort
+  overlap_id<-unique(atc_data$person_id[atc_data$person_id%in%trim_data$person_id])
+  atc_data<-atc_data[atc_data$person_id%in%overlap_id,]
+  trim_data<-trim_data[trim_data$person_id%in%overlap_id,]
+  
+  atc_data<-atc_data[complete.cases(atc_data),]
+ 
+
   if(nrow(atc_data)>0){
   
     # convert atc_date to date format
@@ -22,18 +27,18 @@ during_cov_window<-function(atc_data, trim_data){
     
     # keep only person_id also present in ATC data
   
-    trim_data<-trim_data[trim_data$person_id%in%atc_data$person_id,]
+    
     
     # extract covid+ trimesters exposed from same person_ids as exposure data (woman was exposed to drug at some point in time)
     
     #multiple pregnancies per person possible, need to reshape start and end 
     
-    trim_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("cov_date", "cov_trimester", "severity"))
+    trim_wide<-dcast(setDT(trim_data), person_id ~ rowid(person_id), value.var = c("covid_date", "cov_trimester", "severity"))
     trim_wide<-trim_wide[order(person_id),]
     
    
     #test that person_id for exposure data and pregnancy data are the same
-    if((all(trim_wide$person_id==atc_data_wide$person_id))==T){print("person_ids start match start, OK")}
+    if((all(trim_wide$person_id==atc_data_wide$person_id))==T){print("person_ids start match, OK")}
     
     #test if any dispensing dates occurred within covid trimester
   
@@ -45,13 +50,9 @@ during_cov_window<-function(atc_data, trim_data){
   # each needs to be compared to the ATC dates per person
   
   
-  cov_trim_date<-select(trim_wide,starts_with("cov_date"))
+  cov_trim_date<-select(trim_wide,starts_with("covid_date"))
   severity<-select(trim_wide,starts_with("sev"))
-  # IN CASE THERE ARE MULTIPLE ROWS OF SEVERITY, THERE ARE "BLANK" VALUES FOR THOSE WITHOUT A SECOND COVID+TRIMESTER
-  #THIS CAUSES PROBLEMS
-  # severity <- severity[severity==""]
-      #checking this problem with simulated long-->wide data, and getting NAs instead of blanks, which should be fine 22/7
-  length(unlist(severity, use.names = F))
+  
   trimester<-select(trim_wide,starts_with("cov_trim"))
   
   
@@ -68,7 +69,11 @@ during_cov_window<-function(atc_data, trim_data){
         minus30<-between(cov_expos_days, -30, 0)
         plus30<-between(cov_expos_days,  0,30)
         
-        cov_window_df<-as.data.frame(cbind(trim_wide$person_id, apply(minus30,1,any),apply(plus30,1,any), my_date, severity[,..i], trimester[,..i]))
+        minus30_sum<- apply(minus30,1,sum, na.rm=T)
+        plus30_sum<- apply(plus30,1,sum, na.rm=T)
+      
+        
+        cov_window_df<-as.data.frame(cbind(trim_wide$person_id, as.numeric(minus30_sum>0),as.numeric(plus30_sum>0), my_date, severity[,..i], trimester[,..i]))
         
         colnames(cov_window_df)<-c("person_id", "minus_30", "plus_30", "cov_date", "severity", "cov_trimester")
         cov_30_plus_minus[[i]]<- cov_window_df

@@ -29,7 +29,6 @@ for(i in 1:length(my_tables)){
  my_data<-fread(paste0(output_drugs,my_tables[i]))
   atc_result<-as.data.frame(during_cov_window(atc_data = my_data, trim_data = cov_trim_data))
   fwrite(atc_result, paste0(output_cov_window_drugs,my_names[i],"_cov_window_counts.csv" ))
-  # print(atc_result)
 }
 
 # the result for table 1 group are the sums of each column

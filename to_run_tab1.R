@@ -34,6 +34,8 @@ source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
 source(paste0(pre_dir, "/ATC_detect.R"))
 
+# pick up here tomorrow
+
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
