@@ -33,8 +33,10 @@ cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
 
 cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
+# flag covid dates that are too close to labor to "sandbox" them in severity analysis
+# there should be minimum 0 (negative days means after labor, this would be removed from data since covid_date not DURING pregnancy)
+
+cov_trim_data$days_cov_before_labor<-(cov_trim_data$pregnancy_end_date)-(cov_trim_data$covid_date)
 
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
-
-
 
