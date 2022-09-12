@@ -55,7 +55,7 @@ covid_dup<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==T),]
 #death? EImir input (assume )
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
 
-severity_indicators<-c("hospital", "pd", "sd", "intensive")
+severity_indicators<-c("hospital", "pd", "sd", "intensive", "cause_of_death")
 
 sev_rows<-which(Reduce(`|`, lapply(severity_indicators, startsWith, x = as.character(covid_unique$meaning))))
 
@@ -63,12 +63,18 @@ covid_unique$severe<-0
 
 covid_unique$severe[sev_rows]<-1
 
+# need to group events --> episodes (any severe indicator with 4 weeks of first date)
+# AAAAAHHHHHHHHHHHH >_<
+# create "episode" varaible
+
 # table(covid_unique$severity)
 
 
 #labor (end of pregnancy) (cov_date-end_of_pregnancy == [-3:+3])--> subset
 #check Rosa input on timeframe symmetry
 # sequester these cases at a later stage
+# eimir 9/9 2 days before end_of_preg, from OBS
+# remove cov+preg days to end_of_preg<2 (sandbox the labor/cov confounded group)
 
 
 fwrite(covid_unique, paste0(preselect_folder, "covid_data.csv"))
