@@ -28,16 +28,21 @@ covid_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 #######################
 # make categorical maternal_age (at start of pregnancy) groups
 # HELP this grouping is arbitrary, age-group definition missing from SAP, please advise
+# page 30 "covariates"
+# 12-24 years of age
+# 25-39 years of age
+# 40-55 years of age
 
 my_PREG$age_group<-my_PREG$age_at_start_of_pregnancy
 
-my_PREG$age_group[my_PREG$age_at_start_of_pregnancy<20]<-1
+my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, 12,24)]<-1
 
-my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, lower=20, upper=35)]<-2
+my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, lower=25, upper=39)]<-2
 
-my_PREG$age_group[my_PREG$age_at_start_of_pregnancy>35]<-3
+my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy,40,55)]<-3
 
 # table(my_PREG$age_group)
+
 ############################################
 OG_preg_id<-length(unique(my_PREG$person_id))
 #############################################
