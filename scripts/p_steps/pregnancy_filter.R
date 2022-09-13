@@ -89,11 +89,9 @@ study_PREG_ID<- length(unique(my_PREG$person_id))
 
 #filter out red quality pregnancies (DAP specific due to data generating mechanism which makes "red")
 
-ifelse(DAP!="ARS"){
+if(DAP!="ARS"){
 my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
-
-no_red_preg<-length(unique(my_PREG$person_id))
-}{no_red_preg<- "ARS keeps red pregnancies"}
+no_red_preg<-length(unique(my_PREG$person_id))}else{no_red_preg<- "ARS keeps red pregnancies"}
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
