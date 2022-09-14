@@ -64,52 +64,67 @@ covid_data$severe[sev_rows]<-1
 # merge covid episodes
 
 # table(table(covid_data$person_id))
-
-covid_data<-covid_data[with(covid_data, order(person_id, cov_date)),]
-
-covid_grouped<-covid_data%>%group_by(person_id)
-
-
-first_covid<-covid_grouped%>%slice_head()
-last_covid<-covid_grouped%>%slice_tail()
-
-duration<-(last_covid$cov_date)-(first_covid$cov_date)
-summary(duration)
-hist(duration, breaks=30)
+# 
+# covid_data<-covid_data[with(covid_data, order(person_id, cov_date)),]
+# id_freq<-as.numeric(table(covid_data$person_id))
+# covid_grouped<-covid_data%>%group_by(person_id)
+# 
+# 
+# first_covid<-covid_grouped%>%slice_head()
+# covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
+# 
+# hist(covid_data$duration, breaks=30)
 #GOOD this is what we expect
 
-  single_episode_id<-first_covid$person_id[duration<31]
-  multi_episode_id<-first_covid$person_id[duration>30]
-  #check these are distinct cohorts
-  all(single_episode_id%in%multi_episode_id==F)
   
-  df_covid_single<-covid_data[covid_data$person_id%in%single_episode_id,]
-  id_freq<-as.numeric(table(df_covid_single$person_id))
+  df_covid_first<-covid_data[covid_data$duration<29,]
+  df_covid_first$episode<-1
   
-  df_covid_single$episode<-1
+  df_covid_first<-df_covid_first[with(df_covid_first, order(person_id, severe)),]
+  id_freq<-as.numeric(table(df_covid_first$person_id))
   
-  df_covid_single<-df_covid_single[with(df_covid_single, order(person_id, severe)),]
+  max_sev<-df_covid_first%>%group_by(person_id)%>%slice_tail()
   
-  max_sev<-df_covid_single%>%group_by(person_id)%>%slice_tail()
   length(id_freq)==nrow(max_sev)
-  df_covid_single$max_severity<-rep(max_sev$severe,id_freq)
+  df_covid_first$max_severity<-rep(max_sev$severe,id_freq)
   
-  df_covid_multi<-covid_data[covid_data$person_id%in%multi_episode_id,]
+  
+#get duration of subsequent cov_dates  
+  df_covid_multi<-covid_data[covid_data$duration>28,]
   df_covid_multi<-df_covid_multi%>%group_by(person_id)
-  # table(table(df_covid_multi$person_id))
   
+  id_freq<-as.numeric(table(df_covid_multi$person_id))
+  first_covid<-df_covid_multi%>%slice_head()
+  df_covid_multi$duration_2<-df_covid_multi$cov_date-(rep(first_covid$cov_date, id_freq))
+  
+  
+  
+  df_covid_second<-df_covid_multi[df_covid_multi$duration_2<29,]
+  df_covid_second$episode<-2
+  df_covid_second<-df_covid_second[with(df_covid_second, order(person_id, severe)),]
+  id_freq<-as.numeric(table(df_covid_second$person_id))
+  max_sev<-df_covid_second%>%group_by(person_id)%>%slice_tail()
+  length(id_freq)==nrow(max_sev)
+  df_covid_second$max_severity<-rep(max_sev$severe,id_freq)
+  
+  
+  
+  df_covid_third<-df_covid_multi[df_covid_multi$duration_2>28,]
+  df_covid_third$episode<-3
+  df_covid_third<-df_covid_third[with(df_covid_third, order(person_id, severe)),]
+  id_freq<-as.numeric(table(df_covid_third$person_id))
+  max_sev<-df_covid_third%>%group_by(person_id)%>%slice_tail()
+ 
+  df_covid_third$max_severity<-rep(max_sev$severe,id_freq)
 
-#similar task to create_spells.... 
+  
+  person_id<-c(df_covid_first$person_id, df_covid_second$person_id, df_covid_third$person_id)  
+  covid_date<-c(df_covid_first$cov_date, df_covid_second$cov_date, df_covid_third$cov_date) 
+  episode<-c(df_covid_first$episode, df_covid_second$episode, df_covid_third$episode) 
+  severe<-c(df_covid_first$max_severity, df_covid_second$max_severity, df_covid_third$max_severity) 
+  
+  final_covid_data<-as.data.frame(cbind(person_id, covid_date, episode, severe))
+  final_covid_data<-final_covid_data[with(final_covid_data, order(person_id, covid_date)),]
+  nrow(final_covid_data)==nrow(covid_data)
 
-# FIRST need to group by person_id
-
-# SECOND need to calculate ((each date)- (first_date))<=30 --> same episode else --> new episode
-
-# THIRD for all in same episode, severity[i]=max(episode_severity)
-
-covid_unique<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==F),]
-covid_dup<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==T),]
-
-#testing continuity of longitudinal data
-
-fwrite(covid_unique, paste0(preselect_folder, "covid_data.csv"))
+fwrite(final_covid_data, paste0(preselect_folder, "covid_data.csv"))
