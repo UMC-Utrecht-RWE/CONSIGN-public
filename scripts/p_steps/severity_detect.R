@@ -57,7 +57,6 @@ covid_data$severe[sev_rows]<-1
 # covid_data$severe<-sample(0:1, nrow(covid_data), replace = T)
 # 
 
-# need to group events --> episodes (any severe indicator with 4 weeks of first date)
 # AAAAAHHHHHHHHHHHH >_<
 # create "episode" varaible
 
@@ -76,7 +75,8 @@ covid_data$severe[sev_rows]<-1
 # hist(covid_data$duration, breaks=30)
 #GOOD this is what we expect
 
-  
+ 
+# need to group events --> episodes (all dates with 4 weeks of first date) 
   df_covid_first<-covid_data[covid_data$duration<29,]
   df_covid_first$episode<-1
   
@@ -95,6 +95,7 @@ covid_data$severe[sev_rows]<-1
   
   id_freq<-as.numeric(table(df_covid_multi$person_id))
   first_covid<-df_covid_multi%>%slice_head()
+  # duration from index date of second episode
   df_covid_multi$duration_2<-df_covid_multi$cov_date-(rep(first_covid$cov_date, id_freq))
   
   
@@ -108,7 +109,8 @@ covid_data$severe[sev_rows]<-1
   df_covid_second$max_severity<-rep(max_sev$severe,id_freq)
   
   
-  
+  # more than 4 weeks from second episode index--> episode 3
+  # can add more episode definition, but don't think it's relevant (more than 3 covid infections in 16 months? extremely unlikely)
   df_covid_third<-df_covid_multi[df_covid_multi$duration_2>28,]
   df_covid_third$episode<-3
   df_covid_third<-df_covid_third[with(df_covid_third, order(person_id, severe)),]
