@@ -33,4 +33,9 @@ df_preg$pregnancy_id<-1:nrow(df_preg)
 
 df_preg$pregnancy_start_date
 
+
+age_cat<-rep(c(1,2,3),  (to_replace/3))
+
+df_preg$age_at_start_of_pregnancy[is.na(df_preg$age_at_start_of_pregnancy)]<-age_cat
+
 fwrite(df_preg, paste0(path_CDM, "imputed_pregnancy.csv"))

@@ -33,29 +33,12 @@ covid_data<-covid_data[complete.cases(covid_data),]
 # fix date format
 covid_data$cov_date<-as.Date(covid_data$cov_date, format = "%Y%m%d")
 covid_data$cov_date<-as.numeric(covid_data$cov_date)
-# merge covid episodes
 
-
-# need to match by person id and date
-
-#exact date? 
-
-covid_unique<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==F),]
-covid_dup<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==T),]
-
-# 
-# table(covid_dup$person_id%in%covid_unique$person_id)
-# table(table(covid_dup$person_id))
-# table(table(covid_data$person_id))
-# table(table(covid_unique$person_id))
-
-# covid unique has all records with the same ID & same Date removed 
-# person_id multiples have unique dates
-
-#death? EImir input (assume )
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
 
 severity_indicators<-c("hospital", "pd", "sd", "intensive", "cause_of_death")
+
+# will STARTSWITH become a problem? rather look for string at any position
 
 sev_rows<-which(Reduce(`|`, lapply(severity_indicators, startsWith, x = as.character(covid_unique$meaning))))
 
@@ -67,14 +50,21 @@ covid_unique$severe[sev_rows]<-1
 # AAAAAHHHHHHHHHHHH >_<
 # create "episode" varaible
 
-# table(covid_unique$severity)
+# merge covid episodes
 
+table(table(covid_data$person_id))
 
-#labor (end of pregnancy) (cov_date-end_of_pregnancy == [-3:+3])--> subset
-#check Rosa input on timeframe symmetry
-# sequester these cases at a later stage
-# eimir 9/9 2 days before end_of_preg, from OBS
-# remove cov+preg days to end_of_preg<2 (sandbox the labor/cov confounded group)
+#similar task to create_spells.... 
 
+# FIRST need to group by person_id
+
+# SECOND need to calculate ((each date)- (first_date))<=30 --> same episode else --> new episode
+
+# THIRD for all in same episode, severity[i]=max(episode_severity)
+
+covid_unique<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==F),]
+covid_dup<- covid_data[(duplicated(covid_data[,1:2], fromLast = F)==T),]
+
+#testing continuity of longitudinal data
 
 fwrite(covid_unique, paste0(preselect_folder, "covid_data.csv"))

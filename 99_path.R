@@ -17,6 +17,9 @@ setwd(projectFolder)
 # set the name of the study
 StudyName <- "CONSIGN"
 
+# need to make the source DAP more clear
+# DAP_folder<-paste0(projectFolder,"/" )
+
 path_dir<-paste0(projectFolder,"/scripts/")
 if(dir.exists(path_dir)==F){dir.create(path_dir)}
 
