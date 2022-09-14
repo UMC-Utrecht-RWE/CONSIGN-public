@@ -156,6 +156,8 @@ non_preg_ID<-preselect_person_ID[preselect_person_ID%exclude%preg_ID]
 # what's this step? #HELP #check 
 non_preg_hist_ID<-hist_preg_ID[hist_preg_ID%exclude%pan_preg_ID]
 
+
+all_non_preg_ID<- (unlist(unique(c(non_preg_ID, non_preg_hist_ID))))
 FC_all_non_preg_ID<- length(unlist(unique(c(non_preg_ID, non_preg_hist_ID))))
 
 for (i in 1:length(table_list)){
@@ -170,7 +172,7 @@ flowchart<-as.data.frame(cbind(FC_OG_preg_id, length(FC_preselect_person_ID), FC
                          
  colnames(flowchart)<-c("Original PERSONS", "preselect (women of reproductive age)", "total pregnancies", "pregnancies with spell data",
                         "pregnancies 12 months follow up from LMP", "pregnancies during study period", "after excluding red pregnancies", "pandemic pregnancies",
-                        "historical pregnancies", "between pregnancies", "women without pregnancy") 
+                        "historical pregnancies", "between pregnancies", "women without pregnancy during pandemic") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  
