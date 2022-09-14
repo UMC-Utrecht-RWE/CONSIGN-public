@@ -6,15 +6,6 @@
 
 # combine Pjijzer standard COVID data with DAP tailored COVID data
 
-
-# for each COVID infection (possibly multiple dates), either severe OR non-severe
-#first date --> look forward 4 weeks for severity
-
-# simulate covid severity (place holder until we decide how to determine severity)
-
-#check duplicates
-# IF same person, same date duplicates but incongruent severity--> severe
-
 covid_ev_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
 
 covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
@@ -57,21 +48,19 @@ covid_data$severe[sev_rows]<-1
 # covid_data$severe<-sample(0:1, nrow(covid_data), replace = T)
 # 
 
-# AAAAAHHHHHHHHHHHH >_<
-# create "episode" varaible
 
-# merge covid episodes
 
-# table(table(covid_data$person_id))
-# 
-# covid_data<-covid_data[with(covid_data, order(person_id, cov_date)),]
-# id_freq<-as.numeric(table(covid_data$person_id))
-# covid_grouped<-covid_data%>%group_by(person_id)
-# 
-# 
-# first_covid<-covid_grouped%>%slice_head()
-# covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
-# 
+# for each COVID infection (possibly multiple dates), either severe OR non-severe
+#first date --> look forward 4 weeks for severity
+
+covid_data<-covid_data[with(covid_data, order(person_id, cov_date)),]
+id_freq<-as.numeric(table(covid_data$person_id))
+covid_grouped<-covid_data%>%group_by(person_id)
+
+
+first_covid<-covid_grouped%>%slice_head()
+covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
+
 # hist(covid_data$duration, breaks=30)
 #GOOD this is what we expect
 
