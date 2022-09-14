@@ -110,7 +110,7 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
 
   
   person_id<-c(df_covid_first$person_id, df_covid_second$person_id, df_covid_third$person_id)  
-  covid_date<-c(df_covid_first$cov_date, df_covid_second$cov_date, df_covid_third$cov_date) 
+  cov_date<-c(df_covid_first$cov_date, df_covid_second$cov_date, df_covid_third$cov_date) 
   episode<-c(df_covid_first$episode, df_covid_second$episode, df_covid_third$episode) 
   severe<-c(df_covid_first$max_severity, df_covid_second$max_severity, df_covid_third$max_severity) 
   
