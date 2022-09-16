@@ -16,7 +16,7 @@ SUBP<-F
 
 FlowChartCreateSpells <- list()
 
-OBSERVATION_PERIODS <- fread(paste0(preselect_folder, "OBSERVATION_PERIODS.csv"))
+OBSERVATION_PERIODS <- fread(paste0(path_CDM, "OBSERVATION_PERIODS.csv"))
 
 
 step0<-"original data"
@@ -71,7 +71,7 @@ step1_unique<-length(unique(OBSERVATION_PERIODS$person_id))
   # for OP ending after study ends, 
   OBSERVATION_PERIODS1$end_date<-OBSERVATION_PERIODS1$op_end_date
   OBSERVATION_PERIODS1[(OBSERVATION_PERIODS1$end_date>end_study_date),]<-end_study_date
-  fwrite(OBSERVATION_PERIODS1, file = paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
+  fwrite(OBSERVATION_PERIODS1, file = paste0(path_CDM,"ALL_OBS_SPELLS.csv"))
 
 
   ######################################################################################################################

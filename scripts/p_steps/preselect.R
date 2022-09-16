@@ -19,7 +19,7 @@ do.call(file.remove, list(list.files(preselect_folder, full.names = TRUE)))
 
 study_start_date<-as.Date("20180101", format="%Y%m%d")
 
-OBSERVATION_PERIODS <- fread(paste0(path_CDM, "OBSERVATION_PERIODS.csv"))
+OBSERVATION_PERIODS <- fread(paste0(path_CDM,"ALL_OBS_SPELLS.csv"))
 OBSERVATION_PERIODS$date_end<-as.Date(as.character(OBSERVATION_PERIODS$op_end_date), format = "%Y%m%d")
 
 OB_P_ID_end<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
@@ -47,7 +47,7 @@ all_actual_tables<-list.files(path_CDM, pattern = "\\.csv$")
 ##############
 
 #firstflter function selects females within age range from the persons table and stores the selected IDs to use for subsequent filtering
-personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=1954, dobmax=2008) {
+personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12)) {
   newdata<-personstable[(personstable[,get(sex)]==female),]
   flowchart_gender<-as.numeric(c(nrow(personstable), nrow(newdata)))
   newdata<-newdata[(newdata[,get(dob)]>=dobmin),]

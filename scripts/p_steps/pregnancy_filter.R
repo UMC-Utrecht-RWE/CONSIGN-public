@@ -19,7 +19,11 @@ FC_OG_preg_id<-nrow(my_PREG)
 
 # Output of Create_Spells to measure follow up (FU) from preg_start_date
 df_observation<-IMPORT_PATTERN("ALL_OBS", preselect_folder)
+# check that preselect filters and copies ALL_OBS
 
+# need persons to check for age from 12-55 at start pandemic
+#also need to check for cov_pos_non_preg
+df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder)
 
 start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
@@ -81,7 +85,7 @@ FC_from_start_study<- nrow(my_PREG)
 
 if(DAP!="ARS"){
 my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
-FC_no_red_preg<-FC_OG_preg_id<-nrow(my_PREG)}else{no_red_preg<- "ARS keeps red pregnancies"}
+FC_no_red_preg<-nrow(my_PREG)}else{no_red_preg<- "ARS keeps red pregnancies"}
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
@@ -152,13 +156,13 @@ fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.c
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
-non_preg_ID<-preselect_person_ID[preselect_person_ID%exclude%preg_ID]
+non_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%preg_ID]))
 # what's this step? #HELP #check 
 non_preg_hist_ID<-hist_preg_ID[hist_preg_ID%exclude%pan_preg_ID]
 
 
-all_non_preg_ID<- (unlist(unique(c(non_preg_ID, non_preg_hist_ID))))
-FC_all_non_preg_ID<- length(unlist(unique(c(non_preg_ID, non_preg_hist_ID))))
+all_non_preg_ID<- unlist(c(non_preg_ID, non_preg_hist_ID))
+FC_all_non_preg_ID<- length(unique(all_non_preg_ID))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
@@ -167,12 +171,14 @@ for (i in 1:length(table_list)){
 }
 
 
-flowchart<-as.data.frame(cbind(FC_OG_preg_id, length(FC_preselect_person_ID), FC_OG_preg_id, FC_preg_with_spell, FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), 
-                               length(hist_preg_ID), length(between_preg_ID), FC_all_non_preg_ID))
+flowchart<-as.data.frame(cbind(FC_OG_person_ID, length(FC_preselect_person_ID), FC_OG_preg_id, FC_preg_with_spell, FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), 
+                               length(hist_preg_ID), length(between_preg_ID)))
+                               # , length(non_preg_ID)))
                          
  colnames(flowchart)<-c("Original PERSONS", "preselect (women of reproductive age)", "total pregnancies", "pregnancies with spell data",
-                        "pregnancies 12 months follow up from LMP", "pregnancies during study period", "after excluding red pregnancies", "pandemic pregnancies",
-                        "historical pregnancies", "between pregnancies", "women without pregnancy during pandemic") 
+                        "pregnancies 12 months follow up from LMP", "pregnancies during study period", "after excluding red pregnancies", 
+                        "pandemic pregnancies","historical pregnancies", "between pregnancies")
+                        # , "women with no pregnancies") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  
