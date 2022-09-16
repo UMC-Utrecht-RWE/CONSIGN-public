@@ -114,8 +114,8 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   episode<-c(df_covid_first$episode, df_covid_second$episode, df_covid_third$episode) 
   severe<-c(df_covid_first$max_severity, df_covid_second$max_severity, df_covid_third$max_severity) 
   
-  final_covid_data<-as.data.frame(cbind(person_id, covid_date, episode, severe))
-  final_covid_data<-final_covid_data[with(final_covid_data, order(person_id, covid_date)),]
+  final_covid_data<-as.data.frame(cbind(person_id, cov_date, episode, severe))
+  final_covid_data<-final_covid_data[with(final_covid_data, order(person_id, cov_date)),]
   nrow(final_covid_data)==nrow(covid_data)
 
 fwrite(final_covid_data, paste0(preselect_folder, "covid_data.csv"))
