@@ -18,14 +18,14 @@ preselect_folder<-paste0(projectFolder,"/CDMInstances_preselect/")
 do.call(file.remove, list(list.files(preselect_folder, full.names = TRUE)))
 
 study_start_date<-as.Date("20180101", format="%Y%m%d")
-
-OBSERVATION_PERIODS <- fread(paste0(path_CDM,"ALL_OBS_SPELLS.csv"))
-OBSERVATION_PERIODS$date_end<-as.Date(as.character(OBSERVATION_PERIODS$op_end_date), format = "%Y%m%d")
-
-OB_P_ID_end<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
-OB_P_ID_NA<-unique(OBSERVATION_PERIODS$person_id[is.na(OBSERVATION_PERIODS$date_end)])
-
-OB_P_ID<-unique(c(OB_P_ID_end, OB_P_ID_NA))
+# 
+# OBSERVATION_PERIODS <- fread(paste0(path_CDM,"ALL_OBS_SPELLS.csv"))
+# OBSERVATION_PERIODS$date_end<-as.Date(as.character(OBSERVATION_PERIODS$op_end_date), format = "%Y%m%d")
+# 
+# OB_P_ID_end<-unique(OBSERVATION_PERIODS$person_id[OBSERVATION_PERIODS$date_end>=study_start_date])
+# OB_P_ID_NA<-unique(OBSERVATION_PERIODS$person_id[is.na(OBSERVATION_PERIODS$date_end)])
+# 
+# OB_P_ID<-unique(c(OB_P_ID_end, OB_P_ID_NA))
 #preselection application onto multiple table subsets (especially MEDICINES)
 
 #get tables 
@@ -69,11 +69,11 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 
 PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
 
-personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=1954, dobmax=2008)))
+personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12))))
 personsfilter_ID<-personsfilter_output[[1]]
 
 
-OB_PERS_filter_ID<-personsfilter_ID[personsfilter_ID%in%OB_P_ID]
+# OB_PERS_filter_ID<-personsfilter_ID[personsfilter_ID%in%OB_P_ID]
 
 # #write preselected files into new folder
 # 
@@ -88,7 +88,7 @@ tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
 for(i in 1:length(tables_vec_all)){
   tablename<-(tables_vec_all[i])
   mytable<-fread(paste0(path_CDM,tablename))
-  preselect_table<-mytable[mytable$person_id%in%OB_PERS_filter_ID,]
+  preselect_table<-mytable[mytable$person_id%in%personsfilter_ID,]
   fwrite(preselect_table, paste0(preselect_folder, tablename), row.names = F)
 }
 
