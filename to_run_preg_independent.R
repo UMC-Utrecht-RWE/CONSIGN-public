@@ -24,6 +24,7 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 
 #creates new dataset of only women (sex_at_instance_creation==F, 2008<DOB>1954)
+# reduce data size for next steps 
 source(paste0(pre_dir, "/preselect.R"))
 
 
@@ -31,10 +32,15 @@ source(paste0(pre_dir, "/preselect.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir,"/CreateSpells.R"))
 
+
+# find covid from EVENTS (pfijzer algorithm)
 source(paste0(pre_dir, "/covid_detect_function.R"))
 
+# find covid from survey and medical observations with DAP specific criteria
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
+# merge events and dap-specific covid data, detect severity codes and group dates into episodes and create episode severity
 source(paste0(pre_dir, "/severity_detect.R"))
 
+# finds all drug utilization of ATC level 2
 source(paste0(pre_dir, "/ATC_detect.R"))

@@ -72,8 +72,8 @@ g_intermediate <- paste0(projectFolder, "/g_intermediate/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/atc_counts/")), dir.create(paste0(projectFolder, "/g_output/atc_counts")), FALSE))
-output_drugs    <- paste0(projectFolder, "/g_output/atc_counts/")
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_counts")), FALSE))
+raw_atc_counts    <- paste0(projectFolder, "/g_intermediate/atc_counts/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc")), FALSE))
 output_cov_window_drugs    <- paste0(projectFolder, "/g_output/cov_window_atc/")

@@ -26,7 +26,7 @@ source(paste0(pre_dir,"/params.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir,"/CreateSpells.R"))
 
-#creates new dataset of only women (sex_at_instance_creation==F, DOB>1954)
+#creates new dataset of only women (sex_at_instance_creation==F, 2008<DOB>1954)
 source(paste0(pre_dir, "/preselect.R"))
 
 # calculates trimester dates and adds these variables to original pregnancy data

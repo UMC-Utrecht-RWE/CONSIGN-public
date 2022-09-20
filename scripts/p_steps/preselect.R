@@ -69,6 +69,16 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 
 PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
 
+PERSONS$age_at_start_pandemic<-(2020)-as.numeric(PERSONS$year_of_birth)
+
+PERSONS$age_group<-PERSONS$age_at_start_pandemic
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
+
 personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12))))
 personsfilter_ID<-personsfilter_output[[1]]
 
@@ -78,7 +88,6 @@ personsfilter_ID<-personsfilter_output[[1]]
 # #write preselected files into new folder
 # 
 person_preselect_tables<-actual_tables_preselect
-# [names(actual_tables_preselect) %in% "MEDICINES" == FALSE]
 tables_df<-as.data.frame(unlist(person_preselect_tables))
 colnames(tables_df)<-"CDMtableName"
 tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
