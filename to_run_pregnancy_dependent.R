@@ -21,27 +21,35 @@ source(paste0(pre_dir,"/params.R"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
+# adding variables to pregnancy data
 # calculates trimester dates AND maternal age categories and adds these variables to original pregnancy data
 source(paste0(pre_dir, "/trimester_create.R"))
 
-#filters out red quality pregnancies
-# creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
+#applying exclusion criteria and creating pregnancy cohorts 
+    #filters out red quality pregnancies
+    #checks pregnancies have 12 months follow up from preg_start_date
+    # creates subsets of pregnancy-having (historical and pandemic) and non-pregnancy-having women
 
 # NEED TO ADD FILTER FOR PERSON_ID%IN% ALL_OBS (OUTPUT OF CREATE SPELLS)
 # NEED TO ADD AGE FILTER FOR HISTORICAL VS. PANDEMIC GROUPS
 
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
+# tests covid_dates against pregnancy dates
+# if covid_date is during pregnancy, cov_trim shows which trimester the first covid_date was in
+
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 
 source(paste0(pre_dir, "/trimester_covid.R"))
 
-
+#sorts cohorts according to pregnancy and covid status
 source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
+# checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
+
 
 
 
