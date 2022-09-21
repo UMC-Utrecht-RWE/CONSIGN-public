@@ -72,8 +72,17 @@ g_intermediate <- paste0(projectFolder, "/g_intermediate/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_counts")), FALSE))
-raw_atc_counts    <- paste0(projectFolder, "/g_intermediate/atc_counts/")
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_2_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_2_counts")), FALSE))
+raw_atc_2_counts    <- paste0(projectFolder, "/g_intermediate/atc_2_counts/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_3_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_3_counts")), FALSE))
+raw_atc_3_counts    <- paste0(projectFolder, "/g_intermediate/atc_3_counts/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_4_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_4_counts")), FALSE))
+raw_atc_4_counts    <- paste0(projectFolder, "/g_intermediate/atc_4_counts/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_5_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_5_counts")), FALSE))
+raw_atc_5_counts    <- paste0(projectFolder, "/g_intermediate/atc_5_counts/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc")), FALSE))
 output_cov_window_drugs    <- paste0(projectFolder, "/g_output/cov_window_atc/")
