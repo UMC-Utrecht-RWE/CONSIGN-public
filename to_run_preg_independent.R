@@ -43,4 +43,17 @@ source(paste0(pre_dir, "/DAP_covid_detection.R"))
 source(paste0(pre_dir, "/severity_detect.R"))
 
 # finds all drug utilization of ATC level 2
-source(paste0(pre_dir, "/ATC_detect.R"))
+source(paste0(pre_dir, "/ATC_2_detect.R"))
+
+
+# for supplement section of report
+# finds all drug utilization of ATC level 3
+source(paste0(pre_dir, "/ATC_3_detect.R"))
+
+# finds all drug utilization of ATC level 4
+source(paste0(pre_dir, "/ATC_4_detect.R"))
+
+# finds all drug utilization of ATC level 5
+source(paste0(pre_dir, "/ATC_5_detect.R"))
+
+

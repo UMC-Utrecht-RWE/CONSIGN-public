@@ -31,31 +31,44 @@ rm(drug_date)
 
 # translate SAP ATC table into machine-readable format
 
-names_drug_groups<-list( "Antithrombotic_Heparin","Gluco_Corticoisteroids",
-                        "AB_Penicillin_Extended", "AB_Penicillin_Combination", 
-                        "AB_1st_Cephalosporins","AB_2nd_Cephalosporins","AB_3rd_Cephalosporins",
-                        "AB_4th_Cephalosporins",
-                        "AB_Carbapenems", "AB_Macrolides","AB_Lincosamides",
-                        "AB_Anminoglycosides_other", "AB_Glycopeptide",
-                        "Antivirals_Nucleosides_Excl_RTI", "Antivirals_HIV","Antivirals_Neuraminidase",
-                        "Antivirals_HCV", "Antivirals_Other",
-                        "IG_Antiviral_monoclonal_antibodies", "IG_Normal_Human",
-                        "Vaccinations_Viral_Other", "Antineoplastic_BCR_ABL_tyrosine_kinase_inhibitors",
-                        "Antineoplastic_JAK_inhibitors",
-                        "Immunostimulants_Interferons", "Immunosuppressants_Selective",
-                        "Immunosuppressants_Interleukin","Immunosuppressants_Calcineurin",
-                        "Antigout_no_effect_Uric", "Analgesics_Anilides",
-                         "Psychoanaleptics_Antidepressants_SSRI", "Antiprotozoals_Amoebiasis_Nitroimidazole", 
-                        "Antiprotozoals_Amoebiasis_Other",
-                        "Antiprotozoals_Malaria_Aminoquinolines",
-                        "Antinematodal_Avermectines", "Obstructive_Airway_Adrenergics_Beta2")
+names_drug_groups<-list( "Enoxaparin","Heparin_Unfractionated", "Acetylsalicyclic_Acid", 
+                         "GC_dexamethasone", "GC_betamethasone","GC_hydrocortisone",
+                         "GC_methylprednisolone","GC_prednsisone",
+                        "AB_amoxicillin","AB_ampicillin", "AB_ampicillin_combination",
+                        "AB_piperacilline_BLI","AB_ampicillin_BLI","AB_amoxixillin_BLI",
+                        "AB_1st_Ceph_cefalexin","AB_1st_Ceph_cefazolin","AB_2nd_Ceph_cefuroxime",
+                        "AB_3rd_Ceph_cefotaxime","AB_3rd_Ceph_ceftazidime","AB_3rd_Ceph_ceftriaxone",
+                        "AB_3rd_Ceph_cefixime","AB_3rd_Ceph_cefodizime","AB_4th_Ceph_cefepime",
+                        "AB_Carbapenems_meropenem", 
+                        "AB_Macrolides_azithromycin","AB_Macrolides_clarithromycin","AB_Macrolides_erythromycin",
+                        "AB_Lincosamides_clindamycin",
+                        "AB_Anminoglycosides_amikacin","AB_Anminoglycosides_gentamicin",
+                        "AB_Glycopeptide_vancomycin","AB_Glycopeptide_teicoplanin",
+                        "AV_Nucleosides_remdesivir", "AV_HIV_lopinavir_ritonavir",
+                        "AV_Neuraminidase_oseltamivir", "AV_HCV_ribavirin", "AV_Other_favipiravir",
+                        "IG_Normal_Human_IV", "Vaccinations_Viral_COVID19","Antineoplastic_BCR_ABL_TKI_imatinib",
+                        "Antineoplastic_JAK_inhibitors_ruxolitinib",
+                        "Immunosuppressants_baricitinib","Immunosuppressants_tofacitinib",
+                        "Immunosuppressants_IL1_tocilizumab","Immunosuppressants_IL1_sarilumab",
+                        "Immunosuppressants_IL6_anakinra","Immunosuppressants_IL6_canakinumab",
+                        "Immunosuppressants_Calcineurin_ciclosporin",
+                        "Antigout_colchicine", "Analgesics_Paracetemol",
+                        "Psychoanalepts_SSRI_fluvoxamine", "Antiprotozoals_Amoebiasis_metronidazole", 
+                        "Antiprotozoals_Amoebiasis_nitazoxanide",
+                        "Antiprotozoals_Malaria_chloroquine","Antiprotozoals_Malaria_hydroxychloroquine",
+                        
+                        "Antinematodal_ivermectin", "Obstructive_Airway_salbutamol")
 
-ATC_groups<-list( "B01AB" ,"H02AB", "J01CA", "J01CR","J01DB", "J01DC","J01DD","J01DE","J01DH",
-                  "J01FA","J01FF","J01GB","J01XA",
-                  "J05AB" , "J05AR" , "J05AH" , "J05AP" , "J05AX" , 
-                  "J06BD","J06BA", "J07BX" ,  "L01EA", "L01EJ", "L03AB", "L04AA","L04AC","L04AD",
-                  "M04AC", "N02BE",
-                  "N06AB" , "P01AB","P01AX","P01BA", "P02CF",   "R03AC" )
+ATC_groups<-list( "B01AB01" ,"B01AB05" ,"B01AC06" ,"H02AB02","H02AB01","H02AB09","H02AB04","H02AB06",
+                  "J01CA04","J01CA01","J01CA51", "J01CR05","J01CR01","J01CR02",
+                  "J01DB01","J01DB04", "J01DC02","J01DD01","J01DD02","J01DD04","J01DD08","J01DD09",
+                  "J01DE01","J01DH02","J01FA10","J01FA09","J01FA01",
+                  "J01FF01","J01GB06","J01GB03","J01XA01","J01XA02",
+                  "J05AB16", "J05AR10" , "J05AH02" , "J05AP01" , "J05AX27" , 
+                  "J06BA02", "J07BX03" ,  "L01EA01", "L01EJ01", "L04AA37","L04AA29",
+                  "L04AC07","L04AC14","L04AC03","L04AC08","L04AD01",
+                  "M04AC01", "N02BE01",
+                  "N06AB08" , "P01AB01","P01AX11","P01BA01","P01BA02", "P02CF01",   "R03AC02" )
 
 # bind to data_frame to check that codes are aligned correctly
 df_atc_groups<-as.data.frame(cbind((names_drug_groups), (ATC_groups)))
