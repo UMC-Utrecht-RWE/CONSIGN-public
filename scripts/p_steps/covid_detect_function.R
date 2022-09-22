@@ -32,7 +32,7 @@ NULL
 
 # codesheet==all_full_codelist file==EVENTS c.voc== columns for vocabulary (ICD9, 10 etc..)
 
-events_tables<-IMPORT_PATTERN(pat="EVENTS", dir = preselect_folder)
+events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
 
 codesheet<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
 codesheet2<-codesheet[codesheet$event_definition=="COVID19 diagnosis",]

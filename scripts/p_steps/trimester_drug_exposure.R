@@ -1,4 +1,4 @@
-#set look_back parameter#Author: Ema Alsina, M.Sc.
+#Author: Ema Alsina, M.Sc.
 #e.m.alsina-2@umcutrecht.nl
 #University Medical Center Utrecht
 #13/7/2022
@@ -17,7 +17,7 @@
 
 # cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG_sim.csv"))
 
-my_tables<-list.files(path=raw_atc_counts)
+my_tables<-list.files(path=raw_atc_2_counts)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
 cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
@@ -26,9 +26,9 @@ cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
 
 for(i in 1:length(my_tables)){
- my_data<-fread(paste0(output_drugs,my_tables[i]))
+ my_data<-fread(paste0(raw_atc_2_counts,my_tables[i]))
   atc_result<-as.data.frame(during_cov_window(atc_data = my_data, trim_data = cov_trim_data))
-  fwrite(atc_result, paste0(output_cov_window_drugs,my_names[i],"_cov_window_counts.csv" ))
+  fwrite(atc_result, paste0(output_cov_window_atc_2,my_names[i],"_cov_window_counts.csv" ))
 }
 
 # the result for table 1 group are the sums of each column

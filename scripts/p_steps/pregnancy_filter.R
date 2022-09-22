@@ -107,7 +107,8 @@ hist_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="historical"])
 between_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="between"])
 
 actual_tables_preselect<-list()
-actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS")
+actual_tables_preselect$EVENTS<-IMPORT_PATTERN("EVENTS")
+  list.files(paste0(preselect_folder,"/"), pattern="^EVENTS")
 actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICAL_OBSERVATIONS")
 actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_OBSERVATIONS")
 actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICINES")
@@ -158,7 +159,7 @@ fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.c
 
 non_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%preg_ID]))
 # what's this step? #HELP #check 
-non_oan_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%pan_preg_ID]))
+non_pan_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%(pan_preg_ID)]))
 
 
 all_non_preg_ID<- unlist(c(non_preg_ID, non_preg_hist_ID))

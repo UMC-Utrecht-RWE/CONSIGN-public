@@ -1,11 +1,13 @@
 # CONSIGN
 0) users must have a folder ..../CONSIGN/CDMInstances/ where their CDM and pregnancy output are stored
 
-1) Users should first open params.R and input the name of their pregnancy data file 
 
-2) Then they should run to_run_study_pop.R 
+1) Then they should run to_run_preg_independent.R  (these are the steps that do not require pregnancy data)
 
-3) Then they should run to_run_tab1.R which generates the counts for the table 1 group.
+
+
+2a) Users should first open params.R and input the name of their pregnancy data file 
+2b) Then they should run to_run_pregnancy_dependent.R which requires pregnancy data
 
 
 

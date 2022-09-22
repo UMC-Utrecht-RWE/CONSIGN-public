@@ -24,7 +24,7 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 # STUDY POPULATION
 #creates new dataset of only women (sex_at_instance_creation==F, 2008<DOB>1954)
-# reduce data size for next steps 
+# reduce data size for next steps
 source(paste0(pre_dir, "/preselect.R"))
 
 
@@ -32,7 +32,8 @@ source(paste0(pre_dir, "/preselect.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir,"/CreateSpells.R"))
 
-
+# Removes records from MEDICINES, MEDICAL_OBSERVATIONS, EVENTS and SURVEY_OBSERVATIONS before of start study period (1-1-2018)
+source(paste0(pre_dir,"/preselect_study_period.R"))
 
 # COVID DIAGNOSES AND SEVERITY
 # find covid from EVENTS (pfijzer algorithm)

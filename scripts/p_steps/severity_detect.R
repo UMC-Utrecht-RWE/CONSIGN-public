@@ -19,10 +19,11 @@ colnames(covid_ev_data)<-colnames(covid_dap_data)
 
 covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))
 
+rm(covid_dap_data)
+rm(covid_ev_data)
 # remove rows with missing data
 covid_data<-covid_data[complete.cases(covid_data),]
-# fix date format
-covid_data$cov_date<-as.Date(covid_data$cov_date, format = "%Y%m%d")
+
 covid_data$cov_date<-as.numeric(covid_data$cov_date)
 
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
@@ -79,6 +80,7 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   
   
 #get duration of subsequent cov_dates  
+ 
   df_covid_multi<-covid_data[covid_data$duration>28,]
   df_covid_multi<-df_covid_multi%>%group_by(person_id)
   
@@ -100,6 +102,7 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   
   # more than 4 weeks from second episode index--> episode 3
   # can add more episode definition, but don't think it's relevant (more than 3 covid infections in 16 months? extremely unlikely)
+
   df_covid_third<-df_covid_multi[df_covid_multi$duration_2>28,]
   df_covid_third$episode<-3
   df_covid_third<-df_covid_third[with(df_covid_third, order(person_id, severe)),]

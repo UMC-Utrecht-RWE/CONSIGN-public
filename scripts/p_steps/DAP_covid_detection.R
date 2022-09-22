@@ -22,7 +22,7 @@ person_id<-vector()
 meaning<-vector()
 
 if(DAP=="ARS"){
-  my_data<-IMPORT_PATTERN(pat="SURVEY_ID", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$survey_meaning=='covid_registry'),]
   person_id<-my_data$person_id
   cov_date<-my_data$survey_date
@@ -30,7 +30,7 @@ if(DAP=="ARS"){
 }
 
 if(DAP=="FISABIO"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data1<-my_data[(my_data$mo_meaning=='covid19_pcr_test'& my_data$mo_source_value=="positive"),]
   my_data2<-my_data[(my_data$mo_meaning=='covid19_antigen_test'& my_data$mo_source_value=="positive"),]
 
@@ -41,7 +41,7 @@ if(DAP=="FISABIO"){
 
 
 if(DAP=="USWAN"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='COVID_LIMS_TESTRESULTS'& my_data$mo_source_value==("ND6"|"ND7")),]
   
   person_id<-my_data$person_id
@@ -50,7 +50,7 @@ if(DAP=="USWAN"){
 }
 
 if(DAP=="IACS"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='COVID19 TEST'& my_data$mo_source_value==""),]
   
   person_id<-my_data$person_id
@@ -69,7 +69,7 @@ if(DAP=="Bordeaux"){
 
 
 if(DAP=="Karolinska Institutet"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='covid_positive_test'& my_data$mo_source_value=="yes"),]
   
   person_id<-my_data$person_id
@@ -79,7 +79,7 @@ if(DAP=="Karolinska Institutet"){
 
 
 if(DAP=="UOSL"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$mo_meaning=='covid19_test'& my_data$mo_source_value=="positive"),]
   
   person_id<-my_data$person_id
@@ -88,7 +88,7 @@ if(DAP=="UOSL"){
 }
 
 if(DAP=="TEST"){
-  my_data<-IMPORT_PATTERN(pat="MEDICAL_OBSERVATIONS", dir=cohort_folder)
+  my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data1<-my_data[(my_data$mo_meaning=='covid19_pcr_test'& my_data$mo_source_value=="positive"),]
   my_data2<-my_data[(my_data$mo_meaning=='covid19_antigen_test'& my_data$mo_source_value=="positive"),]
   
