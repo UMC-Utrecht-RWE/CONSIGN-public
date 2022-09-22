@@ -38,5 +38,7 @@ cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
 cov_trim_data$days_cov_before_labor<-(cov_trim_data$pregnancy_end_date)-(cov_trim_data$covid_date)
 
+cov_trim_data$gest_age_cov<-(cov_trim_data$covid_date)-(cov_trim_data$pregnancy_start_date)
+
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
