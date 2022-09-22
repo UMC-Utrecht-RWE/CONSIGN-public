@@ -16,7 +16,7 @@ my_write_path<- raw_atc_3_counts
 #pattern match to find and loop through all the MEDS tables
 
 
-my_dt_MED<-IMPORT_PATTERN(pat="MEDICINES", dir = my_path)
+my_dt_MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir = my_path)
 
 
 df <- select(my_dt_MED, date_dispensing, date_prescription)
@@ -52,7 +52,7 @@ colnames(df_atc_groups)<-c("name", "ATC")
 
 print(df_atc_groups)
 
-fwrite(df_atc_groups, paste0(my_write_path,"/source_data.csv"))
+fwrite(df_atc_groups, paste0(g_intermediate,"/ATC_3_source_data.csv"))
 #####################################################################
 
 ATC_detect<-function(my_data= my_dt_MED, names=names_drug_groups, ATC=ATC_groups){

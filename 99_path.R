@@ -84,8 +84,8 @@ raw_atc_4_counts    <- paste0(projectFolder, "/g_intermediate/atc_4_counts/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_5_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_5_counts")), FALSE))
 raw_atc_5_counts    <- paste0(projectFolder, "/g_intermediate/atc_5_counts/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc")), FALSE))
-output_cov_window_drugs    <- paste0(projectFolder, "/g_output/cov_window_atc/")
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc_2/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc_2")), FALSE))
+output_cov_window_atc_2    <- paste0(projectFolder, "/g_output/cov_window_atc_2/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/trimester/")), dir.create(paste0(projectFolder, "/g_output/trimester")), FALSE))
 output_trimester    <- paste0(projectFolder, "/g_output/trimester/")

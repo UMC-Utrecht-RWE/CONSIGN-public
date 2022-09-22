@@ -6,7 +6,13 @@
 # CONSIGN
 # this script will identify the target codes for each covariate
 
-cohort_folder<-pan_preg_folder
+cohort_folder<-pan_preg_folder 
+
+# only looking at pan_preg and pan_non_preg
+
+# only events within 1 year before covid+ pregnancy start date
+# filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
+
 
 EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
 MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)

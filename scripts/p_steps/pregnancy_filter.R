@@ -158,27 +158,26 @@ fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.c
 
 non_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%preg_ID]))
 # what's this step? #HELP #check 
-non_preg_hist_ID<-hist_preg_ID[hist_preg_ID%exclude%pan_preg_ID]
+non_oan_preg_ID<-unique(unlist(preselect_person_ID[preselect_person_ID%exclude%pan_preg_ID]))
 
 
 all_non_preg_ID<- unlist(c(non_preg_ID, non_preg_hist_ID))
-FC_all_non_preg_ID<- length(unique(all_non_preg_ID))
+FC_all_non_preg_ID<- length(unique(non_preg_ID))
+FC_pan_non_preg_ID<-length(unique(non_pan_preg_ID))
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%all_non_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%non_pan_preg_ID,]
   fwrite(my_preg_table,paste0(not_preg_folder,table_list[i]))
 }
 
 
 flowchart<-as.data.frame(cbind(FC_OG_person_ID, length(FC_preselect_person_ID), FC_OG_preg_id, FC_preg_with_spell, FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), 
-                               length(hist_preg_ID), length(between_preg_ID)))
-                               # , length(non_preg_ID)))
+                               length(hist_preg_ID), length(between_preg_ID), FC_all_non_preg_ID, FC_pan_non_preg_ID))
                          
  colnames(flowchart)<-c("Original PERSONS", "preselect (women of reproductive age)", "total pregnancies", "pregnancies with spell data",
                         "pregnancies 12 months follow up from LMP", "pregnancies during study period", "after excluding red pregnancies", 
-                        "pandemic pregnancies","historical pregnancies", "between pregnancies")
-                        # , "women with no pregnancies") 
+                        "pandemic pregnancies","historical pregnancies", "between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  
