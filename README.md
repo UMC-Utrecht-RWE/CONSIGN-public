@@ -1,15 +1,23 @@
 # CONSIGN
-0) users must have a folder ..../CONSIGN/CDMInstances/ where their CDM and pregnancy output are stored
+
+0) users must have a folder ..../CONSIGN/
+
+1) COVID_codes.csv (from github) stored in .../CONSIGN/
+
+2) in CONSIGN/CDMInstances/ store the CONSIGN CDM
+
+3) PULL CONSIGN project from GitHub
+
+ 
+4) Then should run 01_to_run_pregnancy_independent.R  (these are the steps that do not require pregnancy data)
 
 
-1) Then they should run to_run_preg_independent.R  (these are the steps that do not require pregnancy data)
+##########################################################################
 
+PREGNANCY DEPENDENT
 
-
-2a) Users should first open params.R and input the name of their pregnancy data file 
-2b) Then they should run to_run_pregnancy_dependent.R which requires pregnancy data
-
-
+SEPARATE RELEASE:
+TO BE RUN WHEN NEW PREGNANCY ALGORITHM OUTPUT IS AVAILABLE
 
 
 SAP Documents:
