@@ -12,6 +12,9 @@
 4) Then should run 01_to_run_pregnancy_independent.R  (these are the steps that do not require pregnancy data)
 
 
+![01_to_run_pregnancy_independent](https://user-images.githubusercontent.com/40298610/192247083-b66fb5d0-9c7e-40a5-be03-83c2450efd57.jpeg)
+
+
 ##########################################################################
 
 PREGNANCY DEPENDENT
