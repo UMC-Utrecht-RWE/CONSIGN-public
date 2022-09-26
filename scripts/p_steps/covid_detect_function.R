@@ -34,9 +34,8 @@ NULL
 
 events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
 
-codesheet<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
-codesheet1<-codesheet[codesheet$tags=="Narrow",]
-codesheet2<-codesheet1[codesheet1$event_definition=="COVID19 diagnosis",]
+codesheet<-fread(paste0(projectFolder,"/COVID_codes.csv"))
+
 # filter for narrow? 
 
 CreateConceptDatasets <- function(codesheet=codesheet2,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,

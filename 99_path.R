@@ -72,6 +72,9 @@ g_intermediate <- paste0(projectFolder, "/g_intermediate/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/final/")), dir.create(paste0(projectFolder, "/g_output/final/")), FALSE))
+final_output_dir     <- paste0(projectFolder, "/g_output/final/")
+
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_2_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_2_counts")), FALSE))
 raw_atc_2_counts    <- paste0(projectFolder, "/g_intermediate/atc_2_counts/")
 
