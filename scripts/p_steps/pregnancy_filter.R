@@ -145,6 +145,7 @@ all_actual_tables<-list.files(paste0(preselect_folder,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_preselect)
 ##############################################################
 
+# need to be between 12-55 at start of pandemic
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
@@ -153,6 +154,7 @@ for (i in 1:length(table_list)){
 }
 fwrite(my_PREG[my_PREG$cohort=="pandemic",],paste0(pan_preg_folder,"my_PREG.csv"))
 
+# need to be 12-55 at start of STUDY
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_preg_table<- my_table[my_table$person_id%in%hist_preg_ID,]
@@ -161,7 +163,7 @@ for (i in 1:length(table_list)){
 fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.csv"))
 
   
-
+# need to be 12-55 at start of PANDEMIC (only use this group for cov+ comparison)
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_preg_table<- my_table[my_table$person_id%in%all_non_pan_preg_ID,]
