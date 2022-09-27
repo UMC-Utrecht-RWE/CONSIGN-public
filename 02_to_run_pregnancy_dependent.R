@@ -50,6 +50,8 @@ source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 
+source(paste0(pre_dir, "/create_table_1abc.R"))
+
 
 
 

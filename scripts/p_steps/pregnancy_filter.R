@@ -126,6 +126,10 @@ fwrite(my_PREG, paste0(path_CDM,"study_pop_PREG.csv"))
 
 
 # filter CDM
+# HELP check with Eimir (27/9)
+# pandemic cohorts: pan_preg and non_preg they need to be 12-55 DURING pandemic: 55<2020- DOB>12
+# historical cohort: 55< 2018-DOB>12
+
 preg_ID<-unique(my_PREG$person_id)
 pan_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="pandemic"])
 hist_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="historical"])
