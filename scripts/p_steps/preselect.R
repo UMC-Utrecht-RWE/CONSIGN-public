@@ -28,6 +28,20 @@ study_start_date<-as.Date("20180101", format="%Y%m%d")
 # OB_P_ID<-unique(c(OB_P_ID_end, OB_P_ID_NA))
 #preselection application onto multiple table subsets (especially MEDICINES)
 
+PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
+
+PERSONS$age_at_start_pandemic<-(2020)-as.numeric(PERSONS$year_of_birth)
+
+PERSONS$age_group<-PERSONS$age_at_start_pandemic
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
+
+fwrite(PERSONS, paste0(path_CDM, "PERSONS.csv"))
+
 #get tables 
 #Get EVENTS, MO, SO, MEDICINES, VACCINES tables
 actual_tables_preselect<-list()
@@ -65,19 +79,7 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 
 ##############################################################
 #run personsfilter on PERSONS table (PERSONS USUALLY* one table)
-
-
 PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
-
-PERSONS$age_at_start_pandemic<-(2020)-as.numeric(PERSONS$year_of_birth)
-
-PERSONS$age_group<-PERSONS$age_at_start_pandemic
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
 
 personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12))))
 personsfilter_ID<-personsfilter_output[[1]]
@@ -95,6 +97,7 @@ tables_vec_all<-unique(as.vector(tables_df$CDMtableName))
 #subset data using preselection IDs and write new files
 #need to name each new table the same as the old table, then write in the new folder
 for(i in 1:length(tables_vec_all)){
+  print(i)
   tablename<-(tables_vec_all[i])
   mytable<-fread(paste0(path_CDM,tablename))
   preselect_table<-mytable[mytable$person_id%in%personsfilter_ID,]
@@ -109,4 +112,6 @@ for(fil_ind in 1:length(to_be_copied)){
   mytable<-fread(paste0(path_CDM,tablename))
   fwrite(mytable, paste0(preselect_folder, tablename), row.names = F)
 }
+
+
 
