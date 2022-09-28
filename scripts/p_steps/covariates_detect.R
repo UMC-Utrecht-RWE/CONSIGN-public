@@ -5,6 +5,7 @@
 
 # CONSIGN
 # this script will identify the target codes for each covariate
+# covariates described in Teams file CONSIGN_Variables.xlsx using version 9/15/22
 
 cohort_folder<-pan_preg_folder 
 
@@ -26,6 +27,8 @@ all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
 
 #################################################################
 #CARDIO
+
+
 
 cardio_names<-c("C_CAD_AESI","C_CARDIOMYOPATHY_COV", "C_CMSTRESS_AESI","C_HF_COV","V_HYPERTENSION_COV")
 my_rows<-which(Reduce(`|`, lapply(cardio_names, startsWith, x = as.character(all_codes$full_name))))
@@ -355,4 +358,38 @@ immsup_date<-c(immsup_EV_Date, immsup_MO_Date, immsup_SO_Date, immsup_MED_Date)
 immsup_cov<-as.data.frame(cbind(immsup_id, immsup_date))
 
 fwrite(immsup_cov, paste0(output_cov,"immunosupression.csv"))
+
+#################################################################################
+# IMMUNOSUPRESSION
+
+
+immsup_names<-c("Im_TRANSPLANTRECIPIENT_COV")
+my_rows<-which(Reduce(`|`, lapply(immsup_names, startsWith, x = as.character(all_codes$full_name))))
+
+immsup_codes<- unique(all_codes$code[my_rows])
+
+my_rows<-which(Reduce(`|`, lapply(immsup_codes, startsWith, x = as.character(EVENTS$event_code))))
+immsup_EV_ID<-(EVENTS$person_id[my_rows])
+immsup_EV_Date<- (EVENTS$start_date_record[my_rows])
+
+my_rows<-which(Reduce(`|`, lapply(immsup_codes, startsWith, x = as.character(MED_OB$mo_code))))
+immsup_MO_ID<-(MED_OB$person_id[my_rows])
+immsup_MO_Date<- (MED_OB$mo_date[my_rows])
+
+my_rows<-which(Reduce(`|`, lapply(immsup_codes, startsWith, x = as.character(SURV_OB$so_meaning))))
+immsup_SO_ID<-(SURV_OB$person_id[my_rows])
+immsup_SO_Date<- (SURV_OB$so_date[my_rows])
+
+immsup_atc<-c("L04A","H02")
+
+my_rows<-which(Reduce(`|`, lapply(immsup_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
+immsup_MED_ID<-(MED$person_id[my_rows])
+immsup_MED_Date<- (MED$drug_date[my_rows])
+
+immsup_id<-c(immsup_EV_ID, immsup_MO_ID, immsup_SO_ID, immsup_MED_ID)
+immsup_date<-c(immsup_EV_Date, immsup_MO_Date, immsup_SO_Date, immsup_MED_Date)
+immsup_cov<-as.data.frame(cbind(immsup_id, immsup_date))
+
+fwrite(immsup_cov, paste0(output_cov,"immunosupression.csv"))
+
 

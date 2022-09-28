@@ -34,11 +34,11 @@ NULL
 
 events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
 
-codesheet<-fread(paste0(projectFolder,"/COVID_codes.csv"))
+codesheet_cov<-fread(paste0(projectFolder,"/COVID_codes.csv"))
 
 # filter for narrow? 
 
-CreateConceptDatasets <- function(codesheet=codesheet,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
+CreateConceptDatasets <- function(codesheet=codesheet_cov,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
                                   f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder, method = "loop", group = T, f.name = NULL, db = NULL ){
   # browser()
   #Get data. If not use copy input dataset may be affected (see data.table properties)
@@ -211,7 +211,7 @@ CreateConceptDatasets <- function(codesheet=codesheet,file=events_tables, c.voc=
 CreateConceptDatasets()
 
 
-covid_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
+# covid_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
 
 
 
