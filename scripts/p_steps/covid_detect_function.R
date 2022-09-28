@@ -38,7 +38,7 @@ codesheet<-fread(paste0(projectFolder,"/COVID_codes.csv"))
 
 # filter for narrow? 
 
-CreateConceptDatasets <- function(codesheet=codesheet2,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
+CreateConceptDatasets <- function(codesheet=codesheet,file=events_tables, c.voc="coding_system", c.concept="full_name", c.codes="code", c.startwith = NULL,
                                   f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder, method = "loop", group = T, f.name = NULL, db = NULL ){
   # browser()
   #Get data. If not use copy input dataset may be affected (see data.table properties)

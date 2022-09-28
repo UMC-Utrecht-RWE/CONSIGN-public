@@ -30,11 +30,14 @@ FC_OG_mom<-length(unique(OG_PREG_ID))
 
 # need persons to check for age from 12-55 at start pandemic
 
-df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder)
+df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder) 
 
 OG_person_ID<-df_PERSONS$person_id 
 FC_OG_person_ID<-length(OG_person_ID)
 
+# pull year of birth from PERSONS, add to PREG, and use for exclusion
+
+# add DOB criteria here
 never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$person_id%exclude%OG_PREG_ID==T]
 FC_never_preg<-length(never_PREG_ID)
 
