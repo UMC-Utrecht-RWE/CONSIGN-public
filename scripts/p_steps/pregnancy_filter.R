@@ -32,6 +32,8 @@ FC_OG_mom<-length(unique(OG_PREG_ID))
 
 df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder) 
 
+df_PERSONS$DOB<-as.Date(paste0(df_PERSONS$day_of_birth,df_PERSONS$month_of_birth, df_PERSONS$year_of_birth), format = "%d%m%Y")
+
 OG_person_ID<-df_PERSONS$person_id 
 FC_OG_person_ID<-length(OG_person_ID)
 
@@ -53,9 +55,7 @@ df_observation<-IMPORT_PATTERN("ALL_OBS", preselect_folder)
 
 
 #######################
-# make categorical maternal_age (at start of pregnancy) groups
-# HELP this grouping is arbitrary, age-group definition missing from SAP, please advise DONE 12/9
-# page 30 "covariates"
+# make categorical maternal_age (at start of pregnancy) groups: page 30 "covariates"
 # 12-24 years of age
 # 25-39 years of age
 # 40-55 years of age
@@ -140,8 +140,8 @@ between_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="between"])
 
 actual_tables_preselect<-list()
 actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS_SLIM")
-actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICAL_OBSERVATIONS_SLIM")
-actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_OBSERVATIONS_SLIM")
+actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^MED_OB_SLIM")
+actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_SLIM")
 actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICINES_SLIM")
 actual_tables_preselect$VACCINES<-list.files(paste0(preselect_folder,"/"), pattern="^VACCINES")
 actual_tables_preselect$SURVEY_ID<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_ID")
@@ -154,37 +154,75 @@ table_list<-unlist(actual_tables_preselect)
 
 # need to be between 12-55 at start of pandemic
 
+# bring in personsfilter() function, make a filter_id for each cohort and filter cohort_ids
+
+personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12)) {
+  newdata<-personstable[(personstable[,get(sex)]==female),]
+  flowchart_gender<-as.numeric(c(nrow(personstable), nrow(newdata)))
+  newdata<-newdata[(newdata[,get(dob)]>=dobmin),]
+  filtered_data<-newdata[(newdata[,get(dob)]<=dobmax),]
+  flowchart_age<-as.numeric(c(flowchart_gender, nrow(filtered_data)))
+  flowchart_steps<-c("original", "females only", "1954<=DOB<=2008")
+  filter_ID<-(filtered_data[[caseid]])
+  flowchart_filter<-as.data.frame(cbind(flowchart_steps, flowchart_age))
+  colnames(flowchart_filter)<-c("filter_step","cases_number" )
+  persons_filter_output<-list(filter_ID, flowchart_filter, filtered_data)
+  return(persons_filter_output)
+}
+
+df_PERSONS_preg<- df_PERSONS[df_PERSONS$person_id%in%my_PREG$person_id,]
+
+# PANDEMIC PREGNANT
+age_filter_pandemic<-personsfilter(personstable = df_PERSONS_preg,caseid = "person_id", female="F", dob= "year_of_birth", dobmin = (2020-55), dobmax = (2020-12))
+age_pan_ID<-unlist(age_filter_pandemic[1])
+pan_preg_ID_age<-pan_preg_ID[pan_preg_ID%in%age_pan_ID]
+
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%pan_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%pan_preg_ID_age,]
+  
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
-fwrite(my_PREG[my_PREG$cohort=="pandemic",],paste0(pan_preg_folder,"my_PREG.csv"))
+fwrite(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,],paste0(pan_preg_folder,"my_PREG.csv"))
 
-# need to be 12-55 at start of STUDY
-for (i in 1:length(table_list)){
-  my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%hist_preg_ID,]
-  fwrite(my_preg_table,paste0(hist_preg_folder,table_list[i]))
-}
-fwrite(my_PREG[my_PREG$cohort=="historical",],paste0(hist_preg_folder,"my_PREG.csv"))
-
-  
+# NON-PREGNANT 
 # need to be 12-55 at start of PANDEMIC (only use this group for cov+ comparison)
+
+non_pan_preg_ID_age<-all_non_pan_preg_ID[all_non_pan_preg_ID%in%age_pan_ID]
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%all_non_pan_preg_ID,]
+  my_preg_table<- my_table[my_table$person_id%in%non_pan_preg_ID_age,]
   fwrite(my_preg_table,paste0(not_preg_folder,table_list[i]))
 }
 
+# HISTORICAL PREGNANT
+# historical group age filter for observation time 2018-2020
+age_filter_hist<-personsfilter(personstable = df_PERSONS_preg,caseid = "person_id", female="F", dob= "year_of_birth", dobmin = (2018-55), dobmax = (2018-12))
+age_hist_ID<-unlist(age_filter_hist[1])
+hist_preg_ID_age<-hist_preg_ID[hist_preg_ID%in%age_hist_ID]
+
+
+# need to be 12-55 at start of STUDY 2018
+for (i in 1:length(table_list)){
+  my_table<-fread(paste0(preselect_folder,table_list[i]))
+  my_preg_table<- my_table[my_table$person_id%in%hist_preg_ID_age,]
+  fwrite(my_preg_table,paste0(hist_preg_folder,table_list[i]))
+}
+fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"my_PREG.csv"))
+
+
+# #######################################################
+# FLOWCHART to record attrition
+#########################################################
 
 flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_with_spell, 
-                               FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), 
-                               length(hist_preg_ID), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg))
+                               FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), length(pan_preg_ID_age),
+                               length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg, length(non_pan_preg_ID_age)))
                          
  colnames(flowchart)<-c("All women of reproductive age", "total pregnancies", "total mothers", "pregnancies with spell data",
                         "pregnancies 12 months follow up from LMP", "pregnancies starting during study period", "after excluding red pregnancies", 
-                        "pandemic pregnancies","historical pregnancies", "between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic") 
+                        "pandemic pregnancies","pandemic pregnancies with age 12-55 in 2020","historical pregnancies",
+                        "historical pregnancies with age 12-55 in 2018","between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  

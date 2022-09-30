@@ -96,6 +96,15 @@ output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/")), dir.create(paste0(projectFolder, "/g_output/covariates")), FALSE))
 output_cov   <- paste0(projectFolder, "/g_output/covariates/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), FALSE))
+output_cov_pos_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), FALSE))
+output_cov_neg_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), FALSE))
+output_cov_pos_non_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
+
 
 # Sets path to p_steps (to read codelists)
 pre_dir <- paste0(path_dir,"p_steps")

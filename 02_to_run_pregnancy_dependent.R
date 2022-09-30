@@ -12,12 +12,11 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
+source("params.R")
 
 source("99_path.R")
 
 source(paste0(pre_dir, "/packages.R"))
-
-source(paste0(pre_dir,"/params.R"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 

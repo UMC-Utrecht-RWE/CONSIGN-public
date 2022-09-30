@@ -6,10 +6,14 @@
 
 # create trimester start and end dates
 
+if(preg_format=="csv"){
+my_PREG<-fread(paste0(path_CDM,preg_data))}
 
-my_PREG<-fread(paste0(path_CDM,preg_data))
+if(preg_format=="rds"){
+  my_PREG<-readRDS(paste0(path_CDM,preg_data))}
 
-summary(my_PREG$pregnancy_start_date)
+
+# summary(my_PREG$pregnancy_start_date)
 
 my_PREG$pregnancy_start_date<-as.numeric(my_PREG$pregnancy_start_date)
 my_PREG$pregnancy_end_date<-as.numeric(my_PREG$pregnancy_end_date)

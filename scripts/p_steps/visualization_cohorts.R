@@ -1,5 +1,20 @@
 # cohort description/visualization
 
+# 
+# non_pregancy checklist
+# -NOT pregnant btween 1/3/20 and 31/12/20 (full year follow up to end of study)
+# 
+# - problem is that in birth registry we don't know the start of pregnancy until birth
+# --> SO if a birth occurs 1/1/21 (exlcuded from my_PREG) so the WILL end up in non-preg
+#  --> from RAW my_PREG all pregnancies not pregnant EVER 
+#   --> NOT pregnant in 2020 from march-december (preg_end_date< march 1 2020) --> non_preg cohort
+#    --> person_id %in% cov_data (only want cov pos)
+# 
+# #pregnancy checklist
+# 
+# visualize the cohorts 
+
+
 # pan_preg : hist of preg_end_dates
 
 # want to layer data over the whole study period
