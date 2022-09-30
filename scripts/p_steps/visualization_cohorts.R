@@ -12,25 +12,42 @@
 # 
 # #pregnancy checklist
 # 
-# visualize the cohorts 
+# visualize the cohorts (after matching?) 
 
+pan_preg_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
+pan_preg_neg_dates <- table(cut(as.Date(pan_preg_neg$pregnancy_end_date), "month"))
+my_ylim<-(max(pan_preg_neg_dates))+1
+levels(pan_preg_neg_dates)<-seq(start_study_date,end_study_date,by="month")
+
+pan_preg_pos<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+pan_preg_pos_dates <- table(cut(as.Date(pan_preg_pos$pregnancy_end_date), "month"))
+levels(pan_preg_pos_dates)<-seq(start_study_date,end_study_date,by="month")
+
+
+
+
+hist_preg<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
+hist_end_dates<-cut(as.Date(hist_preg$pregnancy_end_date), "month" )
+levels(hist_end_dates)<-seq(start_study_date,end_study_date,by="month")
+
+
+
+not_preg_pos<- fread(paste0(not_preg_folder, "covid_positive/PERSONS.csv"))
+# not_preg_pos<-
 
 # pan_preg : hist of preg_end_dates
 
 # want to layer data over the whole study period
 
-plot(0, ylim=c(0,0.3), xlim=c(study_start_date, end_study_date), type="n", xaxt="n", xlab="", ylab="")
+plot(0, ylim=c(0,my_ylim), xlim=c(start_study_date, end_study_date), type="n",xaxt="n", xlab="", ylab="", main="Pregnancy Cohorts")
 
-pan_preg_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
-pan_preg_neg <- table(cut(as.Date(pan_preg_neg$pregnancy_end_date), "month"))
-hist((as.Date(pan_preg_neg$pregnancy_end_date)), breaks=100, freq = F )
+# i want the xlab to show month-year from 01-01-2018 to 31-12-2021 
+xlab_dat <- format(seq(start_study_date,end_study_date,by="month"), "%Y-%b")
 
-pan_preg_pos<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
-as.Date(pan_preg_pos$pregnancy_end_date)
-hist((as.Date(pan_preg_pos$pregnancy_end_date)), breaks=100, freq = F )
+axis(1, at=(as.numeric(seq(start_study_date,end_study_date,by="month"))), xlab_dat, las=2)
 
-pan_preg_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
-as.Date(pan_preg_neg$pregnancy_end_date)
-hist((as.Date(pan_preg_neg$pregnancy_end_date)), breaks=100, freq = F )
+abline(v= pan_start_date, col=2, lty=2)
 
-not_preg_pos<- fread(paste0(not_preg_folder, "covid_positive/PERSONS.csv"))
+rect((pan_start_date),0, (pan_start_date-91),my_ylim, col = rgb(0.5,0.5,0.5,1/4), border =NA, lwd=0.1)
+
+lines(hist_preg)
