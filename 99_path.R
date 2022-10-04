@@ -17,18 +17,19 @@ setwd(projectFolder)
 # set the name of the study
 StudyName <- "CONSIGN"
 
-# need to make the source DAP more clear
-# DAP_folder<-paste0(projectFolder,"/" )
+if(set_my_CDM==F){
+  path_CDM<-paste0(projectFolder,"/CDMInstances/")
+  invisible(if(dir.exists(path_CDM)==F)
+  {dir.create(path_CDM)})}
 
+if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
+  invisible(if(dir.exists(path_CDM)==F)
+  {dir.create(path_CDM)})}
+
+if(set_my_CDM==F)
 path_dir<-paste0(projectFolder,"/scripts/")
 if(dir.exists(path_dir)==F){dir.create(path_dir)}
 
-# path_dir<-paste0(dir_base,"/CDMInstances_preselect/") # use this option if you want to use the preselection files
-# path<-path_dir
-
-path_CDM<-paste0(projectFolder,"/CDMInstances/")
-invisible(if(dir.exists(path_CDM)==F)
-{dir.create(path_CDM)})
 
 pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/")
 invisible(if(dir.exists(pan_preg_folder)==F)

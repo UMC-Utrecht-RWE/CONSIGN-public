@@ -11,7 +11,7 @@
 # user input can change to historical and non-pregnant
 cohort_folder<- preselect_folder
 
-CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 # each DAP has 1)tables to read in 2)diagnosis column(s) 3)desired variable(s) value 4)date column 
