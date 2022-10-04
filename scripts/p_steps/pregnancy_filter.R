@@ -43,8 +43,8 @@ FC_OG_person_ID<-length(OG_person_ID)
 never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$person_id%exclude%OG_PREG_ID==T]
 FC_never_preg<-length(never_PREG_ID)
 
-# NOT pregnant in 2020 from march-december (preg_end_date< march 1 2020) --> non_preg cohort
-non_pan_preg_ID<- my_PREG$person_id[my_PREG$pregnancy_end_date<covid_start_date]
+# NOT pregnant in 2020 from march-december (preg_end_date< jan 1 2020) --> non_preg cohort
+non_pan_preg_ID<- my_PREG$person_id[my_PREG$pregnancy_end_date<historical_end_date]
 length(non_pan_preg_ID)
 
 all_non_pan_preg_ID<-unique(c(never_PREG_ID, non_pan_preg_ID))
