@@ -93,8 +93,7 @@ my_PREG$preg_FU<-(my_PREG$mother_op_end)-(my_PREG$pregnancy_start_date)
 
 my_PREG<- my_PREG[my_PREG$preg_FU>=365,]
 
-FU_hist<-(hist(my_PREG$preg_FU, breaks=100,xlab="days", main="Follow Up Days from Start of Pregnancy"))
-min(my_PREG$preg_FU)>=365
+if (min(my_PREG$preg_FU)>=365){print("Follow Up from LMP at least 365 days, OK")}else{print("Follow Up Restriction Failure")}
 
 FC_sufficient_follow_up<-nrow(my_PREG)
 
@@ -125,7 +124,7 @@ my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
 # all the pregnancies included in the study with additional variables:
 
-fwrite(my_PREG, paste0(path_CDM,"study_pop_PREG.csv"))
+fwrite(my_PREG, paste0(projectFolder,"/study_pop_PREG.csv"))
 
 
 # filter CDM
@@ -225,4 +224,17 @@ flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_w
                         "historical pregnancies with age 12-55 in 2018","between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
+ 
+ # before removing the preselect folder, copy cov_data out to projectFolder
+ 
+ # cov_data<-fread(paste0(preselect_folder,"covid_data.csv"))
+ 
+ # fwrite(cov_data, paste0(projectFolder, "/covid_data.csv"))
+ 
+ #########################################################
+ 
+ # delete preselect
+ 
+ unlink( paste0(projectFolder,"/CDMInstances_preselect"), recursive=T)
+ 
  

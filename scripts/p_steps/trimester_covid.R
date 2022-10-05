@@ -16,7 +16,7 @@
 
 my_PREG<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
-cov_data<-fread(paste0(preselect_folder,"covid_data.csv"))
+cov_data<-fread(paste0(projectFolder,"/covid_data.csv"))
 
 
 ##########################################################################

@@ -5,9 +5,6 @@
 
 #This script sets and saves paths to folders needed for all subsequent scripts
 # setwd('..') #in Data Characterisation
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
 
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)

@@ -6,9 +6,10 @@
 
 # subset covid + and covid- pan_preg and non_preg
 
-cov_data<-fread(paste0(preselect_folder, "covid_data.csv"))
+cov_data<-fread(paste0(projectFolder, "/covid_data.csv"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
+
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
 ###############################################################
@@ -39,6 +40,7 @@ for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))
   my_preg_table<- my_table[my_table$person_id%in%cov_neg_pan_preg$person_id,]
   fwrite(my_preg_table,paste0(cov_neg_pan_preg_folder,pan_tables[i]))
+  unlink(paste0(pan_preg_folder,pan_tables[i]))
 }
 
 fwrite(cov_neg_pan_preg, paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
@@ -53,14 +55,16 @@ not_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=not_preg_folder)
 cov_pos_not_preg<-not_preg_PERSONS[not_preg_PERSONS$person_id%in%cov_data$person_id,]
 
 for (i in 1:length(not_preg_tables)){
-  my_table<-fread(paste0(preselect_folder,not_preg_tables[i]))
+  my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
   my_preg_table<- my_table[my_table$person_id%in%cov_pos_not_preg$person_id,]
   fwrite(my_preg_table,paste0(cov_pos_not_preg_folder,not_preg_tables[i]))
+  
 }
 
 for (i in 1:length(not_preg_tables)){
-  my_table<-fread(paste0(preselect_folder,not_preg_tables[i]))
+  my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
   my_preg_table<- my_table[my_table$person_id%exclude%cov_pos_not_preg$person_id,]
   fwrite(my_preg_table,paste0(cov_neg_not_preg_folder,not_preg_tables[i]))
+  unlink(paste0(not_preg_folder,not_preg_tables[i]))
 }
 

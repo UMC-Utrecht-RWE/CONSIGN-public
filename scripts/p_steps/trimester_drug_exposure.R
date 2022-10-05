@@ -20,7 +20,7 @@
 my_tables<-list.files(path=raw_atc_2_counts)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
-cov_trim_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
+cov_trim_data<-fread(paste0(pan_preg_folder,"/covid_positive/trim_cov_PREG.csv"))
 
 # now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis
 
