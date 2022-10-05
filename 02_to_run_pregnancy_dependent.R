@@ -46,6 +46,12 @@ source(paste0(pre_dir, "/trimester_covid.R"))
 
 source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
+# finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
+# written to cohort folders in g_output/covariates/...
+source(paste0(pre_dir,"/covariates_detect.R" ))
+
+# add matching script here
+
 # checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
