@@ -48,7 +48,7 @@ source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
 # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # written to cohort folders in g_output/covariates/...
-# source(paste0(pre_dir,"/covariates_detect.R" ))
+source(paste0(pre_dir,"/covariates_detect.R" ))
 
 # add matching script here
 

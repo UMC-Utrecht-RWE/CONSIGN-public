@@ -8,7 +8,7 @@
 # covariates described in Teams file CONSIGN_Variables.xlsx using version 9/15/22
 
 cohort_folders<-list(cov_neg_pan_preg_folder, cov_pos_pan_preg_folder, cov_pos_not_preg_folder)
-output_folders<-list(output_folder_neg_pan_preg, output_folder_pos_pan_preg, output_folder_pos_non_preg)
+output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
 
 
 # only events within 1 year before covid+ pregnancy start date
@@ -26,6 +26,9 @@ SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
 MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
 df <- select(MED, date_dispensing, date_prescription)
 drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
+drug_date<-unlist(drug_date)
+drug_date<-as.Date(drug_date, format="%Y%m%d")
+
 MED$drug_date<-as.numeric(drug_date)
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
@@ -373,6 +376,8 @@ my_rows<-which(Reduce(`|`, lapply(mental_names, startsWith, x = as.character(all
 
 mental_codes<- unique(all_codes$code[my_rows])
 
+if(length(mental_codes>0)){
+
 my_rows<-which(Reduce(`|`, lapply(mental_codes, startsWith, x = as.character(EVENTS$event_code))))
 mental_EV_ID<-(EVENTS$person_id[my_rows])
 mental_EV_Date<- (EVENTS$start_date_record[my_rows])
@@ -389,6 +394,6 @@ mental_id<-c(mental_EV_ID, mental_MO_ID, mental_SO_ID)
 mental_date<-c(mental_EV_Date, mental_MO_Date, mental_SO_Date)
 mental_cov<-as.data.frame(cbind(mental_id, mental_date))
 
-fwrite(mental_cov, paste0(output_folder,"mental.csv"))
+fwrite(mental_cov, paste0(output_folder,"mental.csv"))}else{print("no codes detected for /mental/ group")}
 
 }
