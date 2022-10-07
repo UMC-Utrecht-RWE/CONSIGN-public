@@ -15,7 +15,7 @@ covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meani
 colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
 
-if(nrow(cov_ev_data>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
+if((nrow(covid_ev_data)>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
 
 rm(covid_dap_data)
 rm(covid_ev_data)
