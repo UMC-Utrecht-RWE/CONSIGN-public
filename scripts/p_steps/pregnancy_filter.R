@@ -182,12 +182,15 @@ for (i in 1:length(table_list)){
   
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
+
+pan_PREGNANCIES_age<-nrow(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,])
 fwrite(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,],paste0(pan_preg_folder,"my_PREG.csv"))
 
 # NON-PREGNANT 
 # need to be 12-55 at start of PANDEMIC (only use this group for cov+ comparison)
 
 non_pan_preg_ID_age<-all_non_pan_preg_ID[all_non_pan_preg_ID%in%age_pan_ID]
+
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_preg_table<- my_table[my_table$person_id%in%non_pan_preg_ID_age,]
@@ -215,13 +218,13 @@ fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"
 #########################################################
 
 flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_with_spell, 
-                               FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), length(pan_preg_ID_age),
+                               FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), length(pan_preg_ID_age),pan_PREGNANCIES_age,
                                length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg, length(non_pan_preg_ID_age)))
                          
  colnames(flowchart)<-c("All women of reproductive age", "total pregnancies", "total mothers", "pregnancies with spell data",
                         "pregnancies 12 months follow up from LMP", "pregnancies starting during study period", "after excluding red pregnancies", 
-                        "pandemic pregnancies","pandemic pregnancies with age 12-55 in 2020","historical pregnancies",
-                        "historical pregnancies with age 12-55 in 2018","between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
+                        "WOMEN with pandemic pregnancies","WOMEN with pandemic pregnancies with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
+                        "women with historical pregnancies with age 12-55 in 2018","women with between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  
