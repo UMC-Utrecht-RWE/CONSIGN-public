@@ -54,12 +54,12 @@ source(paste0(pre_dir, "/ATC_2_detect_loop.R"))
 
 # for supplement section of report
 # finds all drug utilization of ATC level 3
-# source(paste0(pre_dir, "/ATC_3_detect.R"))
+source(paste0(pre_dir, "/ATC_3_detect_loop.R"))
 
 # finds all drug utilization of ATC level 4
-# source(paste0(pre_dir, "/ATC_4_detect.R"))
+source(paste0(pre_dir, "/ATC_4_detect_loop.R"))
 
 # finds all drug utilization of ATC level 5
-# source(paste0(pre_dir, "/ATC_5_detect.R"))
+source(paste0(pre_dir, "/ATC_5_detect_loop.R"))
 
 
