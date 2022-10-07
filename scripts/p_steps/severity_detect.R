@@ -8,16 +8,14 @@
 
 covid_ev_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
 
-covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
-
-#teams variables document: "hospital" "intensive" "pd / sd" (whales)(careful for captial and lower case)
-
-
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
 
-colnames(covid_ev_data)<-colnames(covid_dap_data)
+if(nrow(covid_ev_data>0)){
+covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
+colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
-covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))
+
+if(nrow(cov_ev_data>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
 
 rm(covid_dap_data)
 rm(covid_ev_data)
