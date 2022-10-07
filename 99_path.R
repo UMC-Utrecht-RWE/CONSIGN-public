@@ -23,7 +23,7 @@ if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
   invisible(if(dir.exists(path_CDM)==F)
   {dir.create(path_CDM)})}
 
-if(set_my_CDM==F)
+
 path_dir<-paste0(projectFolder,"/scripts/")
 if(dir.exists(path_dir)==F){dir.create(path_dir)}
 

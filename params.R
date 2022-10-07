@@ -4,9 +4,11 @@
 #to use a pre-existing CDM location, first change set_my_CDM to TRUE
 set_my_CDM<-F
 
-#then fill in the my_CSM_path parameter
+#then fill in the my_path_CDM parameter
+# IMPORTANT: USE / BACKSLASH (NOT FORWARD SLASH \ ) IF YOU COPY AND PASTE YOUR PATH, YOU WILL PROBABLY NEED TO REPLACE \ WITH / MANUALLY
+# IMPORTANT: END THE STRING WITH /
 
-my_CDM_path<- "as_a_string/using_forward_slashes/location_of_your_CDM/"
+my_path_CDM<- "a_text_string/showing_where/your_CDM/is_located/"
 
 # the exact name of YOUR pregnancy algorithm output, including file extension 
 preg_data<-"imputed_pregnancy.csv"

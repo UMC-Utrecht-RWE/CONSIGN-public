@@ -16,7 +16,7 @@ covid_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
 
-CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 
