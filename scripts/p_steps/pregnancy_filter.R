@@ -75,41 +75,24 @@ my_PREG<-my_PREG[my_PREG$person_id%in%df_observation$person_id]
 
 FC_preg_with_spell<-nrow(my_PREG)
 
-#############################################################################
-# filter pregnancies without 1 year follow up from LMP (pregnancy_start_date)
-# ###########################################################################
-
-id_freq_preg<-as.numeric(table(my_PREG$person_id))
-
-mother_obs<-df_observation[df_observation$person_id%in%my_PREG$person_id]
-length(mother_obs$op_end_date)==length(id_freq_preg)
-
-mother_op_end<-rep(mother_obs$op_end_date, id_freq_preg)
-
-my_PREG$mother_op_end<-as.numeric(as.Date(mother_op_end,format = "%Y-%m-%d"))
-
-my_PREG$preg_FU<-(my_PREG$mother_op_end)-(my_PREG$pregnancy_start_date)
-
-
-my_PREG<- my_PREG[my_PREG$preg_FU>=365,]
-
-if (min(my_PREG$preg_FU)>=365){print("Follow Up from LMP at least 365 days, OK")}else{print("Follow Up Restriction Failure")}
-
-FC_sufficient_follow_up<-nrow(my_PREG)
-
-
-# remove pregnancies that start before study period should this be based on start of pregnancy
-
-my_PREG<-my_PREG[my_PREG$pregnancy_start_date>=start_date]
-
-FC_from_start_study<- nrow(my_PREG)
-
-
 #filter out red quality pregnancies (DAP specific due to data generating mechanism which makes "red")
 
 if(DAP!="ARS"){
-my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
-FC_no_red_preg<-nrow(my_PREG)}else{no_red_preg<- "ARS keeps red pregnancies"}
+  my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
+  FC_no_red_preg<-nrow(my_PREG)}else{no_red_preg<- "ARS keeps red pregnancies"}
+
+
+
+# ###########################################################################
+# 10/10 need to measure maternal death (means end of follow up) can't exclude on follow up
+# --> preg_start_date<31/12/2020
+
+max_preg_start_date<-as.Date(as.character("20201231"), format = "%Y%m%d")
+
+my_PREG<-my_PREG[my_PREG$pregnancy_start_date<=max_preg_start_date,]
+
+FC_sufficient_follow_up<-nrow(my_PREG)
+
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
@@ -217,12 +200,12 @@ fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"
 # FLOWCHART to record attrition
 #########################################################
 
-flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_with_spell, 
-                               FC_sufficient_follow_up, FC_from_start_study, FC_no_red_preg, length(pan_preg_ID), length(pan_preg_ID_age),pan_PREGNANCIES_age,
+flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_with_spell, FC_no_red_preg,
+                               FC_sufficient_follow_up,   length(pan_preg_ID), length(pan_preg_ID_age),pan_PREGNANCIES_age,
                                length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg, length(non_pan_preg_ID_age)))
                          
- colnames(flowchart)<-c("All women of reproductive age", "total pregnancies", "total mothers", "pregnancies with spell data",
-                        "pregnancies 12 months follow up from LMP", "pregnancies starting during study period", "after excluding red pregnancies", 
+ colnames(flowchart)<-c("All women of reproductive age", "total pregnancies", "total mothers", "pregnancies with spell data","after excluding red pregnancies",
+                        "pregnancies starting at least 12 months before end of study",   
                         "WOMEN with pandemic pregnancies","WOMEN with pandemic pregnancies with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
                         "women with historical pregnancies with age 12-55 in 2018","women with between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
  
