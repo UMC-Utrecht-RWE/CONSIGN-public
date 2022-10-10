@@ -13,6 +13,8 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
+# CHECK/ FILL IN YOUR PARAMETERS FOR PREGNANCY ALGORITHM FILE 
+
 source("params.R")
 
 source("99_path.R")
