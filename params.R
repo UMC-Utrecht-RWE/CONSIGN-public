@@ -1,6 +1,6 @@
 # USER INPUT 
 
-# for 01_pregnancy_independent
+# for 01_to_run_pregnancy_independent
 #to use a pre-existing CDM location, first change set_my_CDM to TRUE
 set_my_CDM<-F
 
@@ -9,6 +9,13 @@ set_my_CDM<-F
 # IMPORTANT: END THE STRING WITH /
 
 my_path_CDM<- "a_text_string/showing_where/your_CDM/is_located/"
+
+# for 02_to_run_pregnancy_dependent
+
+# specify your pregnancy path "a_text_string/showing_where/your_CDM/is_located/" using backslash and ending in backslash
+# if pregnancy file stored with CDM, preg_path<-my_path_CDM
+
+preg_path<- "C:/Users/Gebruiker/OneDrive/Documents/projects/CONSIGN/CDMInstances/"
 
 # the exact name of YOUR pregnancy algorithm output, including file extension 
 preg_data<-"imputed_pregnancy.csv"
