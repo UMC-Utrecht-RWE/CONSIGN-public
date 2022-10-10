@@ -36,6 +36,10 @@ for (i in 1:length(pan_tables)){
 
 fwrite(cov_preg_data, paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 
+unlink(paste0(cov_pos_pan_preg_folder,"my_PREG.csv"))
+
+unlink(paste0(cov_pos_pan_preg_folder,"trim_cov_PREG.csv"))
+
 for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))
   my_preg_table<- my_table[my_table$person_id%in%cov_neg_pan_preg$person_id,]
@@ -44,6 +48,10 @@ for (i in 1:length(pan_tables)){
 }
 
 fwrite(cov_neg_pan_preg, paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
+
+unlink(paste0(cov_neg_pan_preg_folder,"my_PREG.csv"))
+
+unlink(paste0(cov_neg_pan_preg_folder,"trim_cov_PREG.csv"))
 
 ##############################################################################################
 
