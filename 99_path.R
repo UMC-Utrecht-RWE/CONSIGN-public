@@ -103,6 +103,9 @@ output_cov_neg_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_neg
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), FALSE))
 output_cov_pos_non_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/hist_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/hist_preg/")), FALSE))
+output_hist_preg   <- paste0(projectFolder, "/g_output/covariates/hist_preg/")
+
 
 # Sets path to p_steps (to read codelists)
 pre_dir <- paste0(path_dir,"p_steps")
