@@ -31,6 +31,10 @@ preg_format<-"csv"
 
 # universal input
 
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+
 start_study_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 
 end_study_date<-as.Date(as.character("20211231"), format = "%Y%m%d")
