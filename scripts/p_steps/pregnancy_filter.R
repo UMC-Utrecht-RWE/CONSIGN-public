@@ -22,6 +22,9 @@ DAP<-CDM_source$data_access_provider_name
 
 my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
 
+print(table(my_PREG$gestage_greater_44))
+my_PREG<-my_PREG[my_PREG$gestage_greater_44==0,]
+
 OG_PREG_ID<-my_PREG$person_id
 
 FC_OG_preg<-nrow(my_PREG)
