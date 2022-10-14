@@ -12,7 +12,7 @@ my_PREG<-fread(paste0(preg_path,preg_data))}
 if(preg_format=="rds"){
   my_PREG<-readRDS(paste0(preg_path,preg_data))}
 
-
+days_trim<-97
 # summary(my_PREG$pregnancy_start_date)
 
 my_PREG$pregnancy_start_date<-as.numeric(my_PREG$pregnancy_start_date)
@@ -49,4 +49,4 @@ my_PREG$trim_2_end[my_PREG$trim_2_end==0]<-NA
 my_PREG$trim_3_start[my_PREG$trim_3_start==0]<-NA
 my_PREG$trim_3_end[my_PREG$trim_3_end==0]<-NA
 
-fwrite(my_PREG, paste0(path_CDM, "preg_trim.csv"))
+fwrite(my_PREG, paste0(preg_path, "preg_trim.csv"))

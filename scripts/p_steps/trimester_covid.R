@@ -29,7 +29,7 @@ cov_data<-fread(paste0(projectFolder,"/covid_data.csv"))
 
 cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
 
-
+# select only those with covid during pregnancy
 
 cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 

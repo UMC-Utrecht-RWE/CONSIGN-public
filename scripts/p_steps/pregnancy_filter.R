@@ -20,7 +20,7 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 
-my_PREG<-fread(paste0(path_CDM, "preg_trim.csv"))
+my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
 
 OG_PREG_ID<-my_PREG$person_id
 
@@ -221,6 +221,6 @@ flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_w
  
  # delete preselect
  
- unlink( paste0(projectFolder,"/CDMInstances_preselect"), recursive=T)
+ # unlink( paste0(projectFolder,"/CDMInstances_preselect"), recursive=T)
  
  

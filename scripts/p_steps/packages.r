@@ -1,5 +1,7 @@
 #Packages needed for CONSIGN
 
+if(!require(rlist)){install.packages("rlist")}
+suppressPackageStartupMessages(library(rlist))
 
 if(!require(stringr)){install.packages("stringr")}
 suppressPackageStartupMessages(library(stringr))

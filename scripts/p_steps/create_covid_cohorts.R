@@ -24,9 +24,9 @@ cov_neg_pan_preg<-all_pan_preg[all_pan_preg$person_id%exclude%cov_preg_data$pers
   
 pan_tables<-list.files(paste0(pan_preg_folder,"/"), pattern = "\\.csv$")
 
-# pan_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=pan_preg_folder)
-# 
-# cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_preg_data$person_id,]
+pan_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=pan_preg_folder)
+
+cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_preg_data$person_id,]
 
 for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))
@@ -37,14 +37,13 @@ for (i in 1:length(pan_tables)){
 fwrite(cov_preg_data, paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 
 unlink(paste0(cov_pos_pan_preg_folder,"my_PREG.csv"))
-
 unlink(paste0(cov_pos_pan_preg_folder,"trim_cov_PREG.csv"))
 
 for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))
   my_preg_table<- my_table[my_table$person_id%in%cov_neg_pan_preg$person_id,]
   fwrite(my_preg_table,paste0(cov_neg_pan_preg_folder,pan_tables[i]))
-  unlink(paste0(pan_preg_folder,pan_tables[i]))
+  # unlink(paste0(pan_preg_folder,pan_tables[i]))
 }
 
 fwrite(cov_neg_pan_preg, paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
@@ -73,6 +72,6 @@ for (i in 1:length(not_preg_tables)){
   my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
   my_preg_table<- my_table[my_table$person_id%exclude%cov_pos_not_preg$person_id,]
   fwrite(my_preg_table,paste0(cov_neg_not_preg_folder,not_preg_tables[i]))
-  unlink(paste0(not_preg_folder,not_preg_tables[i]))
+  # unlink(paste0(not_preg_folder,not_preg_tables[i]))
 }
 
