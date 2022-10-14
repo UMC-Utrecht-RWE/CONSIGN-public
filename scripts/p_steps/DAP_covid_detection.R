@@ -23,7 +23,7 @@ meaning<-vector()
 
 if(DAP=="ARS"){
   my_data<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-  my_data<-my_data[(my_data$survey_meaning=='covid_registry'),]
+  my_data<-my_data[(my_data$so_meaning=='covid_registry'),]
   person_id<-my_data$person_id
   cov_date<-my_data$survey_date
   meaning<-my_data$survey_meaning

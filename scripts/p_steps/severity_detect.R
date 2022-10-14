@@ -119,4 +119,4 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   final_covid_data<-final_covid_data[with(final_covid_data, order(person_id, cov_date)),]
   nrow(final_covid_data)==nrow(covid_data)
 
-fwrite(final_covid_data, paste0(projectFolder, "/covid_data.csv"))
+fwrite(final_covid_data, paste0(preselect_folder, "/covid_data.csv"))
