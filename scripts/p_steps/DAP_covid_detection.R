@@ -49,9 +49,10 @@ if(DAP=="USWAN"){
   meaning<-my_data$mo_meaning
 }
 
+# URGENT check in teams doc
 if(DAP=="IACS"){
   my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
-  my_data<-my_data[(my_data$mo_meaning=='COVID19 TEST'& my_data$mo_source_value==""),]
+  my_data<-my_data[(my_data$mo_meaning=='covid19_pcr_test'& my_data$mo_source_value==""),]
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date

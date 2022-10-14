@@ -8,7 +8,9 @@
 
 # make sure you have the location, format and file name of your pregnancy data in params.R
 
-# make sure you have covid_data.csv in the projectFolder (if it is in another location, please copy and paste it to projectFolder)
+# make sure you have covid_data.csv in the preselect_folder (if it is in another location, please copy and paste it to preselect_folder)
+
+# make sure you have ALL_full_codelist.csv in projectFolder
 
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}
