@@ -94,6 +94,7 @@ output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/")), dir.create(paste0(projectFolder, "/g_output/covariates")), FALSE))
 output_cov   <- paste0(projectFolder, "/g_output/covariates/")
 
+
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), FALSE))
 output_cov_pos_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")
 
@@ -105,6 +106,21 @@ output_cov_pos_non_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/hist_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/hist_preg/")), FALSE))
 output_hist_preg   <- paste0(projectFolder, "/g_output/covariates/hist_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates")), FALSE))
+output_mat_cov   <- paste0(projectFolder, "/g_output/maternal_covariates/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates")), FALSE))
+output_mat_cov   <- paste0(projectFolder, "/g_output/maternal_covariates/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/pan_pos/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/pan_pos")), FALSE))
+output_mat_cov_pan_pos   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_pos/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/pan_neg/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/pan_neg")), FALSE))
+output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_neg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/hist")), FALSE))
+output_mat_cov_hist   <- paste0(projectFolder, "/g_output/maternal_covariates/hist/")
 
 
 # Sets path to p_steps (to read codelists)

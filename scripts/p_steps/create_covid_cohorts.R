@@ -6,7 +6,7 @@
 
 # subset covid + and covid- pan_preg and non_preg
 
-cov_data<-fread(paste0(projectFolder, "/covid_data.csv"))
+cov_data<-fread(paste0(preselect_folder, "/covid_data.csv"))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 

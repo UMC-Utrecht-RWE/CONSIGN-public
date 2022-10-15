@@ -5,8 +5,7 @@
 
 # CONSIGN
 # this script will identify the target codes for each covariate
-# covariates described in Teams file CONSIGN_Variables.xlsx using version 10/15/22
-# --> HELP how to specify medicines ATC?
+# covariates described in Teams file CONSIGN_Variables.xlsx using version 9/15/22
 
 cohort_folders<-list(cov_neg_pan_preg_folder, cov_pos_pan_preg_folder, cov_pos_not_preg_folder)
 output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
@@ -22,17 +21,19 @@ cohort_folder<-unlist(cohort_folders[i])
 
 output_folder<-unlist(output_folders[i])
 
-VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
-EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
-MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
-SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
+#WITHIN THE COHORT FOLDER, SHOULD BE A SMALL ENOUGH SUBSET THAT IMPORTPATTERN WORKS 
+
+EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
+MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
+SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
+MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
+
 df <- select(MED, date_dispensing, date_prescription)
 drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
 drug_date<-unlist(drug_date)
 drug_date<-as.Date(drug_date, format="%Y%m%d")
 
-MED$drug_date<-as.numeric(drug_date)
+MED$drug_date<-as.numeric(drug_date)}
 
 
 #################################################################
@@ -372,57 +373,30 @@ fwrite(immsup_cov, paste0(output_folder,"immunosupression.csv"))
 #################################################################################
 # MENTAL
 
-# medicinal_product_atc_code=code in "DP_COVMENTALHEALTH"
-# Date is "date_prescription" or "date_dispensing"
 
-mental_atc<-c("N05A", "N05B", "N06A")
+mental_names<-c("DP_COVMENTALHEALTH")
+my_rows<-which(Reduce(`|`, lapply(mental_names, startsWith, x = as.character(all_codes$full_name))))
 
-my_rows<-which(Reduce(`|`, lapply(mental_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
+mental_codes<- unique(all_codes$code[my_rows])
 
-mental_id<-(MED$person_id[my_rows])
-mental_date<- (MED$drug_date[my_rows])
-                   
+if(length(mental_codes>0)){
+
+my_rows<-which(Reduce(`|`, lapply(mental_codes, startsWith, x = as.character(EVENTS$event_code))))
+mental_EV_ID<-(EVENTS$person_id[my_rows])
+mental_EV_Date<- (EVENTS$start_date_record[my_rows])
+
+my_rows<-which(Reduce(`|`, lapply(mental_codes, startsWith, x = as.character(MED_OB$mo_code))))
+mental_MO_ID<-(MED_OB$person_id[my_rows])
+mental_MO_Date<- (MED_OB$mo_date[my_rows])
+
+my_rows<-which(Reduce(`|`, lapply(mental_codes, startsWith, x = as.character(SURV_OB$so_meaning))))
+mental_SO_ID<-(SURV_OB$person_id[my_rows])
+mental_SO_Date<- (SURV_OB$so_date[my_rows])
+
+mental_id<-c(mental_EV_ID, mental_MO_ID, mental_SO_ID)
+mental_date<-c(mental_EV_Date, mental_MO_Date, mental_SO_Date)
 mental_cov<-as.data.frame(cbind(mental_id, mental_date))
 
-fwrite(mental_cov, paste0(output_folder,"mental.csv"))
-
-
-
-
-#################################################################################
-# VACCINE
-
-
-vaccine_atc<-("J07BB")
-
-my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
-
-vaccine_MED_id<-(MED$person_id[my_rows])
-vaccine_MED_date<- (MED$drug_date[my_rows])
-
-vaccine_cov<-as.data.frame(cbind(vaccine_id, vaccine_date))
-
-my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACCINES$vx_atc))))
-
-vaccine_VAC_id<-(VACCINES$person_id[my_rows])
-
-if(DAP%in%c("Bordeaux", "..."))
-if(DAP!="Bordeaux"){
-vaccine_VAC_date<- (VACCINES$vx_admin_date[my_rows])}else{vaccine_VAC_date<- (VACCINES$vx_record_date[my_rows])}
-
-vaccine_cov<-as.data.frame(cbind(vaccine_id, vaccine_date))
-
-fwrite(vaccine_cov, paste0(output_folder,"vaccine.csv"))
-
-
-  my_rows<-which(Reduce(`|`, lapply(vaccine_codes, startsWith, x = as.character(SURV_OB$so_meaning))))
-  vaccine_SO_ID<-(SURV_OB$person_id[my_rows])
-  vaccine_SO_Date<- (SURV_OB$so_date[my_rows])
-  
-  vaccine_id<-c(vaccine_EV_ID, vaccine_MO_ID, vaccine_SO_ID)
-  vaccine_date<-c(vaccine_EV_Date, vaccine_MO_Date, vaccine_SO_Date)
-  vaccine_cov<-as.data.frame(cbind(vaccine_id, vaccine_date))
-  
-  fwrite(vaccine_cov, paste0(output_folder,"vaccine.csv"))}else{print("no codes detected for /vaccine/ group")}
+fwrite(mental_cov, paste0(output_folder,"mental.csv"))}else{print("no codes detected for /mental/ group")}
 
 }

@@ -15,15 +15,24 @@ covid_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
+############################################################
+# IMPORT DATA
 
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
-
+df_observation<-fread(paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
+df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder)
 my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
+############################################################
 
+
+print("are there pregnancies longer than 44 weeks?")
 print(table(my_PREG$gestage_greater_44))
-my_PREG<-my_PREG[my_PREG$gestage_greater_44==0,]
+print("exclude any pregnancies with gestage_greater_44 == 1")
+# my_PREG<-my_PREG[my_PREG$gestage_greater_44!=1,]
+
+
 
 OG_PREG_ID<-my_PREG$person_id
 
@@ -31,19 +40,28 @@ FC_OG_preg<-nrow(my_PREG)
 
 FC_OG_mom<-length(unique(OG_PREG_ID))
 
-# need persons to check for age from 12-55 at start pandemic
+# adding pregnancy 0/1 to PERSONS for subsetting
 
-df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder) 
+df_PERSONS$pregnant_ever<-0
+df_PERSONS$pregnant_ever[df_PERSONS$person_id%in%my_PREG$person_id]<-1
+table(df_PERSONS$pregnant_ever)
 
-df_PERSONS$DOB<-as.Date(paste0(df_PERSONS$day_of_birth,df_PERSONS$month_of_birth, df_PERSONS$year_of_birth), format = "%d%m%Y")
-
+# store flowchart data
 OG_person_ID<-df_PERSONS$person_id 
 FC_OG_person_ID<-length(OG_person_ID)
 
-# pull year of birth from PERSONS, add to PREG, and use for exclusion
+# add elligibility criteria from CreateEntryExit (in PERSONS) to my_PREG
+my_PREG$elligible_hist<-0
+ell_hist_preg_id<-my_PREG$person_id[df_PERSONS$elligible_historical==1]
+my_PREG$elligible_hist[my_PREG$person_id%in%ell_hist_preg_id]<-1
 
-# add DOB criteria here
-never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$person_id%exclude%OG_PREG_ID==T]
+my_PREG$elligible_pandemic<-0
+ell_pan_preg_id<-my_PREG$person_id[df_PERSONS$elligible_pandemic==1]
+my_PREG$elligible_pandemic[my_PREG$person_id%in%ell_pan_preg_id]<-1
+
+# NEVER PREG ONLY IF ELLIGIBLE FOR PANDEMIC COHORT add entry/exit criteria here
+
+never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$pregnant_ever==0 & df_PERSONS$elligible_pandemic==1]
 FC_never_preg<-length(never_PREG_ID)
 
 # NOT pregnant in 2020 from march-december (preg_end_date< jan 1 2020) --> non_preg cohort
@@ -53,12 +71,10 @@ length(non_pan_preg_ID)
 all_non_pan_preg_ID<-unique(c(never_PREG_ID, non_pan_preg_ID))
 FC_all_non_pan_preg<-length(all_non_pan_preg_ID)
 
-# Output of Create_Spells to measure follow up (FU) from preg_start_date
-df_observation<-IMPORT_PATTERN("ALL_OBS", preselect_folder)
 
 
 #######################
-# make categorical maternal_age (at start of pregnancy) groups: page 30 "covariates"
+# make categorical maternal_age (at start of pregnancy) groups: SAP page 30 "covariates"
 # 12-24 years of age
 # 25-39 years of age
 # 40-55 years of age
@@ -71,12 +87,14 @@ my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, lower=25, upper=39)
 
 my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy,40,55)]<-3
 
-#############################################
+#############################################################################
 
 # person_ids must be in observations
 my_PREG<-my_PREG[my_PREG$person_id%in%df_observation$person_id]
 
 FC_preg_with_spell<-nrow(my_PREG)
+
+##############################################################################
 
 #filter out red quality pregnancies (DAP specific due to data generating mechanism which makes "red")
 
@@ -108,13 +126,15 @@ my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_start_date)]<-"pandemic"
 
 my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
 
+
 # all the pregnancies included in the study with additional variables:
 
-fwrite(my_PREG, paste0(projectFolder,"/study_pop_PREG.csv"))
+fwrite(my_PREG, paste0(g_intermediate,"/study_pop_PREG.csv"))
 
 
 # filter CDM
 # HELP check with Eimir (27/9)
+# IMPROVE: use entry and exit dates instead of DOB
 # pandemic cohorts: pan_preg and non_preg they need to be 12-55 DURING pandemic: 55<2020- DOB>12
 # historical cohort: 55< 2018-DOB>12
 
@@ -123,11 +143,25 @@ pan_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="pandemic"])
 hist_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="historical"])
 between_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="between"])
 
+df_PERSONS_preg<- df_PERSONS[df_PERSONS$person_id%in%my_PREG$person_id,]
+
+
 actual_tables_preselect<-list()
+
+# CHECK WHICH DAPS USE "LARGE" VERSION
+
+if(DAP!="Bordeaux"){
 actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS_SLIM")
 actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^MED_OB_SLIM")
 actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_SLIM")
-actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICINES_SLIM")
+actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICINES_SLIM")}else{
+  actual_tables_preselect$EVENTS<-list.files(paste0(preselect_folder,"/"), pattern="^EVENTS")
+  actual_tables_preselect$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICAL_OB")
+  actual_tables_preselect$SURVEY_OBSERVATIONS<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_OB")
+  actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), pattern="^MEDICINES")
+}
+
+
 actual_tables_preselect$VACCINES<-list.files(paste0(preselect_folder,"/"), pattern="^VACCINES")
 actual_tables_preselect$SURVEY_ID<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_ID")
 actual_tables_preselect$EUROCAT<-list.files(paste0(preselect_folder,"/"), pattern="^EUROCAT")
@@ -137,34 +171,16 @@ all_actual_tables<-list.files(paste0(preselect_folder,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_preselect)
 ##############################################################
 
-# need to be between 12-55 at start of pandemic
-
-# bring in personsfilter() function, make a filter_id for each cohort and filter cohort_ids
-
-personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12)) {
-  newdata<-personstable[(personstable[,get(sex)]==female),]
-  flowchart_gender<-as.numeric(c(nrow(personstable), nrow(newdata)))
-  newdata<-newdata[(newdata[,get(dob)]>=dobmin),]
-  filtered_data<-newdata[(newdata[,get(dob)]<=dobmax),]
-  flowchart_age<-as.numeric(c(flowchart_gender, nrow(filtered_data)))
-  flowchart_steps<-c("original", "females only", "1954<=DOB<=2008")
-  filter_ID<-(filtered_data[[caseid]])
-  flowchart_filter<-as.data.frame(cbind(flowchart_steps, flowchart_age))
-  colnames(flowchart_filter)<-c("filter_step","cases_number" )
-  persons_filter_output<-list(filter_ID, flowchart_filter, filtered_data)
-  return(persons_filter_output)
-}
-
-df_PERSONS_preg<- df_PERSONS[df_PERSONS$person_id%in%my_PREG$person_id,]
+# need to be between 12-55 at start of pandemic - PERSONS$elligible_pandemic
 
 # PANDEMIC PREGNANT
-age_filter_pandemic<-personsfilter(personstable = df_PERSONS_preg,caseid = "person_id", female="F", dob= "year_of_birth", dobmin = (2020-55), dobmax = (2020-12))
-age_pan_ID<-unlist(age_filter_pandemic[1])
-pan_preg_ID_age<-pan_preg_ID[pan_preg_ID%in%age_pan_ID]
+
+pan_preg_ID_age<-my_PREG$person_id[(my_PREG$cohort=="pandemic")& (my_PREG$elligible_pandemic==1)]
+
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$person_id%in%pan_preg_ID_age,]
+  my_preg_table<- my_table[my_table$pregnancy_id%in%pan_preg_ID_age,]
   
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
@@ -174,7 +190,7 @@ fwrite(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,],paste0(pan_preg_folder,"my
 
 # NON-PREGNANT 
 # need to be 12-55 at start of PANDEMIC (only use this group for cov+ comparison)
-
+age_pan_ID<-df_PERSONS$person_id[df_PERSONS$elligible_pandemic==1]
 non_pan_preg_ID_age<-all_non_pan_preg_ID[all_non_pan_preg_ID%in%age_pan_ID]
 
 for (i in 1:length(table_list)){
@@ -184,13 +200,11 @@ for (i in 1:length(table_list)){
 }
 
 # HISTORICAL PREGNANT
-# historical group age filter for observation time 2018-2020
-age_filter_hist<-personsfilter(personstable = df_PERSONS_preg,caseid = "person_id", female="F", dob= "year_of_birth", dobmin = (2018-55), dobmax = (2018-12))
-age_hist_ID<-unlist(age_filter_hist[1])
+# historical group entry/exit filter for observation time 2018-2020
+
+age_hist_ID<-df_PERSONS$person_id[df_PERSONS$elligible_historical==1]
 hist_preg_ID_age<-hist_preg_ID[hist_preg_ID%in%age_hist_ID]
 
-
-# need to be 12-55 at start of STUDY 2018
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
   my_preg_table<- my_table[my_table$person_id%in%hist_preg_ID_age,]

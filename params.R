@@ -31,9 +31,12 @@ preg_format<-"csv"
 
 # universal input
 
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
+# minimum age = 12 
+# maximum age = 55
 
+# Age groups will be defined based upon age at the start date of the pregnancy:
+# 12-34 years of age
+# 35-55 years of age
 
 start_study_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
 

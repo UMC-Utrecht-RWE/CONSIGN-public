@@ -49,4 +49,5 @@ my_PREG$trim_2_end[my_PREG$trim_2_end==0]<-NA
 my_PREG$trim_3_start[my_PREG$trim_3_start==0]<-NA
 my_PREG$trim_3_end[my_PREG$trim_3_end==0]<-NA
 
+
 fwrite(my_PREG, paste0(preg_path, "preg_trim.csv"))
