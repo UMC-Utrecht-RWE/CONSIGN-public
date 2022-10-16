@@ -1,15 +1,9 @@
 #Author: Ema Alsina, M.Sc.
 #e.m.alsina-2@umcutrecht.nl
 #University Medical Center Utrecht
-#20/9/2022
-#further development 5/10/22
+# 7/9/2022
 
-#pregnancy-DEPENDENT scripts (waiting for pregnancy algorithm update)
-
-# make sure you have the location, format and file name of your pregnancy data in params.R
-
-# make sure you have covid_data.csv in the preselect_folder (if it is in another location, please copy and paste it to preselect_folder)
-
+# make sure you have covid_data.csv in preselect_folder
 # make sure you have ALL_full_codelist.csv in projectFolder
 
 rm(list=ls())
@@ -57,14 +51,6 @@ source(paste0(pre_dir, "/trimester_covid.R"))
 # deletes "upstream" files in "parent folder" after filtering/sorting 
 
 source(paste0(pre_dir, "/create_covid_cohorts.R"))
-
-# finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
-# written to cohort folders in g_output/covariates/...
-# since the cohort folders have much smaller data, probably don't need to loop?
-if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
-source(paste0(pre_dir,"/covariates_detect.R" ))}
-
-# covariate timing combining to pregnancy/covid
 
 # checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))

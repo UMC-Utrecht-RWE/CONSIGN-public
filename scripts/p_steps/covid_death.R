@@ -21,4 +21,6 @@ covid_data$mo_severe<-covid_data$severe
 
 covid_data$severe<-(covid_data$mo_severe+covid_data$cov_death)
 
+covid_data$severe[covid_data$severe>0]<-1
+
 fwrite (covid_data, paste0(preselect_folder,"covid_data.csv"))
