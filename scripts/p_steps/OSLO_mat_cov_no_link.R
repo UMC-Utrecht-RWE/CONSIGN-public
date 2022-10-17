@@ -44,7 +44,7 @@ for(i in 1:length(preg_cohort_folders)){
   GEST_DIAB_SO_Date<- (SURV_OB$so_date[my_rows])
  
   GEST_DIAB_cov<-as.data.frame(cbind(GEST_DIAB_SO_ID, GEST_DIAB_SO_Date))
-  
+  colnames(GEST_DIAB_cov)<-c("id", "date")
   fwrite(GEST_DIAB_cov, paste0(output_folder,"gest_diab.csv"))
   
   #################################################################################
@@ -59,7 +59,7 @@ for(i in 1:length(preg_cohort_folders)){
  
   
   CESAREA_cov<-as.data.frame(cbind(CESAREA_SO_ID, CESAREA_SO_Date))
-  
+  colnames(CESAREA_cov)<-c("id", "date")
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
 
  #################################################################################
@@ -88,7 +88,7 @@ for(i in 1:length(preg_cohort_folders)){
   # 
   # 
   SA_cov<-as.data.frame(cbind(SA_SO_ID,SA_SO_Date))
-  
+  colnames(SA_cov)<-c("id", "date")
   fwrite(SA_cov, paste0(output_folder,"Spont_Abort.csv"))
   
     
@@ -117,7 +117,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   
   PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_SO_ID,PREECLAMP_SO_Date))
-  
+  colnames(PREECLAMP_cov)<-c("id", "date")
   fwrite(PREECLAMP_cov, paste0(output_folder,"Preeclampsia.csv"))
 
   #################################################################################
@@ -160,7 +160,7 @@ for(i in 1:length(preg_cohort_folders)){
   PRETERM_DATE<- PRETERM_alg_DATE
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
-  
+  colnames(PRETERM_cov)<-c("id", "date")
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
    
   

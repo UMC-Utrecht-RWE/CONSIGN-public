@@ -64,36 +64,26 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_EV_ID<-(EVENTS$person_id[my_rows])
   CESAREA_EV_Date<- (EVENTS$start_date_record[my_rows])
   
-  # so_source_column  = "CESAREO_ARSNEW" AND so_source_value = 1 
-  # so_source_value = 1 
-  # survey_id = the value from the pregnancy algorithm output
   
-  CESAREA_codes<- "CESAREO_ARSNEW"
-  
- 
-  CESAREA_SO_ID<-SURV_OB$person_id[(SURV_OB$so_source_column==CESAREA_codes& SURV_OB$so_source_value==1)]
-  CESAREA_SO_Date<- SURV_OB$so_date[(SURV_OB$so_source_column==CESAREA_codes& SURV_OB$so_source_value==1)]
-  
-  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
-  CESAREA_DATE<-c(CESAREA_EV_Date,CESAREA_SO_Date)
-  
-  CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
+  CESAREA_cov<-as.data.frame(cbind(CESAREA_EV_ID, CESAREA_EV_Date))
   colnames(CESAREA_cov)<-c("id", "date")
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
 
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SA"
+  # FISABIO USES events only
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+  my_rows<-which(Reduce(`|`, lapply("P_SPONTABO_AESI", startsWith, x = as.character(all_codes$full_name))))
   
+  SA_codes<- unique(all_codes$code[my_rows])
   
-  SA_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
-  SA_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
+  my_rows<-which(Reduce(`|`, lapply(SA_codes, startsWith, x = as.character(EVENTS$event_code))))
+  SA_EV_ID<-(EVENTS$person_id[my_rows])
+  SA_EV_Date<- (EVENTS$start_date_record[my_rows])
   
-  
-  SA_cov<-as.data.frame(cbind(SA_ID,SA_Date))
+  SA_cov<-as.data.frame(cbind(SA_EV_ID, SA_EV_Date))
+
   colnames(SA_cov)<-c("id", "date")
   fwrite(SA_cov, paste0(output_folder,"Spont_Abort.csv"))
   
@@ -101,34 +91,25 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SB" AND events data
+  # FISABIO USES events only
   
-my_rows<-which(Reduce(`|`, lapply("P_STILLBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
-
-SB_codes<- unique(all_codes$code[my_rows])
-
-my_rows<-which(Reduce(`|`, lapply(SB_codes, startsWith, x = as.character(EVENTS$event_code))))
-SB_EV_ID<-(EVENTS$person_id[my_rows])
-SB_EV_Date<- (EVENTS$start_date_record[my_rows])
-
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+  my_rows<-which(Reduce(`|`, lapply("P_STILLBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
   
+  SB_codes<- unique(all_codes$code[my_rows])
   
- SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
- SB_alg_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
- 
-SB_ID<-c(SB_EV_ID, SB_alg_ID)
-SB_Date<-c(SB_EV_Date, SB_alg_DATE)
-   
- SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
- colnames(SB_cov)<-c("id", "date")
+  my_rows<-which(Reduce(`|`, lapply(SB_codes, startsWith, x = as.character(EVENTS$event_code))))
+  SB_EV_ID<-(EVENTS$person_id[my_rows])
+  SB_EV_Date<- (EVENTS$start_date_record[my_rows])
+
+  SB_cov<-as.data.frame(cbind(SB_EV_ID,SB_EV_Date))
+  colnames(SA_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
   
   #################################################################################
   # PREECLAMPSIA
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SB" AND events data
+  # FISABIO USES events only
   
   my_rows<-which(Reduce(`|`, lapply("P_PREECLAMP_AESI", startsWith, x = as.character(all_codes$full_name))))
   
@@ -146,7 +127,7 @@ SB_Date<-c(SB_EV_Date, SB_alg_DATE)
   #################################################################################
   # TOPFA
   
-  # ARS USES event_code=code in "P_SUSPFETANOM_AESI"  and "P_ELECTTERM_AESI" 
+  # FISABIO USES events only
   
   TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
   
@@ -160,13 +141,13 @@ SB_Date<-c(SB_EV_Date, SB_alg_DATE)
   
   
   TOPFA_cov<-as.data.frame(cbind(TOPFA_ID,TOPFA_Date))
-  colnames(TOPFA_cov)<-c("id", "date")
+  
   fwrite(TOPFA_cov, paste0(output_folder,"TOPFA.csv"))
   
   #################################################################################
   # PRE-TERM BIRTH
   
-  # ARS USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
+  # FISABIO USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
   
   
   my_rows<-which(Reduce(`|`, lapply("P_PRETERMBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
@@ -191,7 +172,7 @@ SB_Date<-c(SB_EV_Date, SB_alg_DATE)
   PRETERM_DATE<-c(PRETERM_EV_Date, PRETERM_alg_DATE)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
-  colnames(PRETERM_cov)<-c("id", "date")
+  
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
    
   
@@ -226,6 +207,6 @@ maternal_death_pers_ID<-maternal_death$person_id
 maternal_death_id<-c(maternal_death_EV_ID, maternal_death_pers_ID)
 maternal_death_date<-c(maternal_death_EV_Date, maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
-colnames(maternal_death_outcome)<-c("id", "date")
+
 fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
 
