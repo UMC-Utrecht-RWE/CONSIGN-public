@@ -1,5 +1,12 @@
 #Packages needed for CONSIGN
 
+
+if(!require(RSQLite)){install.packages("RSQLite")}
+suppressPackageStartupMessages(library(RSQLite))
+
+if(!require(sqldf)){install.packages("sqldf")}
+suppressPackageStartupMessages(library(sqldf))
+
 if(!require(rlist)){install.packages("rlist")}
 suppressPackageStartupMessages(library(rlist))
 
