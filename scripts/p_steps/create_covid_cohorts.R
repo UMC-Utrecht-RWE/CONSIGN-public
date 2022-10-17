@@ -61,6 +61,10 @@ not_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=not_preg_folder)
 
 cov_pos_not_preg<-not_preg_PERSONS[not_preg_PERSONS$person_id%in%cov_data$person_id,]
 
+cov_data_pos_not_preg<-cov_data[cov_data$person_id%in%not_preg_PERSONS$person_id,]
+
+fwrite(cov_data_pos_not_preg, paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
+
 for (i in 1:length(not_preg_tables)){
   my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
   my_preg_table<- my_table[my_table$person_id%in%cov_pos_not_preg$person_id,]
