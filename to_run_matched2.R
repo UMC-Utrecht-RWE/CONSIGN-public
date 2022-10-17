@@ -29,16 +29,16 @@ dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
 # read control file
-t2 <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
+t2a <- read.csv(paste0(dataNotPregDir,"covid_data_not_preg.csv"))
 # read control file
-t3 <- read.csv(paste0(dataPregNegDir,"cov_neg_preg.csv"))
-
+t2b <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
+t2 <-sqldf("select t2a.person_id, t2b.age_group, t2a.cov_date from t2a, t2b 
+          where t2a.person_id = t2b.person_id ")
 
 
 # look at first three lines to test
 sqldf("select * from t1 limit 3")
 sqldf("select * from t2 limit 3")
-sqldf("select * from t3 limit 3")
 
 
 
@@ -48,31 +48,31 @@ sqldf("select * from t3 limit 3")
 # 11111111111111111111111111111111111111111111111111111111
 
 round1 <-sqldf(
-
-"WITH 
+  
+  "WITH 
 gt1 AS (
   SELECT
   person_id,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS a_row
+  covid_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
   FROM t1), 
 gt2 AS (
   SELECT
   person_id,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
-  FROM t3
+  cov_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  FROM t2
 )
 SELECT gt1.person_id exposed_id,
        gt2.person_id control1_id,
        gt2.age_group,
-       gt2.pregnancy_start_date
+       gt2.cov_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-   AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+   AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
    AND a_row = b_row
 ORDER BY gt2.person_id"
 
@@ -92,28 +92,28 @@ gt1 AS (
   SELECT
   person_id ,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS a_row
+  covid_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
   FROM t1), 
 
 gt2 AS (
   SELECT
   person_id,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
-  FROM t3
-  WHERE t3.person_id NOT IN (select control1_id from round1)
+  cov_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  FROM t2
+  WHERE t2.person_id NOT IN (select control1_id from round1)
 
 )
 SELECT gt1.person_id exposed_id,
 gt2.person_id control2_id,
 gt2.age_group,
-gt2.pregnancy_start_date
+gt2.cov_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
 
 AND a_row = b_row
 ORDER BY gt2.person_id"
@@ -130,28 +130,28 @@ gt1 AS (
   SELECT
   person_id,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS a_row
+  covid_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
   FROM t1), 
 
 gt2 AS (
   SELECT
   person_id,
   age_group,
-  pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
-  FROM t3
-  WHERE t3.person_id NOT IN (select control1_id from round1)
-  AND t3.person_id NOT IN (select control2_id from round2)
+  cov_date,
+  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  FROM t2
+  WHERE t2.person_id NOT IN (select control1_id from round1)
+  AND t2.person_id NOT IN (select control2_id from round2)
 )
 SELECT gt1.person_id exposed_id,
 gt2.person_id control3_id,
 gt2.age_group,
-gt2.pregnancy_start_date
+gt2.cov_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
 AND a_row = b_row
 ORDER BY gt2.person_id"
 
@@ -159,11 +159,11 @@ ORDER BY gt2.person_id"
 
 results <- sqldf("select round1.exposed_id, round1.control1_id, round2.control2_id, round3.control3_id,
       round1.age_group,
-      round1.pregnancy_start_date
+      round1.cov_date
       from round1, round2, round3
       where round1.exposed_id = round2.exposed_id
       and round1.exposed_id = round3.exposed_id", dbname = "consign.db")
 
 # write to csv
-write.csv(results,'matching_results_preg.csv')
+write.csv(results,'matching_results.csv')
 
