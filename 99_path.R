@@ -27,6 +27,10 @@ if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
 path_dir<-paste0(projectFolder,"/scripts/")
 if(dir.exists(path_dir)==F){dir.create(path_dir)}
 
+matched_folder<-paste0(projectFolder,"/matched/")
+invisible(if(dir.exists(matched_folder)==F)
+{dir.create(matched_folder)})
+
 
 pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/")
 invisible(if(dir.exists(pan_preg_folder)==F)
