@@ -25,7 +25,6 @@ dataPregPosDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_positive/")
 dataNotPregDir<-paste0(projectDir,"/CDMInstances_not_pregnant/covid_positive/")  
 dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")  
 
-
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
 # read control file
@@ -35,20 +34,14 @@ t2b <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
 t2 <-sqldf("select t2a.person_id, t2b.age_group, t2a.cov_date from t2a, t2b 
           where t2a.person_id = t2b.person_id ")
 
-
 # look at first three lines to test
 sqldf("select * from t1 limit 3")
 sqldf("select * from t2 limit 3")
 
-
-
-
 # 111111111111111111111111111111111111111111111111111111111
 # execute matching: 1st round 
-# 11111111111111111111111111111111111111111111111111111111
-
+# 111111111111111111111111111111111111111111111111111111111
 round1 <-sqldf(
-  
   "WITH 
 gt1 AS (
   SELECT
@@ -77,9 +70,6 @@ ON gt1.age_group = gt2.age_group
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
-
-
-
 
 
 #22222222222222222222222222222222222222222222222222222222
@@ -162,8 +152,16 @@ results <- sqldf("select round1.exposed_id, round1.control1_id, round2.control2_
       round1.cov_date
       from round1, round2, round3
       where round1.exposed_id = round2.exposed_id
-      and round1.exposed_id = round3.exposed_id", dbname = "consign.db")
+      and round1.exposed_id = round3.exposed_id
+GROUP BY round1.exposed_id
+HAVING MIN(round1.cov_date)
+ORDER BY round1.cov_date
+                 
+                 ", dbname = "consign.db")
+
+
+
 
 # write to csv
-write.csv(results,'matching_results2.csv')
+write.csv(results,'matching_results_not_preg.csv')
 

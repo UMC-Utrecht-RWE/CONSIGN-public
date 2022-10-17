@@ -2,12 +2,8 @@
 # These person_ids can be matched using the pregnancy tables, variables are 
 #  1)pregnancy_start_date   
 #  2)age_group 
-#  \CDMInstances_pan_pregnant\covid_negative==cov_neg_pan_preg_folder
-#  \CDMInstances_pan_pregnant\covid_positive==cov_pos_pan_preg_folder
 #
 #These need to be matched by cov_date  (and age? age_at_cov_date? Eimir) (age_at_cov_date needs to be calculated)
-#  \CDMInstances_pan_pregnant\covid_positive== cov_pos_pan_preg_folder
-#  \CDMInstances_not_pregnant\covid_positive==  cov_pos_not_preg_folder
 #
 library(RSQLite)
 library(sqldf)
@@ -65,7 +61,8 @@ gt2 AS (
   ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
   FROM t3
 )
-SELECT gt1.person_id exposed_id,
+SELECT 
+       gt1.person_id exposed_id,
        gt2.person_id control1_id,
        gt2.age_group,
        gt2.pregnancy_start_date
@@ -106,7 +103,8 @@ gt2 AS (
   WHERE t3.person_id NOT IN (select control1_id from round1)
 
 )
-SELECT gt1.person_id exposed_id,
+SELECT 
+gt1.person_id exposed_id,
 gt2.person_id control2_id,
 gt2.age_group,
 gt2.pregnancy_start_date
@@ -144,7 +142,8 @@ gt2 AS (
   WHERE t3.person_id NOT IN (select control1_id from round1)
   AND t3.person_id NOT IN (select control2_id from round2)
 )
-SELECT gt1.person_id exposed_id,
+SELECT 
+gt1.person_id exposed_id,
 gt2.person_id control3_id,
 gt2.age_group,
 gt2.pregnancy_start_date
@@ -157,7 +156,7 @@ ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
 
-results <- sqldf("select round1.exposed_id, round1.control1_id, round2.control2_id, round3.control3_id,
+results <- sqldf("select row_number() over (order by 'round1.age_group') as matched_id, round1.exposed_id, round1.control1_id, round2.control2_id, round3.control3_id,
       round1.age_group,
       round1.pregnancy_start_date
       from round1, round2, round3
