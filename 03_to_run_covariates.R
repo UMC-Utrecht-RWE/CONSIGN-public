@@ -24,16 +24,22 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
-# finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
-# written to cohort folders in g_output/covariates/...
-# since the cohort folders have much smaller data, probably don't need to loop?
-if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
-  source(paste0(pre_dir,"/covariates_detect.R" ))}
+source(paste0(pre_dir,"/match_pregnant_cohorts.R"))
 
-# covariate timing combining to pregnancy/covid
+source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
-source(paste0(pre_dir,"/maternal_death_detect.R" ))
 
-source(paste0(pre_dir,"/maternal_gestdiab_detect.R" ))
 
-source(paste0(pre_dir,"/maternal_preeclamp_detect.R" ))
+# # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
+# # written to cohort folders in g_output/covariates/...
+# # since the cohort folders have much smaller data, probably don't need to loop?
+# if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
+#   source(paste0(pre_dir,"/covariates_detect.R" ))}
+# 
+# # covariate timing combining to pregnancy/covid
+# 
+# source(paste0(pre_dir,"/maternal_death_detect.R" ))
+# 
+# source(paste0(pre_dir,"/maternal_gestdiab_detect.R" ))
+# 
+# source(paste0(pre_dir,"/maternal_preeclamp_detect.R" ))
