@@ -63,7 +63,14 @@ cov_pos_not_preg<-not_preg_PERSONS[not_preg_PERSONS$person_id%in%cov_data$person
 
 cov_data_pos_not_preg<-cov_data[cov_data$person_id%in%not_preg_PERSONS$person_id,]
 
-fwrite(cov_data_pos_not_preg, paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
+# need first cov_date for matching
+
+covid_grouped<-cov_data_pos_not_preg%>%group_by(person_id)
+
+
+first_covid<-covid_grouped%>%slice_head()
+
+fwrite(first_covid, paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
 
 for (i in 1:length(not_preg_tables)){
   my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
