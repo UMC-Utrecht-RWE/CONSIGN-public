@@ -21,7 +21,6 @@ dataPregPosDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_positive/")
 dataNotPregDir<-paste0(projectDir,"/CDMInstances_not_pregnant/covid_positive/")  
 dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")  
 
-
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
 # read control file
@@ -29,21 +28,16 @@ t2 <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
 # read control file
 t3 <- read.csv(paste0(dataPregNegDir,"cov_neg_preg.csv"))
 
-
-
 # look at first three lines to test
 sqldf("select * from t1 limit 3")
 sqldf("select * from t2 limit 3")
 sqldf("select * from t3 limit 3")
 
-
-
-
 # 111111111111111111111111111111111111111111111111111111111
 # execute matching: 1st round 
 # 11111111111111111111111111111111111111111111111111111111
 
-round1 <-sqldf(
+round1a <-sqldf(
 
 "WITH 
 gt1 AS (
@@ -71,10 +65,15 @@ LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
    AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
    AND a_row = b_row
-ORDER BY gt2.person_id"
+ORDER BY gt2.person_id", dbname = "consign.db")
 
-, dbname = "consign.db")
-
+round1 <- sqldf("select row_number() over (order by 'round1a.age_group') as matched_id, round1a.exposed_id, round1a.control1_id, 
+      round1a.age_group,
+      round1a.pregnancy_start_date
+      from round1a
+      GROUP BY round1a.exposed_id
+      HAVING MIN(round1a.pregnancy_start_date)
+      ORDER BY round1a.pregnancy_start_date", dbname = "consign.db")
 
 
 
@@ -82,7 +81,7 @@ ORDER BY gt2.person_id"
 #22222222222222222222222222222222222222222222222222222222
 # execute matching: 2st round 
 #22222222222222222222222222222222222222222222222222222222
-round2 <-sqldf(
+round2a <-sqldf(
   
   "WITH 
 gt1 AS (
@@ -117,6 +116,16 @@ AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db", verbose=TRUE)
+
+round2 <- sqldf("select row_number() over (order by 'round2.age_group') as matched_id, round2a.exposed_id, round2a.control2_id, 
+      round2a.age_group,
+      round2a.pregnancy_start_date
+      from round2a
+      GROUP BY round2a.exposed_id
+      HAVING MIN(round2a.pregnancy_start_date)
+      ORDER BY round2a.pregnancy_start_date", dbname = "consign.db")
+
+
 
 #333333333333333333333333333333333333333333333333333333333333333333333333
 # execute matching: 3st round 
@@ -161,7 +170,10 @@ results <- sqldf("select row_number() over (order by 'round1.age_group') as matc
       round1.pregnancy_start_date
       from round1, round2, round3
       where round1.exposed_id = round2.exposed_id
-      and round1.exposed_id = round3.exposed_id", dbname = "consign.db")
+      and round1.exposed_id = round3.exposed_id
+      GROUP BY round1.exposed_id
+      HAVING MIN(round1.pregnancy_start_date)
+      ORDER BY round1.pregnancy_start_date" , dbname = "consign.db")
 
 # write to csv
 write.csv(results,'matching_results_preg.csv')

@@ -41,7 +41,7 @@ sqldf("select * from t2 limit 3")
 # 111111111111111111111111111111111111111111111111111111111
 # execute matching: 1st round 
 # 111111111111111111111111111111111111111111111111111111111
-round1 <-sqldf(
+round1a <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
@@ -71,11 +71,19 @@ ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
 
+round1 <- sqldf("select row_number() over (order by 'round1a.age_group') as matched_id, round1a.exposed_id, round1a.control1_id, 
+      round1a.age_group,
+      round1a.cov_date
+      from round1a
+      GROUP BY round1a.exposed_id
+      HAVING MIN(round1a.cov_date)
+      ORDER BY round1a.cov_date", dbname = "consign.db")
+
 
 #22222222222222222222222222222222222222222222222222222222
 # execute matching: 2st round 
 #22222222222222222222222222222222222222222222222222222222
-round2 <-sqldf(
+round2a <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
@@ -108,6 +116,15 @@ AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db", verbose=TRUE)
+
+round2 <- sqldf("select row_number() over (order by 'round2.age_group') as matched_id, round2a.exposed_id, round2a.control2_id, 
+      round2a.age_group,
+      round2a.cov_date
+      from round2a
+      GROUP BY round2a.exposed_id
+      HAVING MIN(round2a.cov_date)
+      ORDER BY round2a.cov_date", dbname = "consign.db")
+
 
 #333333333333333333333333333333333333333333333333333333333333333333333333
 # execute matching: 3st round 
