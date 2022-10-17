@@ -30,7 +30,7 @@ my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
 print("are there pregnancies longer than 44 weeks?")
 print(table(my_PREG$gestage_greater_44))
 print("exclude any pregnancies with gestage_greater_44 == 1")
-my_PREG<-my_PREG[my_PREG$gestage_greater_44!=1,]
+# my_PREG<-my_PREG[my_PREG$gestage_greater_44!=1,]
 
 
 
