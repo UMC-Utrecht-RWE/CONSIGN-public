@@ -165,5 +165,5 @@ results <- sqldf("select round1.exposed_id, round1.control1_id, round2.control2_
       and round1.exposed_id = round3.exposed_id", dbname = "consign.db")
 
 # write to csv
-write.csv(results,'matching_results.csv')
+write.csv(results,'matching_results2.csv')
 
