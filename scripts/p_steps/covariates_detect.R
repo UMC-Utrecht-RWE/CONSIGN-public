@@ -295,7 +295,7 @@ obesity_atc<-c("A08AB","A08AA")
 
 my_rows<-which(Reduce(`|`, lapply(obesity_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
 obesity_MED_ID<-(MED$person_id[my_rows])
-obesity_MED_Date<- (MED$drug_date[my_rows])
+obesity_MED_Date<- (MED$drug_date[my_rows]) 
 
 obesity_id<-c(obesity_EV_ID, obesity_MO_ID, obesity_SO_ID, obesity_MED_ID)
 obesity_date<-c(obesity_EV_Date, obesity_MO_Date, obesity_SO_Date, obesity_MED_Date)

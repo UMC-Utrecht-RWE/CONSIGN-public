@@ -23,9 +23,9 @@ preg_data<-"imputed_pregnancy.csv"
 # CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
 # if you have a different format, please change it to .csv OR .rds
 
-preg_format<-"csv"
+# preg_format<-"csv"
 
-# preg_format<-"rds"
+preg_format<-".Rdata"
 
 #######################################################################
 
