@@ -71,8 +71,8 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_SO_ID<-SO$person_id[my_rows]
   CESAREA_SO_Date<-SO$so_date[my_rows]
   
-  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_PROC_ID)
-  CESAREA_Date<-c(CESAREA_EV_Date, CESAREA_PROC_Date)
+  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
+  CESAREA_Date<-c(CESAREA_EV_Date, CESAREA_SO_Date)
   
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
@@ -193,7 +193,7 @@ dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%
 
 dead_mother<-my_PREG[my_PREG$person_id%in%dead_PERSONS$person_id]
 
-maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+365),]
+maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
 maternal_death_pers_Date<-maternal_death$death_date
 maternal_death_pers_ID<-maternal_death$person_id
 

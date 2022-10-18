@@ -115,10 +115,10 @@ SB_EV_Date<- (EVENTS$start_date_record[my_rows])
   
   
  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
- SB_alg_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
+ SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
  
 SB_ID<-c(SB_EV_ID, SB_alg_ID)
-SB_Date<-c(SB_EV_Date, SB_alg_DATE)
+SB_Date<-c(SB_EV_Date, SB_alg_Date)
    
  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
  colnames(SB_cov)<-c("id", "date")
@@ -217,7 +217,7 @@ dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%
 
 dead_mother<-my_PREG[my_PREG$person_id%in%dead_PERSONS$person_id]
 
-maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+365),]
+maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
 maternal_death_pers_Date<-maternal_death$death_date
 maternal_death_pers_ID<-maternal_death$person_id
 
