@@ -40,7 +40,6 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 # calculates if death occurred within 28 days of covid date using DOD generated in CreateEntryExit
 source(paste0(pre_dir,"/covid_death.R"))
 
-print(table(covid_data$severity))
 
 # tests covid_dates against pregnancy dates
 # if covid_date is during pregnancy, cov_trim shows which trimester the first covid_date was in
@@ -50,7 +49,6 @@ source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/trimester_covid.R"))
 
 #sorts cohorts according to pregnancy and covid status
-# deletes "upstream" files in "parent folder" after filtering/sorting 
 
 source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
