@@ -184,8 +184,6 @@ SB_Date<-c(SB_EV_Date, SB_alg_DATE)
   PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   
-  PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
-  PRETERM_alg_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
   
   PRETERM_ID<-c(PRETERM_EV_ID, PRETERM_alg_ID)
   PRETERM_DATE<-c(PRETERM_EV_Date, PRETERM_alg_DATE)

@@ -102,7 +102,7 @@ for(i in 1:length(preg_cohort_folders)){
   SB_EV_Date<- (EVENTS$start_date_record[my_rows])
 
   SB_cov<-as.data.frame(cbind(SB_EV_ID,SB_EV_Date))
-  colnames(SA_cov)<-c("id", "date")
+  colnames(SB_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
   
@@ -141,7 +141,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   
   TOPFA_cov<-as.data.frame(cbind(TOPFA_ID,TOPFA_Date))
-  
+  colnames(TOPFA_cov)<-c("id", "date")
   fwrite(TOPFA_cov, paste0(output_folder,"TOPFA.csv"))
   
   #################################################################################
@@ -170,7 +170,7 @@ for(i in 1:length(preg_cohort_folders)){
   PRETERM_DATE<-c(PRETERM_EV_Date, PRETERM_alg_DATE)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
-  
+  colnames(PRETERM_cov)<-c("id", "date")
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
    
   
@@ -205,6 +205,6 @@ maternal_death_pers_ID<-maternal_death$person_id
 maternal_death_id<-c(maternal_death_EV_ID, maternal_death_pers_ID)
 maternal_death_date<-c(maternal_death_EV_Date, maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
-
+colnames(maternal_death_outcome)<-c("id", "date")
 fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
 

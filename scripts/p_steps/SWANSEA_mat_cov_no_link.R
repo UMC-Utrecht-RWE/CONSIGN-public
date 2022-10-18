@@ -106,7 +106,7 @@ for(i in 1:length(preg_cohort_folders)){
   SB_EV_Date<- (EVENTS$start_date_record[my_rows])
 
   SB_cov<-as.data.frame(cbind(SB_EV_ID,SB_EV_Date))
-  colnames(SA_cov)<-c("id", "date")
+  colnames(SB_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
   
