@@ -26,7 +26,7 @@ for(i in 1:length(preg_cohort_folders)){
   MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
   PROC<-IMPORT_PATTERN(pat="PROCEDURE", dir=cohort_folder)
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
-  my_PREG<- IMPORT_PATTERN(pat="preg", dir=cohort_folder)
+  my_PREG<- IMPORT_PATTERN(pat=my_preg_data[i], dir=cohort_folder)
   
   df <- select(MED, date_dispensing, date_prescription)
   drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
@@ -55,6 +55,8 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # CAESARIAN
   
+  # IACS ALSO USES PROCEDURES origin_of_procedure = "CMBD" AND procedure_code in ICD10CM
+  
   
   my_rows<-which(Reduce(`|`, lapply("TP_CESAREA_COV", startsWith, x = as.character(all_codes$full_name))))
   
@@ -64,15 +66,21 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_EV_ID<-(EVENTS$person_id[my_rows])
   CESAREA_EV_Date<- (EVENTS$start_date_record[my_rows])
   
+  my_rows<-which(PROC$origin_of_procedure=="CMBD"&PROC$procedure_code%in%CESAREA_codes)
+  CESAREA_PROC_ID<-PROC$person_id[my_rows]
+  CESAREA_PROC_Date<-PROC$procedure_date[my_rows]
   
-  CESAREA_cov<-as.data.frame(cbind(CESAREA_EV_ID, CESAREA_EV_Date))
+  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_PROC_ID)
+  CESAREA_Date<-c(CESAREA_EV_Date, CESAREA_PROC_Date)
+  
+  CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
 
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # FISABIO USES events only
+  # IACS USES events only
   
   my_rows<-which(Reduce(`|`, lapply("P_SPONTABO_AESI", startsWith, x = as.character(all_codes$full_name))))
   
@@ -91,7 +99,11 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # FISABIO USES events only
+  # IACS USES EVENTS AND SURVEY_OB
+  # 1)(so_source_column="edadgest" AND so_source_value>=23)
+  # 2) (so_source_column="exitus"  AND so_source_value=1) 
+  # 3) (so_source_column="fecexitus"  AND so_source_value<=so_date )
+ 
   
   my_rows<-which(Reduce(`|`, lapply("P_STILLBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
   
@@ -100,8 +112,20 @@ for(i in 1:length(preg_cohort_folders)){
   my_rows<-which(Reduce(`|`, lapply(SB_codes, startsWith, x = as.character(EVENTS$event_code))))
   SB_EV_ID<-(EVENTS$person_id[my_rows])
   SB_EV_Date<- (EVENTS$start_date_record[my_rows])
+  
+  my_rows1<-which(SURV_OB$so_source_column=="edadgest" & SURV_OB$so_source_value>=23)
+  my_rows2<-which(SURV_OB$so_source_column=="exitus" & SURV_OB$so_source_value==1)
+  my_rows3<-which(SURV_OB$so_source_column=="fecexitus" & (SURV_OB$so_source_value<=SURV_OB$so_date))
+  
+  my_rows<-unique(c(my_rows1, my_rows2, my_rows3))
+  
+  SB_SO_ID<-SURV_OB$person_id[my_rows]
+  SB_SO_Date<-SURV_OB$so_date[my_rows]
 
-  SB_cov<-as.data.frame(cbind(SB_EV_ID,SB_EV_Date))
+  SB_ID<-c(SB_EV_ID, SB_SO_ID)
+  SB_ID<-c(SB_EV_Date, SB_SO_Date)
+  
+  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
   colnames(SA_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
@@ -109,7 +133,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PREECLAMPSIA
   
-  # FISABIO USES events only
+  # IACS USES events only
   
   my_rows<-which(Reduce(`|`, lapply("P_PREECLAMP_AESI", startsWith, x = as.character(all_codes$full_name))))
   
@@ -127,7 +151,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # TOPFA
   
-  # FISABIO USES events only
+  # IACS USES events only
   
   TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
   
@@ -147,7 +171,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PRE-TERM BIRTH
   
-  # FISABIO USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
+  # IACS USES event_code=code in "P_PRETERMBIRTH_AESI" AND so_source_column="edadgest" AND so_source_value<37
   
   
   my_rows<-which(Reduce(`|`, lapply("P_PRETERMBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
@@ -158,16 +182,13 @@ for(i in 1:length(preg_cohort_folders)){
   PRETERM_EV_ID<-(EVENTS$person_id[my_rows])
   PRETERM_EV_Date<- (EVENTS$start_date_record[my_rows])
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
-  df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
+  PRETERM_SO_ID<-SURV_OB$person_id[SURV_OB$so_source_column=="edadgest" & SURV_OB$so_source_value<37]
+  PRETERM_SO_Date<-SURV_OB$so_date[SURV_OB$so_source_column=="edadgest" & SURV_OB$so_source_value<37]
   
-  PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
-  PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   
-
-  PRETERM_ID<-c(PRETERM_EV_ID, PRETERM_alg_ID)
-  PRETERM_DATE<-c(PRETERM_EV_Date, PRETERM_alg_DATE)
+  PRETERM_ID<-c(PRETERM_EV_ID, PRETERM_SO_ID)
+  PRETERM_DATE<-c(PRETERM_EV_Date, PRETERM_SO_DATE)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
   

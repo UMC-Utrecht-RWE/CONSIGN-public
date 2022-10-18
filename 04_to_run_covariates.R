@@ -32,7 +32,7 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
   source(paste0(pre_dir,"/covariates_detect.R" ))}
 # 
-# # covariate timing combining to pregnancy/covid
+# covariate timing combining to pregnancy/covid
 
 
 # 

@@ -1,4 +1,4 @@
-#Author: Ema Alsina, M.Sc.
+#Author: Ema Alsina, M.Sc. and Tiago PhD
 #e.m.alsina-2@umcutrecht.nl
 #University Medical Center Utrecht
 #16/10/2022
@@ -30,4 +30,5 @@ source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
 # script to copy over case_dates to their controls
 
+source(paste0(pre_dir,"/create_matched_cohorts.R"))
 
