@@ -35,8 +35,9 @@ if(DAP=="ARS"){
   my_data<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
   my_data<-my_data[(my_data$so_meaning=='covid_registry'),]
   person_id<-my_data$person_id
-  cov_date<-my_data$survey_date
-  meaning<-my_data$survey_meaning
+  cov_date<-my_data$so_date
+  meaning<-my_data$so_value 
+  
 }
 
 if(DAP=="FISABIO"){
@@ -119,3 +120,4 @@ if(DAP=="TEST"){
 cov_dap_data<-as.data.frame(cbind(person_id, cov_date, meaning))
 
 fwrite(cov_dap_data, paste0(cohort_folder,"COVID_data_dap.csv"))
+
