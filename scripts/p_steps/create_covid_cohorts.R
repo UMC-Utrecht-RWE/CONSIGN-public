@@ -2,7 +2,7 @@
 #email: e.m.alsina-2@umcutrecht.nl
 #Organisation: UMC Utrecht, Utrecht, The Netherlands
 #Date: 12/8/2022
-
+#update 18/10/22
 
 # subset covid + and covid- pan_preg and non_preg
 
@@ -20,7 +20,7 @@ all_pan_preg<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
 # HELP >_< split data by person_id OR preg_id? 
 
-cov_neg_pan_preg<-all_pan_preg[all_pan_preg$person_id%exclude%cov_preg_data$person_id,]
+cov_neg_pan_preg<-all_pan_preg[((all_pan_preg$person_id%exclude%cov_preg_data$person_id)&(all_pan_preg$cohort=="pandemic")),]
   
 pan_tables<-list.files(paste0(pan_preg_folder,"/"), pattern = "\\.csv$")
 
