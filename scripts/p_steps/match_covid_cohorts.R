@@ -8,7 +8,6 @@
 #These need to be matched by cov_date  (and age? age_at_cov_date? Eimir) (age_at_cov_date needs to be calculated)
 #  \CDMInstances_pan_pregnant\covid_positive== cov_pos_pan_preg_folder
 #  \CDMInstances_not_pregnant\covid_positive==  cov_pos_not_preg_folder
-#
 
 
 #Set pipeline project directory with path to source code folder 
@@ -20,7 +19,7 @@ setwd(projectDir)
 # based on projectDir, for both populations
 dataPregPosDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_positive/")  
 dataNotPregDir<-paste0(projectDir,"/CDMInstances_not_pregnant/covid_positive/")  
-
+dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")  
 
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
@@ -38,7 +37,7 @@ sqldf("select * from t2 limit 3")
 # 111111111111111111111111111111111111111111111111111111111
 # execute matching: 1st round 
 # 111111111111111111111111111111111111111111111111111111111
-round1 <-sqldf(
+round1a <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
@@ -68,11 +67,19 @@ ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
 
+round1 <- sqldf("select row_number() over (order by 'round1a.age_group') as matched_id, round1a.exposed_id, round1a.control1_id, 
+      round1a.age_group,
+      round1a.cov_date
+      from round1a
+      GROUP BY round1a.exposed_id
+      HAVING MIN(round1a.cov_date)
+      ORDER BY round1a.cov_date", dbname = "consign.db")
+
 
 #22222222222222222222222222222222222222222222222222222222
 # execute matching: 2st round 
 #22222222222222222222222222222222222222222222222222222222
-round2 <-sqldf(
+round2a <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
@@ -105,6 +112,15 @@ AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db", verbose=TRUE)
+
+round2 <- sqldf("select row_number() over (order by 'round2.age_group') as matched_id, round2a.exposed_id, round2a.control2_id, 
+      round2a.age_group,
+      round2a.cov_date
+      from round2a
+      GROUP BY round2a.exposed_id
+      HAVING MIN(round2a.cov_date)
+      ORDER BY round2a.cov_date", dbname = "consign.db")
+
 
 #333333333333333333333333333333333333333333333333333333333333333333333333
 # execute matching: 3st round 
@@ -157,6 +173,4 @@ results <- sqldf("SELECT
 
 
 # write to csv
-write.csv(results,'matching_results_not_preg.csv')
-
-fwrite(results, paste0(matched_folder,"cov_pos_match.csv"))
+fwrite(results,paste0(matched_folder,"matched_covid_postive.csv"))

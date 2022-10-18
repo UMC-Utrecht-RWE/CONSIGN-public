@@ -80,15 +80,11 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # SWANSEA USES events only
+  # SWANSEA unavailable
   
-  my_rows<-which(Reduce(`|`, lapply("P_SPONTABO_AESI", startsWith, x = as.character(all_codes$full_name))))
   
-  SA_codes<- unique(all_codes$code[my_rows])
-  
-  my_rows<-which(Reduce(`|`, lapply(SA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  SA_EV_ID<-(EVENTS$person_id[my_rows])
-  SA_EV_Date<- (EVENTS$start_date_record[my_rows])
+  SA_EV_ID<-(NA)
+  SA_EV_Date<- (NA)
   
   SA_cov<-as.data.frame(cbind(SA_EV_ID, SA_EV_Date))
 
