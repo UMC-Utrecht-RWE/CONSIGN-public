@@ -37,6 +37,14 @@ source(paste0(pre_dir, "/trimester_create.R"))
 
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
+# re-run covid detection scripts using updated codelist and severity indicators
+
+source(paste0(pre_dir, "/covid_detect_function.R"))
+
+source(paste0(pre_dir, "/covid_detect_function.R"))
+
+source(paste0(pre_dir, "/DAP_covid_detection.R"))
+
 source(paste0(pre_dir,"/severity_detect.R"))
 
 # calculates if death occurred within 28 days of covid date using DOD generated in CreateEntryExit

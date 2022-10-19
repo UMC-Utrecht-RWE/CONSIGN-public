@@ -121,3 +121,6 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   nrow(final_covid_data)==nrow(covid_data)
 
 fwrite(final_covid_data, paste0(preselect_folder, "/covid_data.csv"))
+
+print("total covid cases in study population")
+print(nrow(final_covid_data))
