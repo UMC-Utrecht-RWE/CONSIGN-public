@@ -34,7 +34,10 @@ NULL
 
 events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
 
-codesheet_cov<-fread(paste0(projectFolder,"/COVID_codes.csv"))
+codesheet_cov<-fread(paste0(projectFolder,"/COVID_codes_19_10.csv"))
+
+print("the following coding systems are included in the COVID code list")
+print(table(codesheet_cov$`Coding system`))
 
 # filter for narrow? 
 

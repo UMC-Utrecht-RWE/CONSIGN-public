@@ -29,6 +29,7 @@ my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
 
 print("are there pregnancies longer than 44 weeks?")
 print(table(my_PREG$gestage_greater_44))
+FC_exclude_44<-nrow(my_PREG[my_PREG$gestage_greater_44==1,])
 print("exclude any pregnancies with gestage_greater_44 == 1")
 my_PREG<-my_PREG[my_PREG$gestage_greater_44==0,]
 
@@ -217,11 +218,11 @@ fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"
 # FLOWCHART to record attrition
 #########################################################
 
-flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_preg_with_spell, FC_no_red_preg,
+flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_exclude_44,FC_OG_mom, FC_preg_with_spell, FC_no_red_preg,
                                FC_sufficient_follow_up,   length(pan_preg_ID), length(pan_preg_ID_age),pan_PREGNANCIES_age,
                                length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg, length(non_pan_preg_ID_age)))
                          
- colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies", "total mothers", "pregnancies with spell data","after excluding red pregnancies",
+ colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies","pregnancies excluded due to gestation>44 weeks", "total mothers", "pregnancies with spell data","after excluding red pregnancies",
                         "pregnancies starting at least 12 months before end of study",   
                         "WOMEN with pandemic pregnancies","WOMEN with pandemic pregnancies with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
                         "women with historical pregnancies with age 12-55 in 2018","women with between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 

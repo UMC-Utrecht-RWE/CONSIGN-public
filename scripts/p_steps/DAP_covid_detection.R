@@ -36,7 +36,7 @@ if(DAP=="ARS"){
   my_data<-my_data[(my_data$so_meaning=='covid_registry'),]
   person_id<-my_data$person_id
   cov_date<-my_data$so_date
-  meaning<-my_data$so_value 
+  meaning<-my_data$so_source_value 
   
 }
 
