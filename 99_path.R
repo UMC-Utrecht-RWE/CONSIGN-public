@@ -77,6 +77,9 @@ output_dir     <- paste0(projectFolder, "/g_output/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/final/")), dir.create(paste0(projectFolder, "/g_output/final/")), FALSE))
 final_output_dir     <- paste0(projectFolder, "/g_output/final/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/final/supplement/")), dir.create(paste0(projectFolder, "/g_output/final/supplement/")), FALSE))
+final_output_suppl    <- paste0(projectFolder, "/g_output/final/supplement/")
+
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_2_counts/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_2_counts")), FALSE))
 raw_atc_2_counts    <- paste0(projectFolder, "/g_intermediate/atc_2_counts/")
 
@@ -91,6 +94,16 @@ raw_atc_5_counts    <- paste0(projectFolder, "/g_intermediate/atc_5_counts/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc_2/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc_2")), FALSE))
 output_cov_window_atc_2    <- paste0(projectFolder, "/g_output/cov_window_atc_2/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc_3/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc_3")), FALSE))
+output_cov_window_atc_3    <- paste0(projectFolder, "/g_output/cov_window_atc_3/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc_4/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc_4")), FALSE))
+output_cov_window_atc_4    <- paste0(projectFolder, "/g_output/cov_window_atc_4/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/cov_window_atc_5/")), dir.create(paste0(projectFolder, "/g_output/cov_window_atc_5")), FALSE))
+output_cov_window_atc_5    <- paste0(projectFolder, "/g_output/cov_window_atc_5/")
+
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/trimester/")), dir.create(paste0(projectFolder, "/g_output/trimester")), FALSE))
 output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
