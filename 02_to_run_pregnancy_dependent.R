@@ -41,8 +41,6 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 source(paste0(pre_dir, "/covid_detect_function.R"))
 
-source(paste0(pre_dir, "/covid_detect_function.R"))
-
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
 source(paste0(pre_dir,"/severity_detect.R"))
@@ -68,6 +66,14 @@ source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 
 source(paste0(pre_dir, "/create_table_1abc.R"))
+
+##########################################################
+# lower ATC for supplement
+
+source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
+
+source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
+
 
 
 
