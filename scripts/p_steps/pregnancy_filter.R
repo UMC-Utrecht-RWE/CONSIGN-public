@@ -180,13 +180,13 @@ pan_preg_ID_age<-my_PREG$person_id[(my_PREG$cohort=="pandemic")& (my_PREG$elligi
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_preg_table<- my_table[my_table$pregnancy_id%in%pan_preg_ID_age,]
+  my_preg_table<- my_table[(my_table$person_id%in%pan_preg_ID_age),]
   
   fwrite(my_preg_table,paste0(pan_preg_folder,table_list[i]))
 }
 
 pan_PREGNANCIES_age<-nrow(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,])
-fwrite(my_PREG[my_PREG$person_id%in%pan_preg_ID_age,],paste0(pan_preg_folder,"my_PREG.csv"))
+fwrite(my_PREG[((my_PREG$person_id%in%pan_preg_ID_age)&(my_PREG$cohort=="pandemic")),],paste0(pan_preg_folder,"my_PREG.csv"))
 
 # NON-PREGNANT 
 # need to be 12-55 at start of PANDEMIC (only use this group for cov+ comparison)

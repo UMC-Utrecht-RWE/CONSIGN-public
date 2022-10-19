@@ -26,9 +26,10 @@ covid_data$cov_date<-as.numeric(covid_data$cov_date)
 
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
 
-severity_indicators<-c("hospital","Hospital", "pd", "sd", "intensive", "cause_of_death", "Severo", "severo", "Critico", "critico")
+severity_indicators<-as.list(c("hospital","Hospital", "pd", "sd", "intensive", "cause_of_death", "Severo", "severo", "Critico", "critico"))
 
 # will STARTSWITH become a problem? rather look for string at any position
+# --> replace with grep?
 
 sev_rows<-which(Reduce(`|`, lapply(severity_indicators, startsWith, x = as.character(covid_data$meaning))))
 
