@@ -6,6 +6,10 @@
 
 # create trimester start and end dates
 
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
 if(preg_format=="csv"){
 my_PREG<-fread(paste0(preg_path,preg_data))}
 

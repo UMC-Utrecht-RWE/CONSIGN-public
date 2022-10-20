@@ -14,18 +14,18 @@ my_path_CDM<- "a_text_string/showing_where/your_CDM/is_located/"
 
 # specify your pregnancy path "a_text_string/showing_where/your_CDM/is_located/" using backslash and ending in backslash
 # if pregnancy file stored with CDM, preg_path<-my_path_CDM
-
-preg_path<- "C:/Users/Gebruiker/OneDrive/Documents/projects/CONSIGN/CDMInstances/"
+print(output_dir)
+preg_path<- output_dir
 
 # the exact name of YOUR pregnancy algorithm output, including file extension 
-preg_data<-"imputed_pregnancy.csv"
+preg_data<-"D3_pregnancy.final.RData"
 
 # CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
 # if you have a different format, please change it to .csv OR .rds
 
-preg_format<-"csv"
+# preg_format<-"csv"
 
-# preg_format<-".Rdata"
+preg_format<-".RData"
 
 #######################################################################
 
