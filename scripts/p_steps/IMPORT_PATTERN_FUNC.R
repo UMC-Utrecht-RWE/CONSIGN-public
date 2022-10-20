@@ -46,7 +46,7 @@ IMPORT_PATTERN <- function(pat,dir, colls = NULL, colls.new = NULL, exprss = NUL
     for(i in 1:length(obs_files)){
       
       #Import csv
-      if(!is.null(colls)){TEMP <- fread(paste0(dir,"/",obs_files[i]), stringsAsFactors = F, select = colls, na.strings = c("", NA))}else{
+      if(!is.null(colls)){TEMP <- fread(paste0(dir,"/",obs_files[i]), stringsAsFactors = F, select = colls, na.strings = c("", NA), colClasses=c("character"))}else{
         TEMP <- fread(paste0(dir,"/",obs_files[i]), stringsAsFactors = F, na.strings = c("" , NA), colClasses=c("character"))
       }
       
