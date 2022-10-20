@@ -6,12 +6,11 @@
 
 # combine Pjijzer standard COVID data with DAP tailored COVID data
 
-covid_ev_data<-readRDS(paste0(preselect_folder , "I_COVID19DX_COV.rds"))
+covid_ev_data<-fread(paste0(preselect_folder,"COVID_events_data.csv"))
 
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
 
 if(nrow(covid_ev_data>0)){
-covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
 colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
 
@@ -22,7 +21,7 @@ rm(covid_ev_data)
 # remove rows with missing data
 covid_data<-covid_data[complete.cases(covid_data),]
 
-covid_data$cov_date<-as.numeric(covid_data$cov_date)
+# covid_data$cov_date<-as.numeric(covid_data$cov_date)
 
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
 
