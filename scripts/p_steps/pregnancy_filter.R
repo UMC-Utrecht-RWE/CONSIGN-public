@@ -23,7 +23,7 @@ DAP<-CDM_source$data_access_provider_name
 
 df_observation<-fread(paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
 df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder)
-my_PREG<-fread(paste0(preg_path, "preg_trim.csv"))
+my_PREG<-fread(paste0(projectFolder, "/preg_trim.csv"))
 ############################################################
 
 

@@ -10,7 +10,8 @@ if(preg_format=="csv"){
 my_PREG<-fread(paste0(preg_path,preg_data))}
 
 if(preg_format==".RData"){
-  my_PREG<-load(paste0(preg_path,preg_data))}
+  load(paste0(preg_path,preg_data))
+  my_PREG<-D3_pregnancy_final}
 
 days_trim<-97
 # summary(my_PREG$pregnancy_start_date)
@@ -50,4 +51,4 @@ my_PREG$trim_3_start[my_PREG$trim_3_start==0]<-NA
 my_PREG$trim_3_end[my_PREG$trim_3_end==0]<-NA
 
 
-fwrite(my_PREG, paste0(preg_path, "preg_trim.csv"))
+fwrite(my_PREG, paste0(projectFolder, "/preg_trim.csv"))
