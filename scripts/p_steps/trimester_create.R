@@ -13,6 +13,10 @@ if(preg_format==".RData"){
   load(paste0(preg_path,preg_data))
   my_PREG<-D3_pregnancy_final}
 
+if(DAP=="UOSL"){
+  my_PREG<-my_PREG[my_PREG$origin=="MBRN",]
+}
+
 days_trim<-97
 # summary(my_PREG$pregnancy_start_date)
 
