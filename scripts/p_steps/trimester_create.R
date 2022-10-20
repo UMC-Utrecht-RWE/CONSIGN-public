@@ -9,7 +9,7 @@
 if(preg_format=="csv"){
 my_PREG<-fread(paste0(preg_path,preg_data))}
 
-if(preg_format==".Rdata"){
+if(preg_format==".RData"){
   my_PREG<-load(paste0(preg_path,preg_data))}
 
 days_trim<-97
