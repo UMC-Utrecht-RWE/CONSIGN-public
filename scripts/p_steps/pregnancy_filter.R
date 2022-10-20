@@ -98,6 +98,7 @@ FC_preg_with_spell<-nrow(my_PREG)
 ##############################################################################
 
 #filter out red quality pregnancies (DAP specific due to data generating mechanism which makes "red")
+FC_no_red_preg<-NA
 
 if(DAP!="ARS"){
   my_PREG<-my_PREG[(my_PREG$pregnancy_id%like%"Red")==F,]
