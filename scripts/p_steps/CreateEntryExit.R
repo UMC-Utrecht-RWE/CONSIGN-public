@@ -48,15 +48,57 @@ PERSONS$max_bday<-(PERSONS$num_DOB)+(20088) #55 years in days
 
 PERSONS$exit_date<-pmin(OBS_SPELLS$spell_end_date, PERSONS$max_bday, as.numeric(end_study_date))
 
+
+#COHORT ELLIGIIBILITY CANNOT INCLUDE EXIT DATES (COMPLETE OBSERVATION DURING STUDY PERIOD) BECASE WE NEED TO OBSERVE DEATH 
 # historical elligible
 
 PERSONS$elligible_historical<-0
-PERSONS$elligible_historical[(PERSONS$entry_date_historical<= start_study_date)& (PERSONS$exit_date>=pan_start_date)]<-1
-
+PERSONS$elligible_historical[(PERSONS$entry_date_historical== start_study_date)&(PERSONS$max_bday>=start_study_date)]<-1
+table(PERSONS$elligible_historical)
+mean(PERSONS$elligible_historical)
+# pandemic elligible
 
 PERSONS$elligible_pandemic<-0
-PERSONS$elligible_pandemic[(PERSONS$entry_date_pandemic<= pan_start_date)& (PERSONS$exit_date>=end_study_date)]<-1
+PERSONS$elligible_pandemic[(PERSONS$entry_date_pandemic==pan_start_date)&(PERSONS$max_bday>=pan_start_date)]<-1
+table(PERSONS$elligible_pandemic)
+mean(PERSONS$elligible_pandemic)
+
+hist(PERSONS$age_at_start_pandemic[PERSONS$elligible_pandemic==0])
+table(PERSONS$entry_date_pandemic[PERSONS$elligible_pandemic==0])
+mean(PERSONS$elligible_pandemic)
+
+# make age groups
+
+PERSONS$age_at_start_study<-(as.numeric(start_study_date)-PERSONS$num_DOB)/365
+PERSONS$age_at_start_study<-round(PERSONS$age_at_start_study,0)
+# hist(PERSONS$age_at_start_study, breaks=50)
+# abline(v=12, col=2, lwd=2)
+# abline(v=55, col=2, lwd=2)
+
+
+
+PERSONS$age_at_start_pandemic<-(as.numeric(pan_start_date)-PERSONS$num_DOB)/365
+PERSONS$age_at_start_pandemic<-round(PERSONS$age_at_start_pandemic,0)
+# hist(PERSONS$age_at_start_pandemic, breaks=50)
+# abline(v=12, col=2, lwd=2)
+# abline(v=55, col=2, lwd=2)
+
+PERSONS$age_group<-PERSONS$age_at_start_pandemic
+
+PERSONS$age_group[PERSONS$age_group<12]<- NA
+PERSONS$age_group[PERSONS$age_group>55]<- NA
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
+
+table(PERSONS$age_group)
 
 
 fwrite(PERSONS, paste0(preselect_folder,"PERSONS.csv"))
 
+
+# table(PERSONS$age_at_start_pandemic[(PERSONS$entry_date_pandemic==18322)&PERSONS$elligible_pandemic==0])
+# table(PERSONS$age_group[(PERSONS$entry_date_pandemic==18322)&PERSONS$elligible_pandemic==0])
