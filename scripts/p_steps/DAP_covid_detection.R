@@ -44,12 +44,11 @@ if(DAP=="FISABIO"){
   my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
   my_data1<-my_data[(my_data$mo_meaning=='covid19_pcr_test'& my_data$mo_source_value=="positive"),]
   my_data2<-my_data[(my_data$mo_meaning=='covid19_antigen_test'& my_data$mo_source_value=="positive"),]
-
+  
   person_id<-c(my_data1$person_id, my_data2$person_id)
   cov_date<-c(my_data1$mo_date, my_data2$mo_date)
-  meaning<-my_data$mo_meaning
+  meaning<-c(my_data1$mo_meaning, my_data2$mo_meaning)
 }
-
 
 
 if(DAP=="SAIL Databank"){
