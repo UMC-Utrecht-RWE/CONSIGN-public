@@ -25,10 +25,14 @@ df_observation<-fread(paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
 df_PERSONS<-IMPORT_PATTERN("PERSON", preselect_folder)
 my_PREG<-fread(paste0(projectFolder, "/preg_trim.csv"))
 ############################################################
-
+# fix missing data from simulated RTI data
+if(DAP=="TEST"){my_PREG$gestage_greater_44<-0}
+###########################################################
 # store original (preselect) flowchart data  "All women of reproductive age between 2018-2021"  "total pregnancies" "total mothers"               
 # PERSONS
 OG_person_ID<-df_PERSONS$person_id 
+print("all persons should be FEMALE")
+table(df_PERSONS$sex_at_instance_creation)
 FC_OG_person_ID<-length(OG_person_ID)
 
 # PREGNANCY
@@ -226,7 +230,7 @@ fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"
 #########################################################
 
 flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_exclude_44, FC_preg_with_spell, FC_no_red_preg,
-                               FC_sufficient_follow_up,   length(pan_preg_ID), length(pan_preg_ID_age),pan_PREGNANCIES_age,
+                               FC_sufficient_follow_up,   length(unique(pan_preg_ID)), length(unique(pan_preg_ID_age)),pan_PREGNANCIES_age,
                                length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg,length(unique(non_pan_preg_ID)), FC_all_non_pan_preg))
                          
  colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies","total mothers", "pregnancies excluded due to gestation>44 weeks", "pregnancies with spell data","after excluding red pregnancies",
