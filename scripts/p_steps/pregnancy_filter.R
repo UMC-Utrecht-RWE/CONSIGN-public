@@ -32,7 +32,7 @@ if(DAP=="TEST"){my_PREG$gestage_greater_44<-0}
 # PERSONS
 OG_person_ID<-df_PERSONS$person_id 
 print("all persons should be FEMALE")
-table(df_PERSONS$sex_at_instance_creation)
+print(table(df_PERSONS$sex_at_instance_creation))
 FC_OG_person_ID<-length(OG_person_ID)
 
 # PREGNANCY
