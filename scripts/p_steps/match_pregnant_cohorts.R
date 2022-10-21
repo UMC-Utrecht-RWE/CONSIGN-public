@@ -7,14 +7,14 @@
 
 #Set pipeline project directory with path to source code folder 
 # to be used by all other folder definition
-projectDir<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectDir)
+#projectDir<-dirname(rstudioapi::getSourceEditorContext()$path)
+#setwd(projectDir)
 
 #Set source folder for data sources 
 # based on projectDir, for both populations
-dataPregPosDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_positive/")  
-dataNotPregDir<-paste0(projectDir,"/CDMInstances_not_pregnant/covid_positive/")  
-dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")  
+dataPregPosDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_positive/")  
+dataNotPregDir<-paste0(projectFolder,"/CDMInstances_not_pregnant/covid_positive/")  
+dataPregNegDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_negative/")  
 
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
@@ -40,7 +40,7 @@ sqldf("select * from t2 limit 3")
 # execute matching: 1st round 
 # 11111111111111111111111111111111111111111111111111111111
 
-round1a <-sqldf(
+round1p <-sqldf(
 
 "WITH 
 gt1 AS (
@@ -48,14 +48,14 @@ gt1 AS (
   person_id,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0) ORDER BY person_id) AS a_row
   FROM t1), 
 gt2 AS (
   SELECT
   person_id,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0)  ORDER BY person_id) AS b_row
   FROM t2
 )
 SELECT 
@@ -66,25 +66,15 @@ SELECT
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-   AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+   AND round(gt1.pregnancy_start_date/28,0) = round(gt2.pregnancy_start_date/28,0) 
    AND a_row = b_row
 ORDER BY gt2.person_id", dbname = "consign.db")
-
-round1 <- sqldf("select row_number() over (order by 'round1a.age_group') as matched_id, round1a.exposed_id, round1a.control1_id, 
-      round1a.age_group,
-      round1a.pregnancy_start_date
-      from round1a
-      GROUP BY round1a.exposed_id
-      HAVING MIN(round1a.pregnancy_start_date)
-      ORDER BY round1a.pregnancy_start_date", dbname = "consign.db")
-
-
 
 
 #22222222222222222222222222222222222222222222222222222222
 # execute matching: 2st round 
 #22222222222222222222222222222222222222222222222222222222
-round2a <-sqldf(
+round2p <-sqldf(
   
   "WITH 
 gt1 AS (
@@ -92,7 +82,7 @@ gt1 AS (
   person_id ,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0)  ORDER BY person_id) AS a_row
   FROM t1), 
 
 gt2 AS (
@@ -100,9 +90,9 @@ gt2 AS (
   person_id,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0)  ORDER BY person_id) AS b_row
   FROM t2
-  WHERE t2.person_id NOT IN (select control1_id from round1)
+  WHERE t2.person_id NOT IN (select control1_id from round1p)
 
 )
 SELECT 
@@ -113,27 +103,19 @@ gt2.pregnancy_start_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+AND round(gt1.pregnancy_start_date/28,0) = round(gt2.pregnancy_start_date/28,0) 
 
 AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db", verbose=TRUE)
 
-round2 <- sqldf("select row_number() over (order by 'round2.age_group') as matched_id, round2a.exposed_id, round2a.control2_id, 
-      round2a.age_group,
-      round2a.pregnancy_start_date
-      from round2a
-      GROUP BY round2a.exposed_id
-      HAVING MIN(round2a.pregnancy_start_date)
-      ORDER BY round2a.pregnancy_start_date", dbname = "consign.db")
-
 
 
 #333333333333333333333333333333333333333333333333333333333333333333333333
 # execute matching: 3st round 
 #333333333333333333333333333333333333333333333333333333333333333333333333
-round3 <- sqldf(
+round3p <- sqldf(
   
   "WITH 
 gt1 AS (
@@ -151,8 +133,8 @@ gt2 AS (
   pregnancy_start_date,
   ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY person_id) AS b_row
   FROM t2
-  WHERE t2.person_id NOT IN (select control1_id from round1)
-  AND t2.person_id NOT IN (select control2_id from round2)
+  WHERE t2.person_id NOT IN (select control1_id from round1p)
+  AND t2.person_id NOT IN (select control2_id from round2p)
 )
 SELECT 
 gt1.person_id exposed_id,
@@ -162,21 +144,22 @@ gt2.pregnancy_start_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.pregnancy_start_date between gt2.pregnancy_start_date-14 and gt2.pregnancy_start_date+14
+AND round(gt1.pregnancy_start_date/28,0) = round(gt2.pregnancy_start_date/28,0) 
 AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
 
-results <- sqldf("select row_number() over (order by 'round1.age_group') as matched_id, round1.exposed_id, round1.control1_id, round2.control2_id, round3.control3_id,
-      round1.age_group,
-      round1.pregnancy_start_date
-      from round1, round2, round3
-      where round1.exposed_id = round2.exposed_id
-      and round1.exposed_id = round3.exposed_id
-      GROUP BY round1.exposed_id
-      HAVING MIN(round1.pregnancy_start_date)
-      ORDER BY round1.pregnancy_start_date" , dbname = "consign.db")
+resultsp <- sqldf("select row_number() over (order by 'round1p.age_group') as matched_id, round1p.exposed_id, round1p.control1_id, round2p.control2_id, round3p.control3_id,
+      round1p.age_group,
+      round1p.pregnancy_start_date
+      from round1p, round2p, round3p
+      where round1p.exposed_id = round2p.exposed_id
+      and round1p.exposed_id = round3p.exposed_id
+      GROUP BY round1p.exposed_id
+  --    HAVING MIN(round1p.pregnancy_start_date)
+      ORDER BY round1p.pregnancy_start_date" , dbname = "consign.db")
 
 # write to csv
-fwrite(results, paste0(matched_folder,"matched_pregnant.csv"))
+fwrite(resultsp, paste0(matched_folder,"matched_pregnant.csv"))
+

@@ -12,14 +12,14 @@
 
 #Set pipeline project directory with path to source code folder 
 # to be used by all other folder definition
-projectDir<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectDir)
+#projectDir<-dirname(rstudioapi::getSourceEditorContext()$path)
+#setwd(projectDir)
 
 #Set source folder for data sources 
 # based on projectDir, for both populations
-dataPregPosDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_positive/")  
-dataNotPregDir<-paste0(projectDir,"/CDMInstances_not_pregnant/covid_positive/")  
-dataPregNegDir<-paste0(projectDir,"/CDMInstances_pan_pregnant/covid_negative/")  
+dataPregPosDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_positive/")  
+dataNotPregDir<-paste0(projectFolder,"/CDMInstances_not_pregnant/covid_positive/")  
+dataPregNegDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_negative/")  
 
 # read exposed file
 t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
@@ -37,21 +37,21 @@ sqldf("select * from t2 limit 3")
 # 111111111111111111111111111111111111111111111111111111111
 # execute matching: 1st round 
 # 111111111111111111111111111111111111111111111111111111111
-round1a <-sqldf(
+round1 <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
   person_id,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group,  round(covid_date/14,0) ORDER BY person_id) AS a_row
   FROM t1), 
 gt2 AS (
   SELECT
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0) ORDER BY person_id) AS b_row
   FROM t2
 )
 SELECT gt1.person_id exposed_id,
@@ -61,32 +61,24 @@ SELECT gt1.person_id exposed_id,
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-   AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
-   AND a_row = b_row
+  AND round(gt1.covid_date/14,0) = round(gt2.cov_date/14,0) 
+  AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
-
-round1 <- sqldf("select row_number() over (order by 'round1a.age_group') as matched_id, round1a.exposed_id, round1a.control1_id, 
-      round1a.age_group,
-      round1a.cov_date
-      from round1a
-      GROUP BY round1a.exposed_id
-      HAVING MIN(round1a.cov_date)
-      ORDER BY round1a.cov_date", dbname = "consign.db")
 
 
 #22222222222222222222222222222222222222222222222222222222
 # execute matching: 2st round 
 #22222222222222222222222222222222222222222222222222222222
-round2a <-sqldf(
+round2 <-sqldf(
 "WITH 
 gt1 AS (
   SELECT
   person_id ,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY person_id) AS a_row
   FROM t1), 
 
 gt2 AS (
@@ -94,7 +86,7 @@ gt2 AS (
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY person_id) AS b_row
   FROM t2
   WHERE t2.person_id NOT IN (select control1_id from round1)
 
@@ -106,20 +98,13 @@ gt2.cov_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
+  AND round(gt1.covid_date/14,0) = round(gt2.cov_date/14,0) 
 
 AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db", verbose=TRUE)
 
-round2 <- sqldf("select row_number() over (order by 'round2.age_group') as matched_id, round2a.exposed_id, round2a.control2_id, 
-      round2a.age_group,
-      round2a.cov_date
-      from round2a
-      GROUP BY round2a.exposed_id
-      HAVING MIN(round2a.cov_date)
-      ORDER BY round2a.cov_date", dbname = "consign.db")
 
 
 #333333333333333333333333333333333333333333333333333333333333333333333333
@@ -132,7 +117,7 @@ gt1 AS (
   person_id,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, covid_date ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY t1.person_id) AS a_row
   FROM t1), 
 
 gt2 AS (
@@ -140,7 +125,7 @@ gt2 AS (
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, cov_date ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY t2.person_id) AS b_row
   FROM t2
   WHERE t2.person_id NOT IN (select control1_id from round1)
   AND t2.person_id NOT IN (select control2_id from round2)
@@ -152,13 +137,14 @@ gt2.cov_date
 FROM gt1
 LEFT JOIN gt2
 ON gt1.age_group = gt2.age_group
-AND gt1.covid_date between gt2.cov_date-7 and gt2.cov_date+7
+  AND round(gt1.covid_date/14,0) = round(gt2.cov_date/14,0) 
 AND a_row = b_row
 ORDER BY gt2.person_id"
 
 , dbname = "consign.db")
 
-results <- sqldf("SELECT 
+
+results <- sqldf("SELECT row_number() over (order by 'round3.age_group') as matched_id,
       round1.exposed_id, round1.control1_id, round2.control2_id, round3.control3_id,
       round1.age_group,
       round1.cov_date
@@ -166,11 +152,10 @@ results <- sqldf("SELECT
       where round1.exposed_id = round2.exposed_id
       and round1.exposed_id = round3.exposed_id
       GROUP BY round1.exposed_id
-      HAVING MIN(round1.cov_date)
-      ORDER BY round1.cov_date
+    --  HAVING MIN(round1.cov_date)
+      ORDER BY RANDOM() 
       ", dbname = "consign.db")
-
-
 
 # write to csv
 fwrite(results,paste0(matched_folder,"matched_covid_postive.csv"))
+
