@@ -19,15 +19,13 @@ my_write_path<- raw_atc_5_counts
 my_dt_MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir = my_path)
 
 
-df <- select(my_dt_MED, date_dispensing, date_prescription)
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+if(DAP=="USWAN"){
+  my_dt_MED$drug_date<-my_dt_MED$date_prescription}else{my_dt_MED$drug_date<-my_dt_MED$date_dispensing}
 
 
-drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
-
-my_dt_MED$drug_date<-drug_date
-
-rm(df)
-rm(drug_date)
 
 # translate SAP ATC table into machine-readable format
 

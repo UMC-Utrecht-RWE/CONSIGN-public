@@ -68,17 +68,10 @@ for(i in 1:length(actual_MED_tables)){
   
   my_dt_MED<-fread(paste0(my_path,actual_MED_tables[i]))
   
-  df <- select(my_dt_MED, date_dispensing, date_prescription)
+ 
+  my_dt_MED$drug_date<-my_dt_MED$date_dispensing
   
   
-  drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
-  
-  my_dt_MED$drug_date<-drug_date
-  
-  my_dt_MED$drug_date
-  
-  rm(df)
-  rm(drug_date) 
   atc_result<-ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
 
   fwrite(atc_result, paste0(my_write_path, "ATC2_",i,".csv"))
