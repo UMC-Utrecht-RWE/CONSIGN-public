@@ -16,17 +16,24 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 cov_preg_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
 
+# check for days to deliver at covid date and remove those within 3 days
+# use the FINAL for defining positive pan pregnancies BUT use original for defining negative pregnancies
+
+cov_preg_data_final<-cov_preg_data[cov_preg_data$days_cov_before_labor>3,]
+cov_preg_excluded<-cov_preg_data[cov_preg_data$days_cov_before_labor<=3,]
+fwrite(cov_preg_excluded, paste0(output_dir,"covid_within_3_days_delivery.csv"))
+
+
 all_pan_preg<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
-# HELP >_< split data by person_id OR preg_id? 
 
-cov_neg_pan_preg<-all_pan_preg[((all_pan_preg$person_id%exclude%cov_preg_data$person_id)&(all_pan_preg$cohort=="pandemic")),]
+cov_neg_pan_preg<-all_pan_preg[(all_pan_preg$person_id%exclude%cov_preg_data$person_id),]
   
 pan_tables<-list.files(paste0(pan_preg_folder,"/"), pattern = "\\.csv$")
 
 pan_preg_PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=pan_preg_folder)
 
-cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_preg_data$person_id,]
+cov_pos_pan_preg<-pan_preg_PERSONS[pan_preg_PERSONS$person_id%in%cov_preg_data_final$person_id,]
 
 for (i in 1:length(pan_tables)){
   my_table<-fread(paste0(pan_preg_folder,pan_tables[i]))
@@ -34,7 +41,7 @@ for (i in 1:length(pan_tables)){
   fwrite(my_preg_table,paste0(cov_pos_pan_preg_folder,pan_tables[i]))
 }
 
-fwrite(cov_preg_data, paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+fwrite(cov_preg_data_final, paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 
 unlink(paste0(cov_pos_pan_preg_folder,"my_PREG.csv"))
 unlink(paste0(cov_pos_pan_preg_folder,"trim_cov_PREG.csv"))
