@@ -30,18 +30,6 @@ study_start_date<-as.Date("20180101", format="%Y%m%d")
 
 PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
 
-PERSONS$age_at_start_pandemic<-(2020)-as.numeric(PERSONS$year_of_birth)
-
-PERSONS$age_group<-PERSONS$age_at_start_pandemic
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
-
-PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
-
-fwrite(PERSONS, paste0(path_CDM, "PERSONS.csv"))
-
 #get tables 
 #Get EVENTS, MO, SO, MEDICINES, VACCINES tables
 actual_tables_preselect<-list()

@@ -132,12 +132,13 @@ my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy,40,55)]<-3
 
 my_PREG$cohort<-NA
 
-my_PREG$cohort[(my_PREG$pregnancy_end_date<historical_end_date)]<-"historical"
+my_PREG$cohort[(my_PREG$pregnancy_start_date>=start_study_date)&(my_PREG$pregnancy_end_date<historical_end_date)]<-"historical"
 
 my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_start_date)]<-"pandemic"
 
-my_PREG$cohort[is.na(my_PREG$cohort)]<-"between"
+my_PREG$cohort[between(my_PREG$pregnancy_end_date, historical_end_date, covid_start_date) ]<-"between"
 
+table(my_PREG$cohort)
 
 # all the pregnancies included in the study with additional variables:
 

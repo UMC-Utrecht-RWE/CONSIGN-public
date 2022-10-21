@@ -30,5 +30,5 @@ source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
 # script to copy over case_dates to their controls
 
-source(paste0(pre_dir,"/matching_dates_transer.R"))
+source(paste0(pre_dir,"/matching_dates_transfer.R"))
 
