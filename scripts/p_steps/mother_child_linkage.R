@@ -36,18 +36,19 @@ cases$type_of_pregnancy_end<-sample(c("LB", "LB", "SA"), replace = T, size=nrow(
 
 
 cases_mom_id<-cases$person_id [cases$type_of_pregnancy_end=="LB"]
+cases_pregnancy_id<-cases$pregnancy_id [cases$type_of_pregnancy_end=="LB"]
 cases_DOB<-cases$pregnancy_end_date[cases$type_of_pregnancy_end=="LB"]
-case_child<-vector(length=length(cases_mom_id))
-case_child_DOB_PERSONS<-vector(length=length(cases_mom_id))
+case_child<-list()
+case_child_DOB_PERSONS<-list()
 
 
 controls_mom_id<-controls$person_id[controls$type_of_pregnancy_end=="LB"]
 controls_DOB<-controls$pregnancy_end_date[controls$type_of_pregnancy_end=="LB"]
-control_child<-vector(length=length(cases_mom_id))
-control_child_DOB_PERSONS<-vector(length=length(cases_mom_id))
+control_child<-list()
+control_child_DOB_PERSONS<-list()
 
 # simulate PR table >_<
-
+# 
 # CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
 # CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
 # all_mom_ids<-c(cases_mom_id, controls_mom_id)
@@ -56,8 +57,8 @@ control_child_DOB_PERSONS<-vector(length=length(cases_mom_id))
 # sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
 # CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
 # CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
-# 
-# 
+# #
+# #
 # PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
 
 ################################################################################
@@ -77,19 +78,20 @@ case_all_children$mom_id<-long_cases_PR$value
 # for each mom_id and case_DOB combination, test DOB of CHILDREN with mom_id
 
 # POSSIBLE that 1 mom has 2 case pregnancies 
-# use pregnancy ID instead of mom_id
+# that's fine- different DOB
+# BUT what about TWINS? 
 
 for(i in 1:length(cases_mom_id)){
  mom<- cases_mom_id[i]
  case_DOB<-cases_DOB[i]
   offspring<-case_all_children[case_all_children$mom_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(case_DOB)
-  case_child[i]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
-  case_child_DOB_PERSONS<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
+  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<31]
+  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<31]
 }
 
-case_target_children<-as.data.frame(cbind(case_child, cases_DOB,case_child_DOB_PERSONS,cases_mom_id))
-colnames(case_target_children)<-c("person_id", "date_of_birth_preg_alg","date_of_birth_PERSONS", "mother_id")
+case_target_children<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
+colnames(case_target_children)<-c("person_id", "date_of_birth_PERSONS")
 
 ###################################################################
 
@@ -111,11 +113,11 @@ for(i in 1:length(controls_mom_id)){
   control_DOB<-controls_DOB[i]
   offspring<-control_all_children[control_all_children$mom_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(control_DOB)
-  control_child[i]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
-  control_child_DOB_PERSONS<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
+  control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
+  control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
 }
 
-control_target_children<-as.data.frame(cbind(control_child, controls_DOB,control_child_DOB_PERSONS,controls_mom_id))
-colnames(control_target_children)<-c("person_id", "date_of_birth_preg_alg","date_of_birth_PERSONS", "mother_id")
+control_target_children<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
+colnames(control_target_children)<-c("person_id", "date_of_birth_PERSONS")
 
 
