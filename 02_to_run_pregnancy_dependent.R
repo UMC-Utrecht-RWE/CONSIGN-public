@@ -39,7 +39,7 @@ source(paste0(pre_dir, "/trimester_create.R"))
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 # re-run covid detection scripts using updated codelist and severity indicators
-
+# added flexibility to code detection (allowing for "." or no ".")
 source(paste0(pre_dir, "/covid_detect_function.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
@@ -71,9 +71,9 @@ source(paste0(pre_dir, "/create_table_1abc.R"))
 ##########################################################
 # lower ATC for supplement
 
-source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
+ source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
 
-source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
+ source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
 
 
 

@@ -10,14 +10,13 @@ covid_ev_data<-fread(paste0(preselect_folder,"COVID_events_data.csv"))
 
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
 
-if(nrow(covid_ev_data>0)){
-colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
+if(nrow(covid_ev_data>0)){covid_events<-covid_ev_data%>% select(1:3)}else{print("no COVID cases detect in EVENTS")}
 
 
-if((nrow(covid_ev_data)>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
+if((nrow(covid_events)>0)){covid_data<-as.data.frame(rbind(covid_events, covid_dap_data))}else{covid_data<-covid_dap_data}
 
-rm(covid_dap_data)
-rm(covid_ev_data)
+rm(covid_events)
+
 # remove rows with missing data
 covid_data<-covid_data[complete.cases(covid_data),]
 
@@ -25,7 +24,7 @@ covid_data<-covid_data[complete.cases(covid_data),]
 
 #severity indicators from TEAMS sheet, looking for ANY match, so doesn't need to be DAP specific
 
-severity_indicators<-as.list(c("hospital","Hospital", "pd", "sd", "intensive", "cause_of_death", "Severo", "severo", "Critico", "critico"))
+severity_indicators<-as.list(c("hospital","  hospital","Hospital", "pd", "sd", "intensive", "cause_of_death", "Severo", "severo", "Critico", "critico"))
 
 # will STARTSWITH become a problem? rather look for string at any position
 # --> replace with grep?
