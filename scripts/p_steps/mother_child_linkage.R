@@ -49,19 +49,19 @@ control_child_DOB_PERSONS<-list()
 
 # simulate PR table >_<
 # 
-# CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
-# CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
-# all_mom_ids<-c(cases_mom_id, controls_mom_id)
-# CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
-# all_DOB<-c(cases_DOB, controls_DOB)
-# sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
-# CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
-# CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
-# #
-# #
-# PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
-
-################################################################################
+CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
+CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
+all_mom_ids<-c(cases_mom_id, controls_mom_id)
+CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
+all_DOB<-c(cases_DOB, controls_DOB)
+sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
+CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
+CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
+#
+#
+PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
+# 
+# ################################################################################
 # 
 
 cases_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%cases_mom_id,]
@@ -92,6 +92,7 @@ for(i in 1:length(cases_mom_id)){
 
 case_target_children<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
 colnames(case_target_children)<-c("person_id", "date_of_birth_PERSONS")
+fwrite(case_target_children, paste0(case_neonate_folder,"cases_neonates.csv"))
 
 ###################################################################
 
@@ -120,4 +121,42 @@ for(i in 1:length(controls_mom_id)){
 control_target_children<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
 colnames(control_target_children)<-c("person_id", "date_of_birth_PERSONS")
 
+fwrite(control_target_children, paste0(control_neonate_folder,"control_neonates.csv"))
+
+##################################################################################
+# copy over CDM files for neonates
+
+case_neonate_id<-case_target_children$person_id
+control_neonate_id<-control_target_children$person_id
+
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+actual_tables_CDM<-list()
+    actual_tables_CDM$EVENTS<-list.files(paste0(path_CDM,"/"), pattern="^EVENTS")
+    actual_tables_CDM$MEDICAL_OBSERVATIONS<-list.files(paste0(path_CDM,"/"), pattern="^MEDICAL_OB")
+    actual_tables_CDM$SURVEY_OBSERVATIONS<-list.files(paste0(path_CDM,"/"), pattern="^SURVEY_OB")
+    actual_tables_CDM$MEDICINES<-list.files(paste0(path_CDM,"/"), pattern="^MEDICINES")
+    actual_tables_CDM$VACCINES<-list.files(paste0(path_CDM,"/"), pattern="^VACCINES")
+    actual_tables_CDM$SURVEY_ID<-list.files(paste0(path_CDM,"/"), pattern="^SURVEY_ID")
+    actual_tables_CDM$EUROCAT<-list.files(paste0(path_CDM,"/"), pattern="^EUROCAT")
+    actual_tables_CDM$PERSONS<-list.files(paste0(path_CDM,"/"), pattern="^PERSONS")
+
+all_actual_tables<-list.files(paste0(path_CDM,"/"), pattern = "\\.csv$")
+table_list<-unlist(actual_tables_CDM)
+
+for (i in 1:length(table_list)){
+  my_table<-fread(paste0(path_CDM,table_list[i]))
+  my_case_table<- my_table[(my_table$person_id%in%case_neonate_id),]
+  
+  fwrite(my_case_table,paste0(case_neonate_folder,table_list[i]))
+}
+
+for (i in 1:length(table_list)){
+  my_table<-fread(paste0(path_CDM,table_list[i]))
+  my_control_table<- my_table[(my_table$person_id%in%control_neonate_id),]
+  
+  fwrite(my_control_table,paste0(control_neonate_folder,table_list[i]))
+}
 

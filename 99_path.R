@@ -65,6 +65,17 @@ preselect_folder<-paste0(projectFolder,"/CDMInstances_preselect/")
 invisible(if(dir.exists(preselect_folder)==F)
 {dir.create(preselect_folder)})
 
+
+
+case_neonate_folder<-paste0(projectFolder,"/CDMInstances_case_neonate/")
+invisible(if(dir.exists(case_neonate_folder)==F)
+{dir.create(case_neonate_folder)})
+
+control_neonate_folder<-paste0(projectFolder,"/CDMInstances_control_neonate/")
+invisible(if(dir.exists(control_neonate_folder)==F)
+{dir.create(control_neonate_folder)})
+
+
 # Checks if folders exist. If they do not, creates them 
 # Main folders (g_intermediate, g_output)
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/")), dir.create(paste0(projectFolder, "/g_intermediate")), FALSE))

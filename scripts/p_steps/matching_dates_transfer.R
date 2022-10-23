@@ -16,10 +16,12 @@ keep_vars<-c("exposed_id","control1_id","control2_id","control3_id","age_group")
 
 covid_positive_matched<-as.data.frame(fread(paste0(matched_folder, "matched_covid_postive.csv")))
 covid_positive_matched<-covid_positive_matched[keep_vars]
+covid_positive_matched<-covid_positive_matched %>% mutate_all(na_if,"")
 cov_data_non_preg_controls<-fread(paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
 
 pregnant_matched<-as.data.frame(fread(paste0(matched_folder, "matched_pregnant.csv")))
 pregnant_matched<-pregnant_matched[keep_vars]
+pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 
 case_data<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
@@ -48,12 +50,12 @@ pregnant_matched$cov_trimester<-case_data$cov_trimester
 long_covid_match<-melt(covid_positive_matched, id.vars=c("exposed_id", "age_group", "pregnancy_start_date","cov_trimester"))
 long_covid_match$control_id<-long_covid_match$value
 long_covid_match<-long_covid_match[order(long_covid_match$control_id),]
-
+long_covid_match<-long_covid_match[complete.cases(long_covid_match),]
 
 long_pregnant_match<-melt(pregnant_matched, id.vars=c("exposed_id", "age_group", "cov_date","cov_trimester"))
 long_pregnant_match$control_id<-long_pregnant_match$value
 long_pregnant_match<-long_pregnant_match[order(long_pregnant_match$control_id),]
-
+long_pregnant_match<-long_pregnant_match[complete.cases(long_pregnant_match),]
 ######################################################
 
 covid_match_data<-cov_data_non_preg_controls[cov_data_non_preg_controls$person_id%in%long_covid_match$control_id]
