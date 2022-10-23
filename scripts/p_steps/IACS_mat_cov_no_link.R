@@ -5,12 +5,15 @@
 
 # due to wide variety of DAP specific criteria, maternal covariates will be coded separately per DAP
 
-preg_cohort_folders<-list(hist_preg_folder,cov_neg_pan_preg_folder, cov_pos_pan_preg_folder)
+preg_cohort_folders<-list(hist_preg_folder, preg_match_folder, cov_pos_pan_preg_folder)
 output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov_pan_pos)
 
 my_preg_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
+my_codes<-all_codes$code
+no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
+all_codes$code_no_dots<-no_dots_codes
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
@@ -36,7 +39,7 @@ for(i in 1:length(preg_cohort_folders)){
   GEST_DIAB_names<-c("P_GESTDIAB_AESI")
   my_rows<-which(Reduce(`|`, lapply(GEST_DIAB_names, startsWith, x = as.character(all_codes$full_name))))
   
-  GEST_DIAB_codes<- unique(all_codes$code[my_rows])
+  GEST_DIAB_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(GEST_DIAB_codes, startsWith, x = as.character(EVENTS$event_code))))
   GEST_DIAB_EV_ID<-(EVENTS$person_id[my_rows])
@@ -54,7 +57,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply("TP_CESAREA_COV", startsWith, x = as.character(all_codes$full_name))))
   
-  CESAREA_codes<- unique(all_codes$code[my_rows])
+  CESAREA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(CESAREA_codes, startsWith, x = as.character(EVENTS$event_code))))
   CESAREA_EV_ID<-(EVENTS$person_id[my_rows])
@@ -78,7 +81,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply("P_SPONTABO_AESI", startsWith, x = as.character(all_codes$full_name))))
   
-  SA_codes<- unique(all_codes$code[my_rows])
+  SA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(SA_codes, startsWith, x = as.character(EVENTS$event_code))))
   SA_EV_ID<-(EVENTS$person_id[my_rows])
@@ -101,7 +104,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply("P_STILLBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
   
-  SB_codes<- unique(all_codes$code[my_rows])
+  SB_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(SB_codes, startsWith, x = as.character(EVENTS$event_code))))
   SB_EV_ID<-(EVENTS$person_id[my_rows])
@@ -131,7 +134,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply("P_PREECLAMP_AESI", startsWith, x = as.character(all_codes$full_name))))
   
-  PREECLAMP_codes<- unique(all_codes$code[my_rows])
+  PREECLAMP_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(PREECLAMP_codes, startsWith, x = as.character(EVENTS$event_code))))
   PREECLAMP_ID<-(EVENTS$person_id[my_rows])
@@ -151,7 +154,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply(TOPFA_names, startsWith, x = as.character(all_codes$full_name))))
   
-  TOPFA_codes<- unique(all_codes$code[my_rows])
+  TOPFA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(TOPFA_codes, startsWith, x = as.character(EVENTS$event_code))))
   TOPFA_ID<-(EVENTS$person_id[my_rows])
@@ -170,7 +173,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_rows<-which(Reduce(`|`, lapply("P_PRETERMBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
   
-  PRETERM_codes<- unique(all_codes$code[my_rows])
+  PRETERM_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
   
   my_rows<-which(Reduce(`|`, lapply(PRETERM_codes, startsWith, x = as.character(EVENTS$event_code))))
   PRETERM_EV_ID<-(EVENTS$person_id[my_rows])
@@ -206,7 +209,7 @@ for(i in 1:length(preg_cohort_folders)){
 maternal_death_names<-"P_MATERNALDEATH_AESI"
 my_rows<-which(Reduce(`|`, lapply(maternal_death_names, startsWith, x = as.character(all_codes$full_name))))
 
-maternal_death_codes<- unique(all_codes$code[my_rows])
+maternal_death_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(maternal_death_codes, startsWith, x = as.character(EVENTS$event_code))))
 maternal_death_EV_ID<-(EVENTS$person_id[my_rows])

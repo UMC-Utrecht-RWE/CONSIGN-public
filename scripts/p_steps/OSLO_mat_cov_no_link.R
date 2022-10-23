@@ -11,6 +11,9 @@ output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov
 my_preg_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
+my_codes<-all_codes$code
+no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
+all_codes$code_no_dots<-no_dots_codes
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)

@@ -36,6 +36,10 @@ source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
 source(paste0(pre_dir,"/matching_dates_transfer.R"))
 
+# make CDM subset for matched cohort to be used for covariates
+
+source(paste0(pre_dir,"/create_match_CDM.R"))
+
 # find children resulting from case and pregnant_control pregnancies and subset CDM for neonatal outcomes
 
 source(paste0(pre_dir,"/mother_child_linkage.R"))

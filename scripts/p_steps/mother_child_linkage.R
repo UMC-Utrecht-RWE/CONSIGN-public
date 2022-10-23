@@ -15,7 +15,8 @@
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
-RELATIONSHIP_TABLE<- fread(path_PR,PR_name)
+PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
+
 
 PERSONS<-fread(paste0(path_CDM,"PERSONS.csv"), select = c("person_id", "day_of_birth", "month_of_birth", "year_of_birth"))
 
@@ -28,16 +29,33 @@ DOB<-paste0(CHILDREN$comp_day_birth, "/", CHILDREN$month_of_birth, "/",CHILDREN$
 CHILDREN$DOB<-as.Date(DOB, format="%d/%m/%Y")
 CHILDREN$DOB_numeric<-as.numeric(CHILDREN$DOB)
 
-cases<- fread(paste0(cov_pos_pan_preg_folder,"cov_pos_preg.csv"))
+if(DAP=="TEST"){
+  CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
+  CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
+  all_mom_ids<-c(case_mom_id, controls_mom_id, historical_mom_id)
+  CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
+  all_DOB<-c(case_DOB, controls_DOB, historical_DOB)
+  sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
+  CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
+  CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
+  #
+  #
+  PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
+  fwrite (PERSONS_RELATIONS, paste0(preselect_folder,"PERSONS_RELATIONS.csv"))
+}
+
+case<- fread(paste0(cov_pos_pan_preg_folder,"cov_pos_preg.csv"))
 controls<-fread(paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
+historical<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
 
-controls$type_of_pregnancy_end<-sample(c("LB", "LB", "SA"), replace = T,size = nrow(controls))
-cases$type_of_pregnancy_end<-sample(c("LB", "LB", "SA"), replace = T, size=nrow(cases))
+if(DAP=="TEST"){
+controls$type_of_pregnancy_end<-sample(c("LB", "LB", "LB", "SA"), replace = T,size = nrow(controls))
+case$type_of_pregnancy_end<-sample(c("LB", "LB", "LB","SA"), replace = T, size=nrow(case))
+historical$type_of_pregnancy_end<-sample(c("LB", "LB","LB", "SA"), replace = T, size=nrow(historical))
+}
 
-
-cases_mom_id<-cases$person_id [cases$type_of_pregnancy_end=="LB"]
-cases_pregnancy_id<-cases$pregnancy_id [cases$type_of_pregnancy_end=="LB"]
-cases_DOB<-cases$pregnancy_end_date[cases$type_of_pregnancy_end=="LB"]
+case_mom_id<-case$person_id [case$type_of_pregnancy_end=="LB"]
+case_DOB<-case$pregnancy_end_date[case$type_of_pregnancy_end=="LB"]
 case_child<-list()
 case_child_DOB_PERSONS<-list()
 
@@ -47,33 +65,41 @@ controls_DOB<-controls$pregnancy_end_date[controls$type_of_pregnancy_end=="LB"]
 control_child<-list()
 control_child_DOB_PERSONS<-list()
 
+historical_mom_id<-historical$person_id[historical$type_of_pregnancy_end=="LB"]
+historical_DOB<-historical$pregnancy_end_date[historical$type_of_pregnancy_end=="LB"]
+historical_child<-list()
+historical_child_DOB_PERSONS<-list()
+
+
 # simulate PR table >_<
-# 
+#
+
+if(DAP=="TEST"){
 CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
 CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
-all_mom_ids<-c(cases_mom_id, controls_mom_id)
+all_mom_ids<-c(case_mom_id, controls_mom_id, historical_mom_id)
 CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
-all_DOB<-c(cases_DOB, controls_DOB)
+all_DOB<-c(case_DOB, controls_DOB, historical_DOB)
 sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
 CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
 CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
 #
 #
 PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
-# 
+fwrite (PERSONS_RELATIONS, paste0(preselect_folder,"PERSONS_RELATIONS.csv"))
+}
 # ################################################################################
-# 
 
-cases_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%cases_mom_id,]
-# all children of case mother == child_id == cases_PR$person_id
+case_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%case_mom_id,]
+# all children of case mother == child_id == case_PR$person_id
   # check child_ids against DOB
-case_all_children<-CHILDREN[CHILDREN$person_id%in%cases_PR$person_id]
+case_all_children<-CHILDREN[CHILDREN$person_id%in%case_PR$person_id]
 
 # multiple children per woman-- need to group by mom_id
-# cases_PR wide--> long (melt)
-my_id_vars<-colnames(cases_PR)[(colnames(cases_PR)%exclude%"related_id")]
-long_cases_PR<-melt(cases_PR,id.vars = my_id_vars)
-case_all_children$mom_id<-long_cases_PR$value
+# case_PR wide--> long (melt)
+my_id_vars<-colnames(case_PR)[(colnames(case_PR)%exclude%"related_id")]
+long_case_PR<-melt(case_PR,id.vars = my_id_vars)
+case_all_children$mom_id<-long_case_PR$value
  
 # for each mom_id and case_DOB combination, test DOB of CHILDREN with mom_id
 
@@ -81,18 +107,18 @@ case_all_children$mom_id<-long_cases_PR$value
 # that's fine- different DOB
 # BUT what about TWINS? 
 
-for(i in 1:length(cases_mom_id)){
- mom<- cases_mom_id[i]
- case_DOB<-cases_DOB[i]
+for(i in 1:length(case_mom_id)){
+ mom<- case_mom_id[i]
+ my_DOB<-case_DOB[i]
   offspring<-case_all_children[case_all_children$mom_id==mom,]
-  offspring$days_to_DOB<- (offspring$DOB_numeric)-(case_DOB)
-  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<31]
-  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<31]
+  offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
+  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<40]
+  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<40]
 }
 
 case_target_children<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
 colnames(case_target_children)<-c("person_id", "date_of_birth_PERSONS")
-fwrite(case_target_children, paste0(case_neonate_folder,"cases_neonates.csv"))
+fwrite(case_target_children, paste0(case_neonate_folder,"case_neonates.csv"))
 
 ###################################################################
 
@@ -111,9 +137,9 @@ control_all_children$mom_id<-long_controls_PR$value
 
 for(i in 1:length(controls_mom_id)){
   mom<- controls_mom_id[i]
-  control_DOB<-controls_DOB[i]
+  my_DOB<-controls_DOB[i]
   offspring<-control_all_children[control_all_children$mom_id==mom,]
-  offspring$days_to_DOB<- (offspring$DOB_numeric)-(control_DOB)
+  offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
   control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
   control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
 }
@@ -123,15 +149,45 @@ colnames(control_target_children)<-c("person_id", "date_of_birth_PERSONS")
 
 fwrite(control_target_children, paste0(control_neonate_folder,"control_neonates.csv"))
 
+##############################################################################
+
+historical_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%historical_mom_id,]
+# all children of historical mother == child_id == historical_PR$person_id
+# check child_ids against DOB
+historical_all_children<-CHILDREN[CHILDREN$person_id%in%historical_PR$person_id]
+
+# multiple children per woman-- need to group by mom_id
+# historical_PR wide--> long (melt)
+my_id_vars<-colnames(historical_PR)[(colnames(historical_PR)%exclude%"related_id")]
+long_historical_PR<-melt(historical_PR,id.vars = my_id_vars)
+historical_all_children$mom_id<-long_historical_PR$value
+
+# for each mom_id and historical_DOB combination, test DOB of CHILDREN with mom_id
+
+# POSSIBLE that 1 mom has 2 historical pregnancies 
+# that's fine- different DOB
+# BUT what about TWINS? 
+
+for(i in 1:length(historical_mom_id)){
+  mom<- historical_mom_id[i]
+  my_DOB<-historical_DOB[i]
+  offspring<-historical_all_children[historical_all_children$mom_id==mom,]
+  offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
+  historical_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<31]
+  historical_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<31]
+}
+
+historical_target_children<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS)))
+colnames(historical_target_children)<-c("person_id", "date_of_birth_PERSONS")
+fwrite(historical_target_children, paste0(historical_neonate_folder,"historical_neonates.csv"))
+
+
 ##################################################################################
 # copy over CDM files for neonates
 
 case_neonate_id<-case_target_children$person_id
 control_neonate_id<-control_target_children$person_id
-
-
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
+historical_neonate_id<-historical_target_children$person_id
 
 actual_tables_CDM<-list()
     actual_tables_CDM$EVENTS<-list.files(paste0(path_CDM,"/"), pattern="^EVENTS")
@@ -160,3 +216,9 @@ for (i in 1:length(table_list)){
   fwrite(my_control_table,paste0(control_neonate_folder,table_list[i]))
 }
 
+for (i in 1:length(table_list)){
+  my_table<-fread(paste0(path_CDM,table_list[i]))
+  my_historical_table<- my_table[(my_table$person_id%in%historical_neonate_id),]
+  
+  fwrite(my_historical_table,paste0(historical_neonate_folder,table_list[i]))
+}

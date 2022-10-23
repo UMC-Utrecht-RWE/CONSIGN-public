@@ -6,12 +6,19 @@
 # CONSIGN
 # this script will identify the target codes for each covariate
 # covariates described in Teams file CONSIGN_Variables.xlsx using version 10/15/22
-# --> HELP how to specify medicines ATC?
 
-cohort_folders<-list(cov_neg_pan_preg_folder, cov_pos_pan_preg_folder, cov_pos_not_preg_folder)
-output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+
+cohort_folders<-list(preg_match_folder, cov_pos_pan_preg_folder, cov_match_folder, hist_preg_folder )
+output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg, output_hist_preg)
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
+my_codes<-all_codes$code
+no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
+all_codes$code_no_dots<-no_dots_codes
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
@@ -27,23 +34,16 @@ EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
 MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
 SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
 MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
-df <- select(MED, date_dispensing, date_prescription)
-drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
-drug_date<-unlist(drug_date)
-drug_date<-as.Date(drug_date, format="%Y%m%d")
 
-MED$drug_date<-as.numeric(drug_date)
-
+if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
 
 #################################################################
 #CARDIO
 
-
-
 cardio_names<-c("C_CAD_AESI","C_CARDIOMYOPATHY_COV", "C_CMSTRESS_AESI","C_HF_COV","V_HYPERTENSION_COV")
 my_rows<-which(Reduce(`|`, lapply(cardio_names, startsWith, x = as.character(all_codes$full_name))))
 
-cardio_codes<- unique(all_codes$code[my_rows])
+cardio_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(cardio_codes, startsWith, x = as.character(EVENTS$event_code))))
 CARDIO_EV_ID<-(EVENTS$person_id[my_rows])
@@ -75,7 +75,7 @@ fwrite(cardio_cov, paste0(output_folder,"cardio.csv"))
 cancer_names<-c("Onc_ANYMALIGNANCY_COV")
 my_rows<-which(Reduce(`|`, lapply(cancer_names, startsWith, x = as.character(all_codes$full_name))))
 
-cancer_codes<- unique(all_codes$code[my_rows])
+cancer_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(cancer_codes, startsWith, x = as.character(EVENTS$event_code))))
 cancer_EV_ID<-(EVENTS$person_id[my_rows])
@@ -108,7 +108,7 @@ fwrite(cancer_cov, paste0(output_folder,"cancer.csv"))
 resp_names<-c("R_RESPCHRONIC_COV")
 my_rows<-which(Reduce(`|`, lapply(resp_names, startsWith, x = as.character(all_codes$full_name))))
 
-resp_codes<- unique(all_codes$code[my_rows])
+resp_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(resp_codes, startsWith, x = as.character(EVENTS$event_code))))
 resp_EV_ID<-(EVENTS$person_id[my_rows])
@@ -146,7 +146,7 @@ liver_names<-c("D_ALCOHOLICLIVER_COV" ,
                "D_NONALCOHOLICLIVER_COV")
 my_rows<-which(Reduce(`|`, lapply(liver_names, startsWith, x = as.character(all_codes$full_name))))
 
-liver_codes<- unique(all_codes$code[my_rows])
+liver_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(liver_codes, startsWith, x = as.character(EVENTS$event_code))))
 liver_EV_ID<-(EVENTS$person_id[my_rows])
@@ -178,7 +178,7 @@ fwrite(liver_cov, paste0(output_folder,"liver.csv"))
 HIV_names<-c("I_HIVNOAIDS_CH")
 my_rows<-which(Reduce(`|`, lapply(HIV_names, startsWith, x = as.character(all_codes$full_name))))
 
-HIV_codes<- unique(all_codes$code[my_rows])
+HIV_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(HIV_codes, startsWith, x = as.character(EVENTS$event_code))))
 HIV_EV_ID<-(EVENTS$person_id[my_rows])
@@ -211,7 +211,7 @@ fwrite(HIV_cov, paste0(output_folder,"HIV.csv"))
 kidney_names<-c("G_KDCHRONIC_COV")
 my_rows<-which(Reduce(`|`, lapply(kidney_names, startsWith, x = as.character(all_codes$full_name))))
 
-kidney_codes<- unique(all_codes$code[my_rows])
+kidney_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(kidney_codes, startsWith, x = as.character(EVENTS$event_code))))
 kidney_EV_ID<-(EVENTS$person_id[my_rows])
@@ -244,7 +244,7 @@ fwrite(kidney_cov, paste0(output_folder,"kidney.csv"))
 diabetes_names<-c("E_DM12_COV")
 my_rows<-which(Reduce(`|`, lapply(diabetes_names, startsWith, x = as.character(all_codes$full_name))))
 
-diabetes_codes<- unique(all_codes$code[my_rows])
+diabetes_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(diabetes_codes, startsWith, x = as.character(EVENTS$event_code))))
 diabetes_EV_ID<-(EVENTS$person_id[my_rows])
@@ -277,7 +277,7 @@ fwrite(diabetes_cov, paste0(output_folder,"diabetes.csv"))
 obesity_names<-c("L_OBESITY_COV")
 my_rows<-which(Reduce(`|`, lapply(obesity_names, startsWith, x = as.character(all_codes$full_name))))
 
-obesity_codes<- unique(all_codes$code[my_rows])
+obesity_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(obesity_codes, startsWith, x = as.character(EVENTS$event_code))))
 obesity_EV_ID<-(EVENTS$person_id[my_rows])
@@ -310,7 +310,7 @@ fwrite(obesity_cov, paste0(output_folder,"obesity.csv"))
 sickle_names<-c("B_SICKLECELL_COV")
 my_rows<-which(Reduce(`|`, lapply(sickle_names, startsWith, x = as.character(all_codes$full_name))))
 
-sickle_codes<- unique(all_codes$code[my_rows])
+sickle_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(sickle_codes, startsWith, x = as.character(EVENTS$event_code))))
 sickle_EV_ID<-(EVENTS$person_id[my_rows])
@@ -343,7 +343,7 @@ fwrite(sickle_cov, paste0(output_folder,"sickle.csv"))
 immsup_names<-c("Im_TRANSPLANTRECIPIENT_COV")
 my_rows<-which(Reduce(`|`, lapply(immsup_names, startsWith, x = as.character(all_codes$full_name))))
 
-immsup_codes<- unique(all_codes$code[my_rows])
+immsup_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
 
 my_rows<-which(Reduce(`|`, lapply(immsup_codes, startsWith, x = as.character(EVENTS$event_code))))
 immsup_EV_ID<-(EVENTS$person_id[my_rows])
@@ -387,8 +387,6 @@ mental_cov<-as.data.frame(cbind(mental_id, mental_date))
 fwrite(mental_cov, paste0(output_folder,"mental.csv"))
 
 
-
-
 #################################################################################
 # VACCINE
 
@@ -406,7 +404,7 @@ my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACC
 
 vaccine_VAC_id<-(VACCINES$person_id[my_rows])
 
-if(DAP%in%c("Bordeaux", "..."))
+
 if(DAP!="Bordeaux"){
 vaccine_VAC_date<- (VACCINES$vx_admin_date[my_rows])}else{vaccine_VAC_date<- (VACCINES$vx_record_date[my_rows])}
 
@@ -424,5 +422,4 @@ fwrite(vaccine_cov, paste0(output_folder,"vaccine.csv"))
   vaccine_cov<-as.data.frame(cbind(vaccine_id, vaccine_date))
   
   fwrite(vaccine_cov, paste0(output_folder,"vaccine.csv"))}else{print("no codes detected for /vaccine/ group")}
-
 }
