@@ -24,13 +24,19 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
+# matches covid negative pregnant women to cases (cov+preg) by maternal age group and start date of pregnancy
+
 source(paste0(pre_dir,"/match_pregnant_cohorts.R"))
+
+# matches covid positive non-pregnant women to cases (cov+preg) by age group and date of covid infection (using first date of covid infection in controls)
 
 source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
 # script to copy over case_dates to their controls
 
 source(paste0(pre_dir,"/matching_dates_transfer.R"))
+
+# find children resulting from case and pregnant_control pregnancies and subset CDM for neonatal outcomes
 
 source(paste0(pre_dir,"/mother_child_linkage.R"))
 

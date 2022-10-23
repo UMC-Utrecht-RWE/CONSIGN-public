@@ -20,21 +20,15 @@ for(i in 1:length(preg_cohort_folders)){
   cohort_folder<-unlist(preg_cohort_folders[i])
   output_folder<-unlist(output_folders[i])
   
-  EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
-  MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
-  SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-  MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
+  EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
+  MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
+  SURV_OB<-IMPORT_PATTERN(pat="SURVEY", dir=cohort_folder)
+  MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
   PROC<-IMPORT_PATTERN(pat="PROCEDURE", dir=cohort_folder)
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
   my_PREG<- IMPORT_PATTERN(pat=my_preg_data[i], dir=cohort_folder)
   
-  df <- select(MED, date_dispensing, date_prescription)
-  drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
-  drug_date<-unlist(drug_date)
-  drug_date<-as.Date(drug_date, format="%Y%m%d")
-  
-  MED$drug_date<-as.numeric(drug_date)
-  
+  MED$drug_date<-MED$date_dispensing
   
   #################################################################################
   # GEST_DIAB

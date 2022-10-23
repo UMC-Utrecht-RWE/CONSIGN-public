@@ -28,12 +28,7 @@ for(i in 1:length(preg_cohort_folders)){
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
   my_PREG<- IMPORT_PATTERN(pat=my_preg_data[i], dir=cohort_folder)
   
-  df <- select(MED, date_dispensing, date_prescription)
-  drug_date<-df %>% transmute(Label = coalesce(date_dispensing, date_prescription))
-  drug_date<-unlist(drug_date)
-  drug_date<-as.Date(drug_date, format="%Y%m%d")
-  
-  MED$drug_date<-as.numeric(drug_date)
+  MED$drug_date<-MED$date_dispensing
   
   
   #################################################################################

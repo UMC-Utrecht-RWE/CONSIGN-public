@@ -27,6 +27,10 @@ preg_format<-"csv"
 
 # preg_format<-".RData"
 
+# location of your PERSONS_RELATIONSHIP table
+path_PR<- "C:/Users/Gebruiker/OneDrive/Documents/projects/CONSIGN/CDMInstances_preselect/"
+  PR_name<-"PERSONS_RELATIONS.csv"
+
 #######################################################################
 
 # universal input
