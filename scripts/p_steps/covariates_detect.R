@@ -222,6 +222,13 @@ fwrite(diabetes_cov, paste0(output_folder,"diabetes.csv"))
 #################################################################################
 # OBESITY
 
+# ARS so_source_table = "CAP1", so source_column = "ALTEZZA" is height in centimeters, so_source_table = "CAP1", so source_column = "PESO" is weight in kg
+# USWAN so_source_table='mids_initial_assessment', so_source_column='BMI', so_source_value  "=> 30"
+# IACS so_source_column='BMI', so_source_value "=> 30"
+# aarhus so_source_column='BMI_MODER' AND so_source_value="=> 30"
+# karolinska so_source_column='BMI vid inskrivning' AND so_source_value="=> 30"
+# UOSL so_source_column='KMI_foer' AND so_source_value="=> 30"
+# --> decided to skip calculated BMI 24/10
 
 obesity_names<-c("L_OBESITY_COV")
 my_rows<-which(Reduce(`|`, lapply(obesity_names, startsWith, x = as.character(all_codes$full_name))))
@@ -231,14 +238,6 @@ obesity_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows
 my_rows<-which(Reduce(`|`, lapply(obesity_codes, match, x = as.character(EVENTS$event_code))))
 obesity_EV_ID<-(EVENTS$person_id[my_rows])
 obesity_EV_Date<- (EVENTS$start_date_record[my_rows])
-
-my_rows<-which(Reduce(`|`, lapply(obesity_codes, startsWith, x = as.character(MED_OB$mo_code))))
-obesity_MO_ID<-(MED_OB$person_id[my_rows])
-obesity_MO_Date<- (MED_OB$mo_date[my_rows])
-
-my_rows<-which(Reduce(`|`, lapply(obesity_codes, startsWith, x = as.character(SURV_OB$so_meaning))))
-obesity_SO_ID<-(SURV_OB$person_id[my_rows])
-obesity_SO_Date<- (SURV_OB$so_date[my_rows])
 
 obesity_atc<-c("A08AB","A08AA")
 
