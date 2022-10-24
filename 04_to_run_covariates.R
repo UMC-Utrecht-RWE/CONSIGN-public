@@ -35,9 +35,29 @@ if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
 # covariate timing combining to pregnancy/covid
 
 
-# 
-# source(paste0(pre_dir,"/maternal_death_detect.R" ))
-# 
-# source(paste0(pre_dir,"/maternal_gestdiab_detect.R" ))
-# 
-# source(paste0(pre_dir,"/maternal_preeclamp_detect.R" ))
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+if(DAP=="ARS"){
+  source(paste0(pre_dir,"/ARS_mat_cov_no_link.R" ))}
+  
+if(DAP=="Aarhus"){
+  source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
+
+if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+
+if(DAP=="FISABIO"){
+  source(paste0(pre_dir,"/Fisabio_mat_cov_no_link.R" ))}
+
+if(DAP=="IACS"){
+  source(paste0(pre_dir,"/IACS_mat_cov_no_link.R" ))}
+
+if(DAP=="Karolinska"){
+  source(paste0(pre_dir,"/Karolinska_mat_cov_no_link.R" ))}
+
+if(DAP=="UOSL"){
+  source(paste0(pre_dir,"/Oslo_mat_cov_no_link.R" ))}
+
+if(DAP=="USWAN"){
+  source(paste0(pre_dir,"/SWANSEA_mat_cov_no_link.R" ))}
