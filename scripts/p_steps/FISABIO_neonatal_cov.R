@@ -8,7 +8,7 @@
 neonate_cohort_folders<-list(case_neonate_folder,control_neonate_folder, historical_neonate_folder)
 output_folders<-neonate_cohort_folders
 
-my_neonate_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
+# my_neonate_data<-c("cov_pos_preg.csv", "cov_neg_preg.csv", "my_PREG.csv")
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
 my_codes<-all_codes$code

@@ -75,7 +75,11 @@ source(paste0(pre_dir, "/create_table_1abc.R"))
 
  source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
 
+############################################################
 
+# baseline characteristics of covid+ pregnancy cohort tabulated and stored in g_output/final/
+
+source(paste0(pre_dir, "/create_table_2abc.R"))
 
 
 
