@@ -7,8 +7,10 @@
 # this script will identify the target codes for each covariate
 # covariates described in Teams file CONSIGN_Variables.xlsx using version 9/15/22
 
-cohort_folders<-list(cov_neg_pan_preg_folder, cov_pos_pan_preg_folder, cov_pos_not_preg_folder)
-output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
+
+cohort_folders<-list(preg_match_folder, cases_match_folder, cov_match_folder, hist_preg_folder )
+output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg, output_hist_preg)
+
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
 

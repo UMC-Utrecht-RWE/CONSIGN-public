@@ -12,7 +12,7 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 
-cohort_folders<-list(preg_match_folder, cov_pos_pan_preg_folder, cov_match_folder, hist_preg_folder )
+cohort_folders<-list(preg_match_folder, cases_match_folder, cov_match_folder, hist_preg_folder )
 output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg, output_hist_preg)
 
 all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
@@ -29,11 +29,18 @@ cohort_folder<-unlist(cohort_folders[i])
 
 output_folder<-unlist(output_folders[i])
 
+if(DAP!="Bordeaux"){
 VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
 EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
 MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
 SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
+MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)}else{
+  VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
+  EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
+  MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
+  SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
+  MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
+}
 
 if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
 
