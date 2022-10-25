@@ -85,7 +85,7 @@ cov_year<-year(as.Date(sev_case_data_trim$covid_date))
 severe_cov_calendar_month<-paste0(cov_month, "-", cov_year)
 
 
-covid_month_severe<-table(factor(cov_calendar_month_total, levels=levels_calendar))
+covid_month_severe<-table(factor(severe_cov_calendar_month, levels=levels_calendar))
 
 severe_cases<-c(number_preg, number_moms, gest_age_at_cov_median, gest_age_at_cov_IQR,
                 age_at_start_preg_median, age_IQR, age_12_24, age_25_39, age_40_55)
@@ -110,13 +110,13 @@ age_12_24<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev
 age_25_39<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev_case_data_trim$age_at_start_of_pregnancy, 25,39)])
 age_40_55<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev_case_data_trim$age_at_start_of_pregnancy, 40,55)])
 
-cov_month<-months(as.Date(sev_case_data_trim$covid_date))
-cov_year<-year(as.Date(sev_case_data_trim$covid_date))
+cov_month<-months(as.Date(nonsev_case_data_trim$covid_date))
+cov_year<-year(as.Date(nonsev_case_data_trim$covid_date))
 
 nonsevere_cov_calendar_month<-paste0(cov_month, "-", cov_year)
 
 
-covid_month_nonsevere<-table(factor(cov_calendar_month_total, levels=levels_calendar))
+covid_month_nonsevere<-table(factor(nonsevere_cov_calendar_month, levels=levels_calendar))
 
 nonsevere_cases<-c(number_preg, number_moms, gest_age_at_cov_median, gest_age_at_cov_IQR,
                    age_at_start_preg_median, age_IQR, age_12_24, age_25_39, age_40_55 )
