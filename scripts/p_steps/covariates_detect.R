@@ -47,7 +47,7 @@ if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date
 
 cardio_names<-c("CAD","CARDIOMYOPATHY", "CMSTRESS","HF","HYPERTENSION")
 cardio_codelist<-all_codes[all_codes$event_abbreviation%in%my_event_name,]
-CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events)
+CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events, )
 
 my_rows<-which(Reduce(`|`, lapply(cardio_names, startsWith, x = as.character(all_codes$full_name))))
 

@@ -6,7 +6,7 @@
 
 # combine Pjijzer standard COVID data with DAP tailored COVID data
 
-covid_ev_data<- readRDS("~/projects/CONSIGN/CDMInstances_preselect/COVID19 diagnosis.rds")
+covid_ev_data<- readRDS(paste0(preselect_folder,"COVID19 diagnosis.rds"))
 
 
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
