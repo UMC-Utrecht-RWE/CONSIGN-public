@@ -107,7 +107,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PREECLAMPSIA
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SB" AND events data
+  # oslo uses survey
   
   my_rows1<-which(SURV_OB$so_source_column=="eklampsia"&SURV_OB$so_source_value==1)
   my_rows2<-which(SURV_OB$so_source_column=="preekl"&SURV_OB$so_source_value%in%c(1,2,3))
@@ -139,9 +139,9 @@ for(i in 1:length(preg_cohort_folders)){
   # TOPFA_Date<- (EVENTS$start_date_record[my_rows])
   # 
   # 
-  # TOPFA_cov<-as.data.frame(cbind(TOPFA_ID,TOPFA_Date))
-  # 
-  # fwrite(TOPFA_cov, paste0(output_folder,"TOPFA.csv"))
+  TOPFA_cov<-as.data.frame(cbind(NA,NA))
+  colnames(TOPFA_cov)<-c("id", "date") 
+  fwrite(TOPFA_cov, paste0(output_folder,"TOPFA.csv"))
   
   #################################################################################
   # PRE-TERM BIRTH

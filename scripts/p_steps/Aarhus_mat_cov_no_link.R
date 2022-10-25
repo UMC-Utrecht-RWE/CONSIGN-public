@@ -37,9 +37,9 @@ for(i in 1:length(preg_cohort_folders)){
   my_event_name<-"GESTDIAB"
   
   GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
-  CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = cov_comorbid_events)
+  CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  GEST_DIAB_EV<-readRDS(paste0(cov_comorbid_events,my_event_name,".rds"))
+  GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
   GEST_DIAB_EV_ID<-(GEST_DIAB_EV$person_id)
   GEST_DIAB_EV_Date<- (GEST_DIAB_EV$start_date_record)
   
@@ -54,14 +54,15 @@ for(i in 1:length(preg_cohort_folders)){
   # Aarhus uses EVENTS and SURVEY_OB 
   # so_source_column= "KEJSERSNIT_MODERSOENSKE"  or so_source_column="Markoer_kejsersnit"  AND  so_source_value= procedure code/non NA
   
+  my_event_name<-"CESAREA"
   
-  my_rows<-which(Reduce(`|`, lapply("TP_CESAREA_COV", startsWith, x = as.character(all_codes$full_name))))
+  CESAREA_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  CESAREA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
+  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
   
-  my_rows<-which(Reduce(`|`, lapply(CESAREA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  CESAREA_EV_ID<-(EVENTS$person_id[my_rows])
-  CESAREA_EV_Date<- (EVENTS$start_date_record[my_rows])
   
   my_rows<-which(SURV_OB$so_source_column%in%c("KEJSERSNIT_MODERSOENSKE", "Markoer_kejsersnit")& (is.na(SURV_OB$so_source_value)==F))
   CESAREA_SO_ID<-SO$person_id[my_rows]
@@ -78,14 +79,17 @@ for(i in 1:length(preg_cohort_folders)){
   # SPONTANEOUS ABORTION
   
   # Aarhus USES events only
+  my_event_name<-"SPONTABO"
   
-  my_rows<-which(Reduce(`|`, lapply("P_SPONTABO_AESI", startsWith, x = as.character(all_codes$full_name))))
+  SPONTABO_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  SA_EV_ID<-(SPONTABO_EV$person_id)
+  SA_EV_Date<- (SPONTABO_EV$start_date_record)
   
-  my_rows<-which(Reduce(`|`, lapply(SA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  SA_EV_ID<-(EVENTS$person_id[my_rows])
-  SA_EV_Date<- (EVENTS$start_date_record[my_rows])
+  
+  
   
   df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
@@ -104,7 +108,7 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # Aarhus uses only SURVEY_OB
+  # Aarhus uses only SURVEY_OB and preg alg
   # so_source_column= "LEVENDE_ELLER_DOEDFOEDT"  AND so_source_value= "DOEDFOEDT" 
   
  
@@ -134,16 +138,16 @@ for(i in 1:length(preg_cohort_folders)){
   
   # Aarhus USES events only
   
-  my_rows<-which(Reduce(`|`, lapply("P_PREECLAMP_AESI", startsWith, x = as.character(all_codes$full_name))))
+  my_event_name<-"PREECLAMP"
   
-  PREECLAMP_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  PREECLAMP_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = PREECLAMP_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  my_rows<-which(Reduce(`|`, lapply(PREECLAMP_codes, startsWith, x = as.character(EVENTS$event_code))))
-  PREECLAMP_ID<-(EVENTS$person_id[my_rows])
-  PREECLAMP_Date<- (EVENTS$start_date_record[my_rows])
+  PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  PREECLAMP_EV_ID<-(PREECLAMP_EV$person_id)
+  PREECLAMP_EV_Date<- (PREECLAMP_EV$start_date_record)
   
-  
-  PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_ID,PREECLAMP_Date))
+  PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_EV_ID,PREECLAMP_EV_Date))
   colnames(PREECLAMP_cov)<-c("id", "date")
   fwrite(PREECLAMP_cov, paste0(output_folder,"Preeclampsia.csv"))
 
@@ -151,19 +155,19 @@ for(i in 1:length(preg_cohort_folders)){
   # TOPFA
   
   # Aarhus USES events only
+  # 
+  # TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
+  # 
+  # my_rows<-which(Reduce(`|`, lapply(TOPFA_names, startsWith, x = as.character(all_codes$full_name))))
+  # 
+  # TOPFA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  # 
+  # my_rows<-which(Reduce(`|`, lapply(TOPFA_codes, startsWith, x = as.character(EVENTS$event_code))))
+  # TOPFA_ID<-(EVENTS$person_id[my_rows])
+  # TOPFA_Date<- (EVENTS$start_date_record[my_rows])
   
-  TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
   
-  my_rows<-which(Reduce(`|`, lapply(TOPFA_names, startsWith, x = as.character(all_codes$full_name))))
-  
-  TOPFA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-  
-  my_rows<-which(Reduce(`|`, lapply(TOPFA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  TOPFA_ID<-(EVENTS$person_id[my_rows])
-  TOPFA_Date<- (EVENTS$start_date_record[my_rows])
-  
-  
-  TOPFA_cov<-as.data.frame(cbind(TOPFA_ID,TOPFA_Date))
+  TOPFA_cov<-as.data.frame(cbind(NA,NA))
   colnames(TOPFA_cov)<-c("id", "date")
   fwrite(TOPFA_cov, paste0(output_folder,"TOPFA.csv"))
   

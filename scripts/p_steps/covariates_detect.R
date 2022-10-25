@@ -15,10 +15,8 @@ DAP<-CDM_source$data_access_provider_name
 cohort_folders<-list(preg_match_folder, cases_match_folder, cov_match_folder, hist_preg_folder )
 output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg, output_hist_preg)
 
-all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
-my_codes<-all_codes$code
-no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
-all_codes$code_no_dots<-no_dots_codes
+
+all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
@@ -47,7 +45,10 @@ if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date
 #################################################################
 #CARDIO
 
-cardio_names<-c("C_CAD_AESI","C_CARDIOMYOPATHY_COV", "C_CMSTRESS_AESI","C_HF_COV","V_HYPERTENSION_COV")
+cardio_names<-c("CAD","CARDIOMYOPATHY", "CMSTRESS","HF","HYPERTENSION")
+cardio_codelist<-all_codes[all_codes$event_abbreviation%in%my_event_name,]
+CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events)
+
 my_rows<-which(Reduce(`|`, lapply(cardio_names, startsWith, x = as.character(all_codes$full_name))))
 
 cardio_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))

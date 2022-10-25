@@ -37,9 +37,9 @@ for(i in 1:length(preg_cohort_folders)){
   my_event_name<-"GESTDIAB"
   
   GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
-  CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = cov_comorbid_events)
+  CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  GEST_DIAB_EV<-readRDS(paste0(cov_comorbid_events,my_event_name,".rds"))
+  GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
   GEST_DIAB_EV_ID<-(GEST_DIAB_EV$person_id)
   GEST_DIAB_EV_Date<- (GEST_DIAB_EV$start_date_record)
  
@@ -52,14 +52,14 @@ for(i in 1:length(preg_cohort_folders)){
   # SWANSEA uses events and survey observations
   # so_source_table='mids' so_source_column='BIRTH_MODE_CD' AND so_source_value is "4" or "5" 
   
+  my_event_name<-"CESAREA"
   
-  my_rows<-which(Reduce(`|`, lapply("TP_CESAREA_COV", startsWith, x = as.character(all_codes$full_name))))
+  CESAREA_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  CESAREA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-  
-  my_rows<-which(Reduce(`|`, lapply(CESAREA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  CESAREA_EV_ID<-(EVENTS$person_id[my_rows])
-  CESAREA_EV_Date<- (EVENTS$start_date_record[my_rows])
+  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
+  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
   
   my_rows<-which(SURV_OB$so_source_table=="mids" &SURV_OB$so_source_column=="BIRTH_MODE_CD"&SURV_OB$so_source_value%in%c(4,5))
   CESAREA_SO_ID<-(SURV_OB$person_id[my_rows])
@@ -95,15 +95,16 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # SWANSEA USES events only
+  # all daps use preg alg
   
-  my_rows<-which(Reduce(`|`, lapply("P_STILLBIRTH_AESI", startsWith, x = as.character(all_codes$full_name))))
+  my_event_name<-"STILLBIRTH"
   
-  SB_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  SB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  my_rows<-which(Reduce(`|`, lapply(SB_codes, startsWith, x = as.character(EVENTS$event_code))))
-  SB_EV_ID<-(EVENTS$person_id[my_rows])
-  SB_EV_Date<- (EVENTS$start_date_record[my_rows])
+  SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  SB_EV_ID<-(SB_EV$person_id)
+  SB_EV_Date<- (SB_EV$start_date_record)
   
   df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
@@ -124,16 +125,17 @@ for(i in 1:length(preg_cohort_folders)){
   
   # SWANSEA USES events only
   
-  my_rows<-which(Reduce(`|`, lapply("P_PREECLAMP_AESI", startsWith, x = as.character(all_codes$full_name))))
+  my_event_name<-"PREECLAMP"
   
-  PREECLAMP_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  PREECLAMP_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = PREECLAMP_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  my_rows<-which(Reduce(`|`, lapply(PREECLAMP_codes, startsWith, x = as.character(EVENTS$event_code))))
-  PREECLAMP_ID<-(EVENTS$person_id[my_rows])
-  PREECLAMP_Date<- (EVENTS$start_date_record[my_rows])
+  PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  PREECLAMP_EV_ID<-(PREECLAMP_EV$person_id)
+  PREECLAMP_EV_Date<- (PREECLAMP_EV$start_date_record)
   
   
-  PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_ID,PREECLAMP_Date))
+  PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_EV_ID,PREECLAMP_EV_Date))
   colnames(PREECLAMP_cov)<-c("id", "date")
   fwrite(PREECLAMP_cov, paste0(output_folder,"Preeclampsia.csv"))
 
@@ -143,23 +145,23 @@ for(i in 1:length(preg_cohort_folders)){
   # SWANSEA USES events AND EUROCAT type=4 signifies termination
   
   
-  TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
-  
-  my_rows<-which(Reduce(`|`, lapply(TOPFA_names, startsWith, x = as.character(all_codes$full_name))))
-  
-  TOPFA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-  
-  my_rows<-which(Reduce(`|`, lapply(TOPFA_codes, startsWith, x = as.character(EVENTS$event_code))))
-  TOPFA_EV_ID<-(EVENTS$person_id[my_rows])
-  TOPFA_EV_Date<- (EVENTS$start_date_record[my_rows])
+  # TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
+  # 
+  # my_rows<-which(Reduce(`|`, lapply(TOPFA_names, startsWith, x = as.character(all_codes$full_name))))
+  # 
+  # TOPFA_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  # 
+  # my_rows<-which(Reduce(`|`, lapply(TOPFA_codes, startsWith, x = as.character(EVENTS$event_code))))
+  # TOPFA_EV_ID<-(EVENTS$person_id[my_rows])
+  # TOPFA_EV_Date<- (EVENTS$start_date_record[my_rows])
   
   df_EUROCAT<-fread(paste0(cohort_folder, "EUROCAT.csv"))
   
   TOPFA_EUR_ID<-df_EUROCAT$person_id_child[df_EUROCAT$type==4]
   TOPFA_EUR_DATE<-df_EUROCAT$birthdate[df_EUROCAT$type==4]
   
-  TOPFA_ID<-c(TOPFA_EV_ID, TOPFA_EUR_ID)
-  TOPFA_Date<-c(TOPFA_EV_Date, TOPFA_EUR_DATE)
+  TOPFA_ID<-c( TOPFA_EUR_ID)
+  TOPFA_Date<-c(TOPFA_EUR_DATE)
   
   TOPFA_cov<-as.data.frame(cbind(TOPFA_ID,TOPFA_Date))
   colnames(TOPFA_cov)<-c("id","date")
