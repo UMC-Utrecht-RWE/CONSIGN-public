@@ -16,7 +16,7 @@ if(nrow(covid_ev_data>0)){
   colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
 
-if((nrow(covid_events)>0)){covid_data<-as.data.frame(rbind(covid_events, covid_dap_data))}else{covid_data<-covid_dap_data}
+if((nrow(covid_ev_data)>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
 
 rm(covid_events)
 
