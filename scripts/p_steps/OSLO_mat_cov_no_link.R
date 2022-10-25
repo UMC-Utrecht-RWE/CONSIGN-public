@@ -10,10 +10,7 @@ output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov
 
 my_preg_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
 
-all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
-my_codes<-all_codes$code
-no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
-all_codes$code_no_dots<-no_dots_codes
+all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
@@ -76,15 +73,17 @@ for(i in 1:length(preg_cohort_folders)){
   SA_SO_ID<-(SURV_OB$person_id[my_rows])
   SA_SO_Date<- (SURV_OB$so_date[my_rows])
   
-  # 
-  # df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
-  # 
-  # 
-  # SA_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
-  # SA_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
-  # 
-  # 
-  SA_cov<-as.data.frame(cbind(SA_SO_ID,SA_SO_Date))
+  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+  
+  
+  SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
+  SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
+  
+  SA_ID<-c(SA_SO_ID, SA_alg_ID)
+  SA_Date<-c(SA_SO_Date, SA_alg_Date)
+  
+  SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
+  
   colnames(SA_cov)<-c("id", "date")
   fwrite(SA_cov, paste0(output_folder,"Spont_Abort.csv"))
   
@@ -95,9 +94,16 @@ for(i in 1:length(preg_cohort_folders)){
   # OSLO same specs for SB as SA
 
   
-  fwrite(SA_cov, paste0(output_folder,"Still_Birth.csv"))
+  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
   
+  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
+  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
+  
+  SB_ID<-c(SB_alg_ID)
+  SB_Date<-c(SB_alg_Date)
+  
+  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
   #################################################################################
   # PREECLAMPSIA
   
@@ -142,8 +148,6 @@ for(i in 1:length(preg_cohort_folders)){
   
   # OSLO only uses pregnancy algorithm output
   
-
-  
   df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
@@ -151,15 +155,13 @@ for(i in 1:length(preg_cohort_folders)){
   PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   
-
-  
-  PRETERM_ID<- PRETERM_alg_ID
-  PRETERM_DATE<- PRETERM_alg_DATE
+  PRETERM_ID<-c( PRETERM_alg_ID)
+  PRETERM_DATE<-c( PRETERM_alg_DATE)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
-  colnames(PRETERM_cov)<-c("id", "date")
+  colnames(PRETERM_cov)<-c("id","date")
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
-   
+  
   
 #####################################################################
 

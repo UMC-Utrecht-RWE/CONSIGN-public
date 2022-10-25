@@ -11,10 +11,7 @@ output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov
 
 my_preg_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
 
-all_codes<-fread(paste0(projectFolder,"/ALL_full_codelist.csv"))
-my_codes<-all_codes$code
-no_dots_codes <- my_codes %>% str_replace_all('\\.', '')
-all_codes$code_no_dots<-no_dots_codes
+all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
@@ -39,14 +36,15 @@ for(i in 1:length(preg_cohort_folders)){
   # Bordeaux ALSO uses PROCEDURES
   # origin_of_procedure = "BIOLOGIE" AND procedure_code="0412"
   
-  GEST_DIAB_names<-c("P_GESTDIAB_AESI")
-  my_rows<-which(Reduce(`|`, lapply(GEST_DIAB_names, startsWith, x = as.character(all_codes$full_name))))
+  my_event_name<-"GESTDIAB"
   
-  GEST_DIAB_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = cov_comorbid_events)
   
-  my_rows<-which(Reduce(`|`, lapply(GEST_DIAB_codes, startsWith, x = as.character(EVENTS$event_code))))
-  GEST_DIAB_EV_ID<-(EVENTS$person_id[my_rows])
-  GEST_DIAB_EV_Date<- (EVENTS$start_date_record[my_rows])
+  GEST_DIAB_EV<-readRDS(paste0(cov_comorbid_events,my_event_name,".rds"))
+  GEST_DIAB_EV_ID<-(GEST_DIAB_EV$person_id)
+  GEST_DIAB_EV_Date<- (GEST_DIAB_EV$start_date_record)
+  
  
   my_rows<-which(PROC$origin_of_procedure=="BIOLOGIE"& PROC$procedure_code=="0412")
   GEST_DIAB_PROC_ID<-PROC$person_id[my_rows]
@@ -105,10 +103,16 @@ for(i in 1:length(preg_cohort_folders)){
   SA_SO_ID<-SURV_OB$person_id[my_rows]
   SA_SO_Date<-SURV_OB$so_date[my_rows]
   
-
   
-  SA_ID<-c(SA_EV_ID,SA_SO_ID)
-  SA_Date<-C(SA_EV_Date, SA_SO_Date)
+  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+  
+  
+  SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
+  SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
+  
+  
+  SA_ID<-c(SA_EV_ID,SA_SO_ID, SA_alg_ID)
+  SA_Date<-C(SA_EV_Date, SA_SO_Date, SA_alg_Date)
   
   SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
   colnames(SA_cov)<-c("id", "date")
@@ -138,8 +142,14 @@ for(i in 1:length(preg_cohort_folders)){
   SB_SO_Date<-SURV_OB$so_date[my_rows]
 
   
-  SB_ID<-c(SB_EV_ID, SB_SO_ID)
-  SB_Date<-c(SB_EV_Date, SB_SO_Date)
+  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+  
+  
+  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
+  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
+  
+  SB_ID<-c(SB_EV_ID, SB_SO_ID, SB_alg_ID)
+  SB_Date<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
   
   SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
   colnames(SB_cov)<-c("id", "date")
@@ -196,24 +206,24 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PRE-TERM BIRTH
   # ALL DAPs use pregnancy algorithm output (LB &gest_age<37 weeks)
-  
  
   
   df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
   
-  PRETERM_alg_ID<-df_preg$person_id[(df_preg$gest_weeks<37)&(df_preg$type_of_pregnancy_end=="LB")]
-  PRETERM_alg_Date<-df_preg$pregnancy_end_date[(df_preg$gest_weeks<37)&(df_preg$type_of_pregnancy_end=="LB")]
+  PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
+  PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
   
-
-  PRETERM_ID<-c(PRETERM_alg_ID)
-  PRETERM_DATE<-c(PRETERM_alg_Date)
+  
+  PRETERM_ID<-c( PRETERM_alg_ID)
+  PRETERM_DATE<-c( PRETERM_alg_DATE)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
-  colnames(PRETERM_cov)<-c("id", "date")
+  colnames(PRETERM_cov)<-c("id","date")
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
-   
+  
+  
   
 #####################################################################
 

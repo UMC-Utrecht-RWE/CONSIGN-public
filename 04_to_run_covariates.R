@@ -24,6 +24,8 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
+source(paste0(pre_dir, "/CreateConceptDatasets.R"))
+
 
 # # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # # written to cohort folders in g_output/covariates/...
