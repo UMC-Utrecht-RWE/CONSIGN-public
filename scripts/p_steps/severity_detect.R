@@ -53,6 +53,7 @@ covid_data$severe[sev_rows]<-1
 
 # for each COVID infection (possibly multiple dates), either severe OR non-severe
 #first date --> look forward 4 weeks for severity
+covid_data$cov_date<-as.numeric(covid_data$cov_date)
 
 covid_data<-covid_data[with(covid_data, order(person_id, cov_date)),]
 id_freq<-as.numeric(table(covid_data$person_id))
@@ -60,7 +61,7 @@ covid_grouped<-covid_data%>%group_by(person_id)
 
 
 first_covid<-covid_grouped%>%slice_head()
-covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
+covid_data$duration<-as.numeric(covid_data$cov_date)-(rep(as.numeric(first_covid$cov_date), id_freq))
 
 # hist(covid_data$duration, breaks=30)
 #GOOD this is what we expect
