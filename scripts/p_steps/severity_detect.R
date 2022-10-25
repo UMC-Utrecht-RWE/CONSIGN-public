@@ -18,7 +18,6 @@ if(nrow(covid_ev_data>0)){
 
 if((nrow(covid_ev_data)>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
 
-rm(covid_events)
 
 # remove rows with missing data
 covid_data<-covid_data[complete.cases(covid_data),]
