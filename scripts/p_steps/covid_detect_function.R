@@ -1,34 +1,31 @@
-#Author: Ema Alsina, MSc.
-#email: e.m.alsina-2@umcutrecht.nl
-#Organisation: UMC Utrecht, Utrecht, The Netherlands
-#Date: 20/10/2022
-
-library(tidyverse)
+#' @param codesheet data.table file with the codes, concept and coding system
+#' @param file CDM table with codes
+#' @param c.voc codesheet coding system column name
+#' @param c.concept codesheet concept column name
+#' @param c.codes codesheet code column name
+#' @param coding systems that merges based on start with
+#' @param f.code file code column name
+#' @param f.voc file coding system column name
+#' @param path location to write the RDS files to per concept name
+#' @param method if SQL, a join is used. If loop a loop is used to subset
 
 events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
+# something going wrong with codes with leading 0s
 
-codesheet_cov<-fread(paste0(projectFolder,"/COVID_codes_19_10.csv"))
-print(table(codesheet_cov$`Coding system`))
+full_codelist<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
-my_covid_codes<-codesheet_cov$Code
+# make sure everything is upper case
+# full_codelist$event_definition<-toupper(full_codelist$event_definition)
+# full_codelist$code<-toupper(full_codelist$code)
+# full_codelist$coding_system<-toupper(full_codelist$coding_system)
 
-# DAPs EVENTS codes missing "." need to expand target list - across the covariates
-no_dots_cov_codes <- my_covid_codes %>% str_replace_all('\\.', '')
+covid_codelist<-full_codelist[full_codelist$event_definition=="COVID19 diagnosis",]
 
-all_covid_codes<-unique(c(my_covid_codes, no_dots_cov_codes))
 
-my_rows<-which(Reduce(`|`, lapply(all_covid_codes, match, x = as.character(events_tables$event_code))))
+CreateConceptDatasets(codesheet = covid_codelist, file = events_tables, c.voc="coding_system", 
+                      c.concept="event_definition", c.codes="code", c.startwith = "ICD9CM",
+                      f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder,
+                      method = "loop", group = T, f.name = NULL, db = NULL )
 
-person_id<-events_tables$person_id[my_rows]
-cov_date<-events_tables$start_date_record[my_rows]
-meaning<-events_tables$meaning_of_event[my_rows]
-ev_code<-events_tables$event_code[my_rows]
 
-table(ev_code)
-
-print("total covid events")
-print(length(person_id))
-
-events_covid_data<-as.data.frame(cbind(person_id, cov_date, meaning, ev_code))
-fwrite(events_covid_data, paste0(preselect_folder,"COVID_events_data.csv" ))
 

@@ -6,11 +6,14 @@
 
 # combine Pjijzer standard COVID data with DAP tailored COVID data
 
-covid_ev_data<-fread(paste0(preselect_folder,"COVID_events_data.csv"))
+covid_ev_data<- readRDS("~/projects/CONSIGN/CDMInstances_preselect/COVID19 diagnosis.rds")
+
 
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
 
-if(nrow(covid_ev_data>0)){covid_events<-covid_ev_data%>% select(1:3)}else{print("no COVID cases detect in EVENTS")}
+if(nrow(covid_ev_data>0)){
+  covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
+  colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
 
 if((nrow(covid_events)>0)){covid_data<-as.data.frame(rbind(covid_events, covid_dap_data))}else{covid_data<-covid_dap_data}
@@ -118,6 +121,12 @@ covid_data$duration<-covid_data$cov_date-(rep(first_covid$cov_date, id_freq))
   final_covid_data<-final_covid_data[with(final_covid_data, order(person_id, cov_date)),]
   nrow(final_covid_data)==nrow(covid_data)
 
+  print("covid date must occur from March 1 2020 onwards, remove earlier dates")
+  print("how many covid cases occur before March 1 2020? Print table: ")
+  print(nrow(final_covid_data[as.numeric(final_covid_data$cov_date)<as.numeric(pan_start_date),]))
+  final_covid_data<-final_covid_data[as.numeric(final_covid_data$cov_date)>=pan_start_date,]
+  
+  
 fwrite(final_covid_data, paste0(preselect_folder, "/covid_data.csv"))
 
 print("total covid cases in study population")

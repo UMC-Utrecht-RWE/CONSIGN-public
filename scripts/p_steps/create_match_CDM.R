@@ -41,7 +41,7 @@ actual_tables_CDM$VACCINES<-list.files(paste0(preselect_folder), pattern="^VACCI
 actual_tables_CDM$SURVEY_ID<-list.files(paste0(preselect_folder), pattern="^SURVEY_ID")
 actual_tables_CDM$EUROCAT<-list.files(paste0(preselect_folder), pattern="^EUROCAT")
 actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS")
-actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^study_pop_PREG")}else{
+actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg_trim")}else{
   actual_tables_CDM<-list()
   actual_tables_CDM$EVENTS<-list.files(paste0(preselect_folder), pattern="^EVENTS_SLIM")
   actual_tables_CDM$MEDICAL_OBSERVATIONS<-list.files(paste0(preselect_folder), pattern="^MED_OB_SLIM")
@@ -51,7 +51,7 @@ actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^stud
   actual_tables_CDM$SURVEY_ID<-list.files(paste0(preselect_folder), pattern="^SURVEY_ID")
   actual_tables_CDM$EUROCAT<-list.files(paste0(preselect_folder), pattern="^EUROCAT")
   actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS")
-  actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^study_pop_PREG")
+  actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg_trim")
 }
 
 
