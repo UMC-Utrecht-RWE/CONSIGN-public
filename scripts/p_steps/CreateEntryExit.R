@@ -65,10 +65,6 @@ PERSONS$elligible_pandemic[(PERSONS$entry_date_pandemic<=pan_start_date)&(PERSON
 table(PERSONS$elligible_pandemic)
 mean(PERSONS$elligible_pandemic)
 
-hist(PERSONS$age_at_start_pandemic[PERSONS$elligible_pandemic==0])
-table(PERSONS$entry_date_pandemic[PERSONS$elligible_pandemic==0])
-mean(PERSONS$elligible_pandemic)
-
 # make age groups
 
 PERSONS$age_at_start_study<-(as.numeric(start_study_date)-PERSONS$num_DOB)/365
@@ -84,6 +80,11 @@ PERSONS$age_at_start_pandemic<-round(PERSONS$age_at_start_pandemic,0)
 # hist(PERSONS$age_at_start_pandemic, breaks=50)
 # abline(v=12, col=2, lwd=2)
 # abline(v=55, col=2, lwd=2)
+
+# hist(PERSONS$age_at_start_pandemic[PERSONS$elligible_pandemic==0])
+# table(PERSONS$entry_date_pandemic[PERSONS$elligible_pandemic==0])
+# mean(PERSONS$elligible_pandemic)
+
 
 PERSONS$age_group<-PERSONS$age_at_start_pandemic
 
