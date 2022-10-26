@@ -11,41 +11,44 @@
 
 my_path<-preselect_folder
 
-my_write_path<- raw_atc_5_counts
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_5_counts/total/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_5_counts/total/")), FALSE))
+raw_atc_5_counts_total    <- paste0(projectFolder, "/g_intermediate/atc_5_counts/total/")
+
+my_write_path_total<- raw_atc_5_counts_total
 
 #pattern match to find and loop through all the MEDS tables
 
 actual_MED_tables<-list.files(my_path, pattern="MEDICINES")
 
-# translate SAP ATC table into machine-readable format
 
+# translate SAP ATC table into machine-readable format
 names_drug_groups<-list( "Enoxaparin","Heparin_Unfractionated", "Acetylsalicyclic_Acid", 
                          "GC_dexamethasone", "GC_betamethasone","GC_hydrocortisone",
                          "GC_methylprednisolone","GC_prednsisone",
-                        "AB_amoxicillin","AB_ampicillin", "AB_ampicillin_combination",
-                        "AB_piperacilline_BLI","AB_ampicillin_BLI","AB_amoxixillin_BLI",
-                        "AB_1st_Ceph_cefalexin","AB_1st_Ceph_cefazolin","AB_2nd_Ceph_cefuroxime",
-                        "AB_3rd_Ceph_cefotaxime","AB_3rd_Ceph_ceftazidime","AB_3rd_Ceph_ceftriaxone",
-                        "AB_3rd_Ceph_cefixime","AB_3rd_Ceph_cefodizime","AB_4th_Ceph_cefepime",
-                        "AB_Carbapenems_meropenem", 
-                        "AB_Macrolides_azithromycin","AB_Macrolides_clarithromycin","AB_Macrolides_erythromycin",
-                        "AB_Lincosamides_clindamycin",
-                        "AB_Anminoglycosides_amikacin","AB_Anminoglycosides_gentamicin",
-                        "AB_Glycopeptide_vancomycin","AB_Glycopeptide_teicoplanin",
-                        "AV_Nucleosides_remdesivir", "AV_HIV_lopinavir_ritonavir",
-                        "AV_Neuraminidase_oseltamivir", "AV_HCV_ribavirin", "AV_Other_favipiravir",
-                        "IG_Normal_Human_IV", "Vaccinations_Viral_COVID19","Antineoplastic_BCR_ABL_TKI_imatinib",
-                        "Antineoplastic_JAK_inhibitors_ruxolitinib",
-                        "Immunosuppressants_baricitinib","Immunosuppressants_tofacitinib",
-                        "Immunosuppressants_IL1_tocilizumab","Immunosuppressants_IL1_sarilumab",
-                        "Immunosuppressants_IL6_anakinra","Immunosuppressants_IL6_canakinumab",
-                        "Immunosuppressants_Calcineurin_ciclosporin",
-                        "Antigout_colchicine", "Analgesics_Paracetemol",
-                        "Psychoanalepts_SSRI_fluvoxamine", "Antiprotozoals_Amoebiasis_metronidazole", 
-                        "Antiprotozoals_Amoebiasis_nitazoxanide",
-                        "Antiprotozoals_Malaria_chloroquine","Antiprotozoals_Malaria_hydroxychloroquine",
-                        
-                        "Antinematodal_ivermectin", "Obstructive_Airway_salbutamol")
+                         "AB_amoxicillin","AB_ampicillin", "AB_ampicillin_combination",
+                         "AB_piperacilline_BLI","AB_ampicillin_BLI","AB_amoxixillin_BLI",
+                         "AB_1st_Ceph_cefalexin","AB_1st_Ceph_cefazolin","AB_2nd_Ceph_cefuroxime",
+                         "AB_3rd_Ceph_cefotaxime","AB_3rd_Ceph_ceftazidime","AB_3rd_Ceph_ceftriaxone",
+                         "AB_3rd_Ceph_cefixime","AB_3rd_Ceph_cefodizime","AB_4th_Ceph_cefepime",
+                         "AB_Carbapenems_meropenem", 
+                         "AB_Macrolides_azithromycin","AB_Macrolides_clarithromycin","AB_Macrolides_erythromycin",
+                         "AB_Lincosamides_clindamycin",
+                         "AB_Anminoglycosides_amikacin","AB_Anminoglycosides_gentamicin",
+                         "AB_Glycopeptide_vancomycin","AB_Glycopeptide_teicoplanin",
+                         "AV_Nucleosides_remdesivir", "AV_HIV_lopinavir_ritonavir",
+                         "AV_Neuraminidase_oseltamivir", "AV_HCV_ribavirin", "AV_Other_favipiravir",
+                         "IG_Normal_Human_IV", "Vaccinations_Viral_COVID19","Antineoplastic_BCR_ABL_TKI_imatinib",
+                         "Antineoplastic_JAK_inhibitors_ruxolitinib",
+                         "Immunosuppressants_baricitinib","Immunosuppressants_tofacitinib",
+                         "Immunosuppressants_IL1_tocilizumab","Immunosuppressants_IL1_sarilumab",
+                         "Immunosuppressants_IL6_anakinra","Immunosuppressants_IL6_canakinumab",
+                         "Immunosuppressants_Calcineurin_ciclosporin",
+                         "Antigout_colchicine", "Analgesics_Paracetemol",
+                         "Psychoanalepts_SSRI_fluvoxamine", "Antiprotozoals_Amoebiasis_metronidazole", 
+                         "Antiprotozoals_Amoebiasis_nitazoxanide",
+                         "Antiprotozoals_Malaria_chloroquine","Antiprotozoals_Malaria_hydroxychloroquine",
+                         
+                         "Antinematodal_ivermectin", "Obstructive_Airway_salbutamol")
 
 ATC_groups<-list( "B01AB01" ,"B01AB05" ,"B01AC06" ,"H02AB02","H02AB01","H02AB09","H02AB04","H02AB06",
                   "J01CA04","J01CA01","J01CA51", "J01CR05","J01CR01","J01CR02",
@@ -58,6 +61,7 @@ ATC_groups<-list( "B01AB01" ,"B01AB05" ,"B01AC06" ,"H02AB02","H02AB01","H02AB09"
                   "M04AC01", "N02BE01",
                   "N06AB08" , "P01AB01","P01AX11","P01BA01","P01BA02", "P02CF01",   "R03AC02" )
 
+
 # bind to data_frame to check that codes are aligned correctly
 df_atc_groups<-as.data.frame(cbind((names_drug_groups), (ATC_groups)))
 
@@ -65,39 +69,45 @@ colnames(df_atc_groups)<-c("name", "ATC")
 
 print(df_atc_groups)
 
-fwrite(df_atc_groups, paste0(g_intermediate,"/ATC_5_source_data.csv"))
+fwrite(df_atc_groups, paste0(g_intermediate,"/atc_5_source_data.csv"))
+
 #####################################################################
 
 ATC_detect<-function(my_data= my_dt_MED, names=names_drug_groups, ATC=ATC_groups){
   for(i in 1:length(names_drug_groups)){
-    my_rows<-which(Reduce(`|`, lapply(ATC[i], startsWith, x = as.character(my_dt_MED$medicinal_product_atc_code))))
-    my_ID<-paste0(names[i],"_ID")
-    my_ID<-(my_dt_MED$person_id[my_rows])
-    my_Date<-paste0(names[i],"_Date")
-    my_Date<- (my_dt_MED$drug_date[my_rows])
-    my_ATC<-paste0(names[i],"_ATC")
-    my_ATC<-(my_dt_MED$medicinal_product_atc_code[my_rows])
-    
-    
-    
-    
-    my_df<-paste0(names[i],"_df")
-    my_df<-as.data.frame(cbind(my_ID,my_Date, my_ATC))
-    colnames(my_df)<-c("person_id", "date", "ATC")
-    return(my_df)
-    
+  my_rows<-which(Reduce(`|`, lapply(ATC[i], startsWith, x = as.character(my_dt_MED$medicinal_product_atc_code))))
+  my_ID<-paste0(names[i],"_ID")
+  my_ID<-(my_dt_MED$person_id[my_rows])
+  my_Date<-paste0(names[i],"_Date")
+  my_Date<- (my_dt_MED$drug_date[my_rows])
+  my_ATC<-paste0(names[i],"_ATC")
+  my_ATC<-(my_dt_MED$medicinal_product_atc_code[my_rows])
+  
+  my_df<-paste0(names[i],"_df")
+  my_df<-as.data.frame(cbind(my_ID,my_Date, my_ATC))
+  colnames(my_df)<-c("person_id", "date", "ATC")
+  fwrite(my_df, paste0(my_write_path_total, names[i],j,".csv"))
+  
   }
 }
 
 
-for(i in 1:length(actual_MED_tables)){
+for(j in 1:length(actual_MED_tables)){
   
-  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[i]))
+  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[j]))
   
   my_dt_MED$drug_date<-my_dt_MED$date_dispensing
   
-  atc_result<-ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
-  
-  fwrite(atc_result, paste0(my_write_path, "ATC5_",i,".csv"))
+  ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
+
 }
 
+for(i in 1:length(names_drug_groups)){
+  
+  drug_group<-as.character(names_drug_groups[i])
+  print(drug_group)
+  
+  my_data<-IMPORT_PATTERN(pat=drug_group, dir=my_write_path_total)
+  
+  fwrite(my_data, paste0(raw_atc_5_counts,names_drug_groups[i],".csv"))
+}

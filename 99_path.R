@@ -31,6 +31,17 @@ matched_folder<-paste0(projectFolder,"/matched/")
 invisible(if(dir.exists(matched_folder)==F)
 {dir.create(matched_folder)})
 
+preg_match_folder<-paste0(projectFolder,"/matched/CDM_preg_negative/")
+invisible(if(dir.exists(preg_match_folder)==F)
+{dir.create(preg_match_folder)})
+
+cases_match_folder<-paste0(projectFolder,"/matched/CDM_preg_positive/")
+invisible(if(dir.exists(cases_match_folder)==F)
+{dir.create(cases_match_folder)})
+
+cov_match_folder<-paste0(projectFolder,"/matched/CDM_covid_positive/")
+invisible(if(dir.exists(cov_match_folder)==F)
+{dir.create(cov_match_folder)})
 
 pan_preg_folder<-paste0(projectFolder,"/CDMInstances_pan_pregnant/")
 invisible(if(dir.exists(pan_preg_folder)==F)

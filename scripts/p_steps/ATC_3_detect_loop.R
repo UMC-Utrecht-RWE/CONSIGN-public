@@ -11,13 +11,15 @@
 
 my_path<-preselect_folder
 
-my_write_path<- raw_atc_3_counts
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_3_counts/total/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_3_counts/total/")), FALSE))
+raw_atc_3_counts_total    <- paste0(projectFolder, "/g_intermediate/atc_3_counts/total/")
 
-#pattern match to find and loop through all the MEDS tables
+my_write_path_total<- raw_atc_3_counts_total
 
 #pattern match to find and loop through all the MEDS tables
 
 actual_MED_tables<-list.files(my_path, pattern="MEDICINES")
+
 
 # translate SAP ATC table into machine-readable format
 
@@ -42,41 +44,45 @@ colnames(df_atc_groups)<-c("name", "ATC")
 
 print(df_atc_groups)
 
-fwrite(df_atc_groups, paste0(g_intermediate,"/ATC_3_source_data.csv"))
+fwrite(df_atc_groups, paste0(g_intermediate,"/atc_3_source_data.csv"))
+
 #####################################################################
 
 ATC_detect<-function(my_data= my_dt_MED, names=names_drug_groups, ATC=ATC_groups){
   for(i in 1:length(names_drug_groups)){
-    my_rows<-which(Reduce(`|`, lapply(ATC[i], startsWith, x = as.character(my_dt_MED$medicinal_product_atc_code))))
-    my_ID<-paste0(names[i],"_ID")
-    my_ID<-(my_dt_MED$person_id[my_rows])
-    my_Date<-paste0(names[i],"_Date")
-    my_Date<- (my_dt_MED$drug_date[my_rows])
-    my_ATC<-paste0(names[i],"_ATC")
-    my_ATC<-(my_dt_MED$medicinal_product_atc_code[my_rows])
-    
-    
-    
-    
-    my_df<-paste0(names[i],"_df")
-    my_df<-as.data.frame(cbind(my_ID,my_Date, my_ATC))
-    colnames(my_df)<-c("person_id", "date", "ATC")
-    return(my_df)
-    
+  my_rows<-which(Reduce(`|`, lapply(ATC[i], startsWith, x = as.character(my_dt_MED$medicinal_product_atc_code))))
+  my_ID<-paste0(names[i],"_ID")
+  my_ID<-(my_dt_MED$person_id[my_rows])
+  my_Date<-paste0(names[i],"_Date")
+  my_Date<- (my_dt_MED$drug_date[my_rows])
+  my_ATC<-paste0(names[i],"_ATC")
+  my_ATC<-(my_dt_MED$medicinal_product_atc_code[my_rows])
+  
+  my_df<-paste0(names[i],"_df")
+  my_df<-as.data.frame(cbind(my_ID,my_Date, my_ATC))
+  colnames(my_df)<-c("person_id", "date", "ATC")
+  fwrite(my_df, paste0(my_write_path_total, names[i],j,".csv"))
+  
   }
 }
 
-###############################################################
 
-for(i in 1:length(actual_MED_tables)){
+for(j in 1:length(actual_MED_tables)){
   
-  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[i]))
+  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[j]))
   
-my_dt_MED$drug_date<-my_dt_MED$date_dispensing
+  my_dt_MED$drug_date<-my_dt_MED$date_dispensing
   
-  
-  atc_result<-ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
-  
-  fwrite(atc_result, paste0(my_write_path, "ATC3_",i,".csv"))
+  ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
+
 }
 
+for(i in 1:length(names_drug_groups)){
+  
+  drug_group<-as.character(names_drug_groups[i])
+  print(drug_group)
+  
+  my_data<-IMPORT_PATTERN(pat=drug_group, dir=my_write_path_total)
+  
+  fwrite(my_data, paste0(raw_atc_3_counts,names_drug_groups[i],".csv"))
+}

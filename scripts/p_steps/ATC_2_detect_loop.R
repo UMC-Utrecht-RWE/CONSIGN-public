@@ -11,7 +11,10 @@
 
 my_path<-preselect_folder
 
-my_write_path<- raw_atc_2_counts
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/atc_2_counts/total/")), dir.create(paste0(projectFolder, "/g_intermediate/atc_2_counts/total/")), FALSE))
+raw_atc_2_counts_total    <- paste0(projectFolder, "/g_intermediate/atc_2_counts/total/")
+
+my_write_path_total<- raw_atc_2_counts_total
 
 #pattern match to find and loop through all the MEDS tables
 
@@ -52,28 +55,31 @@ ATC_detect<-function(my_data= my_dt_MED, names=names_drug_groups, ATC=ATC_groups
   my_ATC<-paste0(names[i],"_ATC")
   my_ATC<-(my_dt_MED$medicinal_product_atc_code[my_rows])
   
-  
-  
-  
   my_df<-paste0(names[i],"_df")
   my_df<-as.data.frame(cbind(my_ID,my_Date, my_ATC))
   colnames(my_df)<-c("person_id", "date", "ATC")
-  return(my_df)
+  fwrite(my_df, paste0(my_write_path_total, names[i],j,".csv"))
   
   }
 }
 
 
-for(i in 1:length(actual_MED_tables)){
+for(j in 1:length(actual_MED_tables)){
   
-  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[i]))
+  my_dt_MED<-fread(paste0(my_path,actual_MED_tables[j]))
   
- 
   my_dt_MED$drug_date<-my_dt_MED$date_dispensing
   
-  
-  atc_result<-ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
+  ATC_detect(my_data = my_dt_MED, names = names_drug_groups, ATC = ATC_groups)
 
-  fwrite(atc_result, paste0(my_write_path, "ATC2_",i,".csv"))
 }
 
+for(i in 1:length(names_drug_groups)){
+  
+  drug_group<-as.character(names_drug_groups[i])
+  print(drug_group)
+  
+  my_data<-IMPORT_PATTERN(pat=drug_group, dir=my_write_path_total)
+  
+  fwrite(my_data, paste0(raw_atc_2_counts,names_drug_groups[i],".csv"))
+}

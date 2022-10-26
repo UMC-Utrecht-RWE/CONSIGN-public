@@ -32,25 +32,11 @@ source(paste0(pre_dir, "/preselect.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir,"/CreateSpells.R"))
 
-# Removes records from MEDICINES, MEDICAL_OBSERVATIONS, EVENTS and SURVEY_OBSERVATIONS before of start study period (1-1-2018)
-# source(paste0(pre_dir,"/preselect_study_period.R"))
-
-# COVID DIAGNOSES AND SEVERITY
-# find covid from EVENTS (pfijzer algorithm)
-source(paste0(pre_dir, "/covid_detect_function.R"))
-
-# find covid from survey and medical observations with DAP specific criteria
-source(paste0(pre_dir, "/DAP_covid_detection.R"))
-
-# merge events and dap-specific covid data, detect severity codes and group dates into episodes and create episode severity
-source(paste0(pre_dir, "/severity_detect.R"))
-
 
 # DRUG UTILIZATION:  RESULTS STORED IN G_INTERMEDIATE
 
 # finds all drug utilization of ATC level 2 
 source(paste0(pre_dir, "/ATC_2_detect_loop.R"))
-
 
 # for supplement section of report
 # finds all drug utilization of ATC level 3
