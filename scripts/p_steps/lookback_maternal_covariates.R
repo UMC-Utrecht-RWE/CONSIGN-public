@@ -17,24 +17,24 @@ for(i in 1:length(exposure_folders)){
   data_name<-preg_data_names[i]
   folder<-matched_data_folders[i]
   df_preg_dates<-fread(paste0(folder,data_name))
-  print(nrow(df_preg_dates))
+  # print(nrow(df_preg_dates))
   
   covariate_tables<-list.files(exposure_folders[i])
-  print(covariate_tables)
-  print("table names")
+  # print(covariate_tables)
+  # print("table names")
   names_covariate<-str_sub(covariate_tables, end=-5)
-  (print("variable names"))
-  print(names_covariate)
+  # (print("variable names"))
+  # print(names_covariate)
   for (j in 1:length(covariate_tables)){
     exposure_data<-fread(paste0(exposure_folders[i],covariate_tables[j]))
     exposure_data$person_id<-exposure_data$id
-    print(head(exposure_data))
-    print(names_covariate[j])
+    # print(head(exposure_data))
+    # print(names_covariate[j])
     results<-lookback_test(expos_data = exposure_data, preg_data = df_preg_dates, lookback = (-365*2))
-    print(results)
-    print(j)
+    # print(results)
+    # print(j)
     filename<-paste0(names_covariate[j],"_lookback.csv")
-    print(filename)
+    # print(filename)
     write(results, paste0(output_folders[i],filename))
   }
 }

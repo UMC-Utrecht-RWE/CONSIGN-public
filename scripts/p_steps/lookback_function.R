@@ -56,8 +56,8 @@ lookback_test<-function(expos_data, preg_data, lookback=-365){
   }
   colnames(my_results)<-c("person_id",preg_num )
   return(my_results)}
-  else{print("no records in migraine algorithm dataframe")
-    return("no patients matching this algorithm")}
+  else{print("no records in exposure dataframe")
+    return(data.frame(person_id=NA, date=NA))}
 }
 
 
@@ -130,8 +130,8 @@ lookback_or_during_test<-function(expos_data, preg_data, lookback=-365){
     }
     colnames(my_results)<-c("person_id",preg_num )
     return(my_results)}
-  else{print("no records in migraine algorithm dataframe")
-    return("no patients matching this algorithm")}
+  else{print("no records in exposure dataframe")
+    return(data.frame(person_id=NA, date=NA))}
 }
 
 
@@ -205,8 +205,8 @@ during_test<-function(expos_data, preg_data){
     }
     colnames(my_results)<-c("person_id",preg_num )
     return(my_results)}
-  else{print("no records in migraine algorithm dataframe")
-    return("no patients matching this algorithm")}
+  else{print("no records in exposure dataframe")
+    return(data.frame(person_id=NA, date=NA))}
 }
 
 
@@ -277,6 +277,6 @@ lookforward_or_during_test<-function(expos_data, preg_data, lookforward=90){
     }
     colnames(my_results)<-c("person_id",preg_num )
     return(my_results)}
-  else{print("no records in migraine algorithm dataframe")
-    return("no patients matching this algorithm")}
+  else{print("no records in exposure dataframe")
+    return(data.frame(person_id=NA, date=NA))}
 }

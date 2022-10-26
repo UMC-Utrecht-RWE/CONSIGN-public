@@ -26,6 +26,8 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
 
 # # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # # written to cohort folders in g_output/covariates/...
@@ -33,9 +35,6 @@ if(DAP!="Bordeaux"){
   source(paste0(pre_dir,"/covariates_detect.R" ))}else{source(paste0(pre_dir,"/covariates_detect_BPE.R" ))}
 
 # covariate timing combining to pregnancy/covid
-
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
 
 if(DAP=="ARS"){
   source(paste0(pre_dir,"/ARS_mat_cov_no_link.R" ))}
@@ -45,6 +44,9 @@ if(DAP=="Aarhus"){
 
 # only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
 if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+
+if(DAP=="TEST"){
   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
 
 if(DAP=="FISABIO"){

@@ -39,7 +39,7 @@ source(paste0(pre_dir, "/trimester_create.R"))
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 # re-run covid detection scripts using updated codelist and severity indicators
-# added flexibility to code detection (allowing for "." or no ".")
+
 
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 
