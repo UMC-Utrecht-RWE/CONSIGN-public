@@ -19,6 +19,8 @@ for(i in 1:length(preg_cohort_folders)){
   
   cohort_folder<-unlist(preg_cohort_folders[i])
   output_folder<-unlist(output_folders[i])
+  preg_data<-my_preg_data[i]
+  df_PREG<-IMPORT_PATTERN(pat=preg_data, dir=cohort_folder)
   
   EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
   MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
@@ -26,10 +28,10 @@ for(i in 1:length(preg_cohort_folders)){
   MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
   PROC<-IMPORT_PATTERN(pat="PROCEDURE", dir=cohort_folder)
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
-  my_PREG<- IMPORT_PATTERN(pat=my_preg_data[i], dir=cohort_folder)
+
   
   MED$drug_date<-MED$date_dispensing
-  
+  MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
   #################################################################################
   # GEST_DIAB
   
@@ -87,7 +89,7 @@ for(i in 1:length(preg_cohort_folders)){
   SA_EV_ID<-(SPONTABO_EV$person_id)
   SA_EV_Date<- (SPONTABO_EV$start_date_record)
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+ 
   
   
   SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
@@ -128,7 +130,7 @@ for(i in 1:length(preg_cohort_folders)){
   SB_SO_ID<-SURV_OB$person_id[my_rows]
   SB_SO_Date<-SURV_OB$so_date[my_rows]
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+ 
   
   
   SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
@@ -187,15 +189,15 @@ for(i in 1:length(preg_cohort_folders)){
   # IACS preg alg
   
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
+ 
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
   
-  PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
-  PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
+  PRETERM_alg_ID<-df_preg$person_id[(df_preg$type_of_pregnancy_end=="LB")&(df_preg$gest_weeks<37)]
+  PRETERM_alg_Date<-df_preg$pregnancy_end_date[(df_preg$type_of_pregnancy_end=="LB")&(df_preg$gest_weeks<37)]
   
   PRETERM_ID<-c( PRETERM_alg_ID)
-  PRETERM_DATE<-c( PRETERM_alg_DATE)
+  PRETERM_Date<-c( PRETERM_alg_Date)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
   colnames(PRETERM_cov)<-c("id","date")

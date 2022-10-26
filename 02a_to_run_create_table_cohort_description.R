@@ -53,7 +53,7 @@ trim3_cov<-cases_trim[3]
 median_gest_age_cov<-round(median(cases_data$gest_age_cov/7),1)
 
 cov_month<-months(as.Date(cases_data$covid_date))
-cov_year<-year(as.Date(case_data$covid_date))
+cov_year<-year(as.Date(cases_data$covid_date))
 
 cov_calendar_month_total<-paste0(cov_month, "-", cov_year)
 

@@ -27,22 +27,27 @@ cohort_folder<-unlist(cohort_folders[i])
 
 output_folder<-unlist(output_folders[i])
 
-if(DAP!="Bordeaux"){
+
 VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
 EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
 MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
 SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)}else{
-  VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
-  EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
-  MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
-  SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
-  MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
-}
+MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
+VACCINES$vx_admin_date<-as.numeric(as.Date(VACCINES$vx_admin_date, format="%Y%m%d"))
+VACCINES$vx_record_date<-as.numeric(as.Date(VACCINES$vx_record_date, format="%Y%m%d"))
+
+# if(DAP!="Bordeaux"){
+# else{
+#   VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
+#   EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
+#   MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
+#   SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
+#   MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
+# }
 
 if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
 
-MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
+
 
 #################################################################
 #CARDIO
@@ -66,7 +71,7 @@ CARDIO_MED_Date<- (MED$drug_date[my_rows])
 cardio_id<-c(CARDIO_EV_ID,  CARDIO_MED_ID)
 cardio_date<-c(CARDIO_EV_Date, CARDIO_MED_Date)
 cardio_cov<-as.data.frame(cbind(cardio_id, cardio_date))
-
+colnames(cardio_cov)<-c("id", "date")
 fwrite(cardio_cov, paste0(output_folder,"cardio.csv"))
 
 #################################################################################
@@ -92,7 +97,7 @@ cancer_MED_Date<- (MED$drug_date[my_rows])
 cancer_id<-c(cancer_EV_ID,  cancer_MED_ID)
 cancer_date<-c(cancer_EV_Date, cancer_MED_Date)
 cancer_cov<-as.data.frame(cbind(cancer_id, cancer_date))
-
+colnames(cancer_cov)<-c("id", "date")
 fwrite(cancer_cov, paste0(output_folder,"cancer.csv"))
 
 #################################################################################
@@ -118,7 +123,7 @@ resp_MED_Date<- (MED$drug_date[my_rows])
 resp_id<-c(resp_EV_ID, resp_MED_ID)
 resp_date<-c(resp_EV_Date, resp_MED_Date)
 resp_cov<-as.data.frame(cbind(resp_id, resp_date))
-
+colnames(resp_cov)<-c("id", "date")
 fwrite(resp_cov, paste0(output_folder,"respiratory.csv"))
 
 
@@ -150,7 +155,7 @@ liver_MED_Date<- (MED$drug_date[my_rows])
 liver_id<-c(liver_EV_ID,  liver_MED_ID)
 liver_date<-c(liver_EV_Date,  liver_MED_Date)
 liver_cov<-as.data.frame(cbind(liver_id, liver_date))
-
+colnames(liver_cov)<-c("id", "date")
 fwrite(liver_cov, paste0(output_folder,"liver.csv"))
 #################################################################################
 # HIV
@@ -175,7 +180,7 @@ HIV_MED_Date<- (MED$drug_date[my_rows])
 HIV_id<-c(HIV_EV_ID, HIV_MED_ID)
 HIV_date<-c(HIV_EV_Date, HIV_MED_Date)
 HIV_cov<-as.data.frame(cbind(HIV_id, HIV_date))
-
+colnames(HIV_cov)<-c("id", "date")
 fwrite(HIV_cov, paste0(output_folder,"HIV.csv"))
 
 #################################################################################
@@ -202,7 +207,7 @@ kidney_MED_Date<- (MED$drug_date[my_rows])
 kidney_id<-c(kidney_EV_ID,  kidney_MED_ID)
 kidney_date<-c(kidney_EV_Date, kidney_MED_Date)
 kidney_cov<-as.data.frame(cbind(kidney_id, kidney_date))
-
+colnames(kidney_cov)<-c("id", "date")
 fwrite(kidney_cov, paste0(output_folder,"kidney.csv"))
 
 #################################################################################
@@ -227,7 +232,7 @@ diabetes_MED_Date<- (MED$drug_date[my_rows])
 diabetes_id<-c(diabetes_EV_ID,  diabetes_MED_ID)
 diabetes_date<-c(diabetes_EV_Date, diabetes_MED_Date)
 diabetes_cov<-as.data.frame(cbind(diabetes_id, diabetes_date))
-
+colnames(diabetes_cov)<-c("id", "date")
 fwrite(diabetes_cov, paste0(output_folder,"diabetes.csv"))
 
 #################################################################################
@@ -261,7 +266,7 @@ obesity_MED_Date<- (MED$drug_date[my_rows])
 obesity_id<-c(obesity_EV_ID, obesity_MED_ID)
 obesity_date<-c(obesity_EV_Date,  obesity_MED_Date)
 obesity_cov<-as.data.frame(cbind(obesity_id, obesity_date))
-
+colnames(obesity_cov)<-c("id", "date")
 fwrite(obesity_cov, paste0(output_folder,"obesity.csv"))
 
 #################################################################################
@@ -287,7 +292,7 @@ sickle_MED_Date<- (MED$drug_date[my_rows])
 sickle_id<-c(sickle_EV_ID,  sickle_MED_ID)
 sickle_date<-c(sickle_EV_Date,  sickle_MED_Date)
 sickle_cov<-as.data.frame(cbind(sickle_id, sickle_date))
-
+colnames(sickle_cov)<-c("id", "date")
 fwrite(sickle_cov, paste0(output_folder,"sickle.csv"))
 
 #################################################################################
@@ -313,7 +318,7 @@ immunosupress_MED_Date<- (MED$drug_date[my_rows])
 immunosupress_id<-c(immunosupress_EV_ID,  immunosupress_MED_ID)
 immunosupress_date<-c(immunosupress_EV_Date, immunosupress_MED_Date)
 immunosupress_cov<-as.data.frame(cbind(immunosupress_id, immunosupress_date))
-
+colnames(immunosupress_cov)<-c("id", "date")
 fwrite(immunosupress_cov, paste0(output_folder,"immunosupression.csv"))
 
 #################################################################################
@@ -330,15 +335,16 @@ mental_id<-(MED$person_id[my_rows])
 mental_date<- (MED$drug_date[my_rows])
                    
 mental_cov<-as.data.frame(cbind(mental_id, mental_date))
-
+colnames(mental_cov)<-c("id", "date")
 fwrite(mental_cov, paste0(output_folder,"mental.csv"))
 
 
 #################################################################################
 # VACCINE
+ 
 
 if(DAP!="ARS"){
-vaccine_atc<-("J07BB")
+vaccine_atc<-("J07BX")
 
 my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
 
@@ -347,7 +353,7 @@ vaccine_MED_date<- (MED$drug_date[my_rows])}else{
 vaccine_MED_id<-NA
 vaccine_MED_date<-NA}
 
-if(DAP%in%c("ARS","FISABIO", "USWAN","UOSL")){
+if(DAP%in%c("ARS","FISABIO", "USWAN","UOSL", "TEST")){
 
 my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACCINES$vx_atc))))
 

@@ -8,7 +8,7 @@
 preg_cohort_folders<-list(hist_preg_folder,preg_match_folder, cases_match_folder)
 output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov_pan_pos)
 
-my_preg_data<-c("my_PREG.csv", "preg_trim.csv", "preg_trim.csv")
+df_preg_data<-c("my_PREG.csv", "preg_trim.csv", "preg_trim.csv")
 
 all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
@@ -19,6 +19,8 @@ for(i in 1:length(preg_cohort_folders)){
   
   cohort_folder<-unlist(preg_cohort_folders[i])
   output_folder<-unlist(output_folders[i])
+  preg_data<-my_preg_data[i]
+  df_PREG<-IMPORT_PATTERN(pat=preg_data, dir=cohort_folder)
   
   EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
   MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
@@ -26,10 +28,9 @@ for(i in 1:length(preg_cohort_folders)){
   MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
   PROC<-IMPORT_PATTERN(pat="PROCEDURE", dir=cohort_folder)
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
-  my_PREG<- IMPORT_PATTERN(pat="preg", dir=cohort_folder)
   
   MED$drug_date<-MED$date_dispensing
-  
+  MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
   #################################################################################
   # GEST_DIAB
   
@@ -77,8 +78,6 @@ for(i in 1:length(preg_cohort_folders)){
   SA_EV_ID<-(SPONTABO_EV$person_id)
   SA_EV_Date<- (SPONTABO_EV$start_date_record)
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
-  
   
   SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
   SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
@@ -106,7 +105,6 @@ for(i in 1:length(preg_cohort_folders)){
   SB_EV_ID<-(SB_EV$person_id)
   SB_EV_Date<- (SB_EV$start_date_record)
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
   SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
   SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
@@ -163,15 +161,14 @@ for(i in 1:length(preg_cohort_folders)){
   # FISABIO USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
   
   
-  df_preg<- fread(paste0(cohort_folder, my_preg_data[i]))
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
   
-  PRETERM_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
-  PRETERM_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end="LB"&df_preg$gest_weeks<37]
+  PRETERM_alg_ID<-df_preg$person_id[(df_preg$type_of_pregnancy_end=="LB")&(df_preg$gest_weeks<37)]
+  PRETERM_alg_Date<-df_preg$pregnancy_end_date[(df_preg$type_of_pregnancy_end=="LB")&(df_preg$gest_weeks<37)]
   
   PRETERM_ID<-c( PRETERM_alg_ID)
-  PRETERM_DATE<-c( PRETERM_alg_DATE)
+  PRETERM_Date<-c( PRETERM_alg_Date)
   
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
   colnames(PRETERM_cov)<-c("id","date")
@@ -188,21 +185,23 @@ for(i in 1:length(preg_cohort_folders)){
 # same for all DAPs : EVENTS codes tagged as P_MATERNALDEATH_AESI in VAC4EU all_codes
 
 maternal_death_names<-"P_MATERNALDEATH_AESI"
-my_rows<-which(Reduce(`|`, lapply(maternal_death_names, startsWith, x = as.character(all_codes$full_name))))
 
-maternal_death_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-
-my_rows<-which(Reduce(`|`, lapply(maternal_death_codes, startsWith, x = as.character(EVENTS$event_code))))
-maternal_death_EV_ID<-(EVENTS$person_id[my_rows])
-maternal_death_EV_Date<- (EVENTS$start_date_record[my_rows])
-
+ maternal_death_codelist<-all_codes[all_codes$event_match_name==maternal_death_names,]
+  CreateConceptDatasets(codesheet =maternal_death_codelist, fil=EVENTS, path = maternal_covariates_events)
+  
+ maternal_death_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+ maternal_death_EV_ID<-(PREECLAMP_EV$person_id)
+ maternal_death_EV_Date<- (PREECLAMP_EV$start_date_record)
+ 
 dead_PERSONS<-PERSONS[is.na(PERSONS$year_of_death)==F,]
 dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]<-paste0(0,(dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]))
 dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]))
 dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_of_death,dead_PERSONS$day_of_death)
 dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
 
-dead_mother<-my_PREG[my_PREG$person_id%in%dead_PERSONS$person_id]
+df_preg<- fread(paste0(cohort_folder, df_preg_data[i]))
+
+dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
 
 maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
 maternal_death_pers_Date<-maternal_death$death_date
@@ -213,4 +212,5 @@ maternal_death_date<-c(maternal_death_EV_Date, maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
 colnames(maternal_death_outcome)<-c("id", "date")
 fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
+
 

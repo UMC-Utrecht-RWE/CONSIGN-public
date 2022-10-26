@@ -15,7 +15,7 @@ preg_control<-fread(paste0(matched_folder,"matches_pregnant_cov_neg.csv"))
 cases<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 
 cov_control_id<-cov_control$person_id
-preg_control_id<-cov_control$person_id
+preg_control_id<-preg_control$person_id
 cases_id<-cases$person_id
 
 
@@ -29,7 +29,7 @@ actual_tables_CDM$MEDICINES<-list.files(paste0(preselect_folder), pattern="^MEDI
 actual_tables_CDM$VACCINES<-list.files(paste0(preselect_folder), pattern="^VACCINES")
 actual_tables_CDM$SURVEY_ID<-list.files(paste0(preselect_folder), pattern="^SURVEY_ID")
 actual_tables_CDM$EUROCAT<-list.files(paste0(preselect_folder), pattern="^EUROCAT")
-actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS")
+actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS.csv")
 actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg_trim")}else{
   actual_tables_CDM<-list()
   actual_tables_CDM$EVENTS<-list.files(paste0(preselect_folder), pattern="^EVENTS_SLIM")
@@ -39,13 +39,11 @@ actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg
   actual_tables_CDM$VACCINES<-list.files(paste0(preselect_folder), pattern="^VACCINES")
   actual_tables_CDM$SURVEY_ID<-list.files(paste0(preselect_folder), pattern="^SURVEY_ID")
   actual_tables_CDM$EUROCAT<-list.files(paste0(preselect_folder), pattern="^EUROCAT")
-  actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS")
+  actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS.csv")
   actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg_trim")
 }
 
 
-
-all_actual_tables<-list.files(paste0(preselect_folder), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_CDM)
 
 #########################################################################################

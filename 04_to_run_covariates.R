@@ -5,7 +5,7 @@
 
 # COVARIATE
 
-# make sure you have ALL_full_codelist.csv in projectFolder
+# make sure you have codelist_CONSIGN.csv in projectFolder
 
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}
@@ -29,13 +29,10 @@ source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 
 # # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # # written to cohort folders in g_output/covariates/...
-# # since the cohort folders have much smaller data, probably don't need to loop?
 
-if(DAP=="Bordeaux"){source(paste0(pre_dir,"/covariates_detect_large.R" ))}else{
-  source(paste0(pre_dir,"/covariates_detect.R" ))}
-# 
+  source(paste0(pre_dir,"/covariates_detect.R" ))
+
 # covariate timing combining to pregnancy/covid
-
 
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
@@ -46,6 +43,7 @@ if(DAP=="ARS"){
 if(DAP=="Aarhus"){
   source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
 
+# only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
 if(DAP=="Bordeaux"){
   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
 
