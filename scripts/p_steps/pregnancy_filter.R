@@ -74,7 +74,10 @@ if(DAP!="ARS"){
 
 max_preg_start_date<-as.Date(as.character("20201231"), format = "%Y%m%d")
 
-my_PREG<-my_PREG[my_PREG$pregnancy_start_date<=max_preg_start_date,]
+max_preg_start_date_BPE<-as.Date(as.character("20191231"), format = "%Y%m%d")
+
+if(DAP!="Bordeaux"){
+my_PREG<-my_PREG[my_PREG$pregnancy_start_date<=max_preg_start_date,]}else{my_PREG<-my_PREG[my_PREG$pregnancy_start_date<=max_preg_start_date_BPE,]}
 
 FC_sufficient_follow_up<-nrow(my_PREG)
 
