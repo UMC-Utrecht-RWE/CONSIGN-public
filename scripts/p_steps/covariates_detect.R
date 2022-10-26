@@ -42,6 +42,8 @@ MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)}else{
 
 if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
 
+MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
+
 #################################################################
 #CARDIO
 
@@ -256,8 +258,8 @@ my_rows<-which(Reduce(`|`, lapply(obesity_atc, startsWith, x = as.character(MED$
 obesity_MED_ID<-(MED$person_id[my_rows])
 obesity_MED_Date<- (MED$drug_date[my_rows]) 
 
-obesity_id<-c(obesity_EV_ID, obesity_MO_ID, obesity_SO_ID, obesity_MED_ID)
-obesity_date<-c(obesity_EV_Date, obesity_MO_Date, obesity_SO_Date, obesity_MED_Date)
+obesity_id<-c(obesity_EV_ID, obesity_MED_ID)
+obesity_date<-c(obesity_EV_Date,  obesity_MED_Date)
 obesity_cov<-as.data.frame(cbind(obesity_id, obesity_date))
 
 fwrite(obesity_cov, paste0(output_folder,"obesity.csv"))
@@ -302,17 +304,17 @@ immunosupress_EV<-readRDS(paste0(cov_comorbid_events, "immunosupress.rds"))
 immunosupress_EV_ID<-(immunosupress_EV$person_id)
 immunosupress_EV_Date<- (immunosupress_EV$start_date_record)
 
-immsup_atc<-c("L04A","H02")
+immunosupress_atc<-c("L04A","H02")
 
-my_rows<-which(Reduce(`|`, lapply(immsup_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
-immsup_MED_ID<-(MED$person_id[my_rows])
-immsup_MED_Date<- (MED$drug_date[my_rows])
+my_rows<-which(Reduce(`|`, lapply(immunosupress_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
+immunosupress_MED_ID<-(MED$person_id[my_rows])
+immunosupress_MED_Date<- (MED$drug_date[my_rows])
 
-immsup_id<-c(immsup_EV_ID,  immsup_MED_ID)
-immsup_date<-c(immsup_EV_Date, immsup_MED_Date)
-immsup_cov<-as.data.frame(cbind(immsup_id, immsup_date))
+immunosupress_id<-c(immunosupress_EV_ID,  immunosupress_MED_ID)
+immunosupress_date<-c(immunosupress_EV_Date, immunosupress_MED_Date)
+immunosupress_cov<-as.data.frame(cbind(immunosupress_id, immunosupress_date))
 
-fwrite(immsup_cov, paste0(output_folder,"immunosupression.csv"))
+fwrite(immunosupress_cov, paste0(output_folder,"immunosupression.csv"))
 
 #################################################################################
 # MENTAL
