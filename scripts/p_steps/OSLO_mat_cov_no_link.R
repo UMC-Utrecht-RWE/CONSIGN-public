@@ -20,7 +20,7 @@ for(i in 1:length(preg_cohort_folders)){
   cohort_folder<-unlist(preg_cohort_folders[i])
   output_folder<-unlist(output_folders[i])
   preg_data<-my_preg_data[i]
-  df_preg<-IMPORT_PATTERN(pat=preg_data, dir=cohort_folder)
+  df_preg<-fread(paste0(cohort_folder,preg_data))
   
   EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
   MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
