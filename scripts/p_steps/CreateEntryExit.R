@@ -34,9 +34,11 @@ PERSONS$min_bday<-(PERSONS$num_DOB)+(4383) #12 years in days
 
 # Creates Entry Date 
 ## entry date <- latest date at which ANY of the following conditions are met: age > 12, observation starts, study starts
-PERSONS$entry_date_historical<-pmax(OBS_SPELLS$spell_start_date, PERSONS$min_bday, as.numeric(start_study_date))
-PERSONS$entry_date_pandemic<-pmax(OBS_SPELLS$spell_start_date, PERSONS$min_bday, as.numeric(pan_start_date))
+# since we made the spell dates as most recent- may cause data loss on historical cohort
+PERSONS$entry_date_historical<-pmax( PERSONS$min_bday, as.numeric(start_study_date))
+PERSONS$entry_date_pandemic<-pmax( PERSONS$min_bday, as.numeric(pan_start_date))
 
+# remove spell date from criteria
 
 # day of death
 
@@ -53,13 +55,13 @@ PERSONS$exit_date<-pmin(OBS_SPELLS$spell_end_date, PERSONS$max_bday, as.numeric(
 # historical elligible
 
 PERSONS$elligible_historical<-0
-PERSONS$elligible_historical[(PERSONS$entry_date_historical== start_study_date)&(PERSONS$max_bday>=start_study_date)]<-1
+PERSONS$elligible_historical[(PERSONS$entry_date_historical<= start_study_date)&(PERSONS$max_bday>=start_study_date)]<-1
 table(PERSONS$elligible_historical)
 mean(PERSONS$elligible_historical)
 # pandemic elligible
 
 PERSONS$elligible_pandemic<-0
-PERSONS$elligible_pandemic[(PERSONS$entry_date_pandemic==pan_start_date)&(PERSONS$max_bday>=pan_start_date)]<-1
+PERSONS$elligible_pandemic[(PERSONS$entry_date_pandemic<=pan_start_date)&(PERSONS$max_bday>=pan_start_date)]<-1
 table(PERSONS$elligible_pandemic)
 mean(PERSONS$elligible_pandemic)
 
