@@ -46,16 +46,14 @@ if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date
 #CARDIO
 
 cardio_names<-c("CAD","CARDIOMYOPATHY", "CMSTRESS","HF","HYPERTENSION")
-cardio_codelist<-all_codes[all_codes$event_abbreviation%in%my_event_name,]
-CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events, )
+cardio_codelist<-all_codes[all_codes$event_abbreviation%in%cardio_names,]
+cardio_codelist$event_abbreviation<-"CARDIO"
+CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-my_rows<-which(Reduce(`|`, lapply(cardio_names, startsWith, x = as.character(all_codes$full_name))))
+CARDIO_EV<-readRDS(paste0(cov_comorbid_events, "CARDIO.rds"))
 
-cardio_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-
-my_rows<-which(Reduce(`|`, lapply(cardio_codes, match, x = as.character(EVENTS$event_code))))
-CARDIO_EV_ID<-(EVENTS$person_id[my_rows])
-CARDIO_EV_Date<- (EVENTS$start_date_record[my_rows])
+CARDIO_EV_ID<-(CARDIO_EV$person_id)
+CARDIO_EV_Date<- (CARDIO_EV$start_date_record)
 
 cardio_atc<-c("C01B","C01C","C01D","C01E", "B01A")
 
@@ -72,15 +70,15 @@ fwrite(cardio_cov, paste0(output_folder,"cardio.csv"))
 #################################################################################
 # CANCER
 
-cancer_names<-c("Onc_ANYMALIGNANCY_COV")
-my_rows<-which(Reduce(`|`, lapply(cancer_names, startsWith, x = as.character(all_codes$full_name))))
+cancer_names<-c("ANYMALIGNANCY")
+cancer_codelist<-all_codes[all_codes$event_abbreviation%in%cancer_names,]
+cancer_codelist$event_abbreviation<-"cancer"
+CreateConceptDatasets(codesheet = cancer_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-cancer_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+cancer_EV<-readRDS(paste0(cov_comorbid_events, "cancer.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(cancer_codes, match, x = as.character(EVENTS$event_code))))
-cancer_EV_ID<-(EVENTS$person_id[my_rows])
-cancer_EV_Date<- (EVENTS$start_date_record[my_rows])
-
+cancer_EV_ID<-(cancer_EV$person_id)
+cancer_EV_Date<- (cancer_EV$start_date_record)
 
 
 cancer_atc<-c("L01A","L01B","L01C","L01D","L01X","L02A","L02B","L03","L04")
@@ -99,15 +97,15 @@ fwrite(cancer_cov, paste0(output_folder,"cancer.csv"))
 # RESPIRATORY
 
 
-resp_names<-c("R_RESPCHRONIC_COV")
-my_rows<-which(Reduce(`|`, lapply(resp_names, startsWith, x = as.character(all_codes$full_name))))
+resp_names<-c("RESPCHRONIC")
 
-resp_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+resp_codelist<-all_codes[all_codes$event_abbreviation%in%resp_names,]
+CreateConceptDatasets(codesheet = resp_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-my_rows<-which(Reduce(`|`, lapply(resp_codes, match, x = as.character(EVENTS$event_code))))
-resp_EV_ID<-(EVENTS$person_id[my_rows])
-resp_EV_Date<- (EVENTS$start_date_record[my_rows])
+resp_EV<-readRDS(paste0(cov_comorbid_events, "RESPCHRONIC.rds"))
 
+resp_EV_ID<-(resp_EV$person_id)
+resp_EV_Date<- (resp_EV$start_date_record)
 
 resp_atc<-c("R03","R07AA","R07AB")
 
@@ -126,18 +124,20 @@ fwrite(resp_cov, paste0(output_folder,"respiratory.csv"))
 # LIVER
 
 
-liver_names<-c("D_ALCOHOLICLIVER_COV" ,
-               "D_HEPATITISAUTOIMMUNE_COV" ,
-               "D_LIVERCHRONICALONE_COV" ,
-               "D_MILDLIVERDISEASE_CH" ,
-               "D_NONALCOHOLICLIVER_COV")
-my_rows<-which(Reduce(`|`, lapply(liver_names, startsWith, x = as.character(all_codes$full_name))))
+liver_names<-c("ALCOHOLICLIVER" ,
+               "HEPATITISAUTOIMMUNE" ,
+               "LIVERCHRONICALONE" ,
+               "MILDLIVERDISEASE_CH" ,
+               "NONALCOHOLICLIVER")
+liver_codelist<-all_codes[all_codes$event_abbreviation%in%liver_names,]
+liver_codelist$event_abbreviation<-"liver"
+CreateConceptDatasets(codesheet = liver_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-liver_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+liver_EV<-readRDS(paste0(cov_comorbid_events, "liver.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(liver_codes, match, x = as.character(EVENTS$event_code))))
-liver_EV_ID<-(EVENTS$person_id[my_rows])
-liver_EV_Date<- (EVENTS$start_date_record[my_rows])
+liver_EV_ID<-(liver_EV$person_id)
+liver_EV_Date<- (liver_EV$start_date_record)
+
 
 liver_atc<-c("J05AP")
 
@@ -154,15 +154,15 @@ fwrite(liver_cov, paste0(output_folder,"liver.csv"))
 # HIV
 
 
-HIV_names<-c("I_HIVNOAIDS_CH")
-my_rows<-which(Reduce(`|`, lapply(HIV_names, startsWith, x = as.character(all_codes$full_name))))
+HIV_names<-c("HIVNOAIDS")
+HIV_codelist<-all_codes[all_codes$event_abbreviation%in%HIV_names,]
+HIV_codelist$event_abbreviation<-"HIV"
+CreateConceptDatasets(codesheet = HIV_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-HIV_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+HIV_EV<-readRDS(paste0(cov_comorbid_events, "HIV.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(HIV_codes, match, x = as.character(EVENTS$event_code))))
-HIV_EV_ID<-(EVENTS$person_id[my_rows])
-HIV_EV_Date<- (EVENTS$start_date_record[my_rows])
-
+HIV_EV_ID<-(HIV_EV$person_id)
+HIV_EV_Date<- (HIV_EV$start_date_record)
 
 HIV_atc<-c("J05AE","J05AR", "J05AF","J05AG")
 
@@ -180,14 +180,15 @@ fwrite(HIV_cov, paste0(output_folder,"HIV.csv"))
 # KIDNEY
 
 
-kidney_names<-c("G_KDCHRONIC_COV")
-my_rows<-which(Reduce(`|`, lapply(kidney_names, startsWith, x = as.character(all_codes$full_name))))
+kidney_names<-c("KDCHRONIC")
+kidney_codelist<-all_codes[all_codes$event_abbreviation%in%kidney_names,]
+kidney_codelist$event_abbreviation<-"kidney"
+CreateConceptDatasets(codesheet = kidney_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-kidney_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+kidney_EV<-readRDS(paste0(cov_comorbid_events, "kidney.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(kidney_codes, match, x = as.character(EVENTS$event_code))))
-kidney_EV_ID<-(EVENTS$person_id[my_rows])
-kidney_EV_Date<- (EVENTS$start_date_record[my_rows])
+kidney_EV_ID<-(kidney_EV$person_id)
+kidney_EV_Date<- (kidney_EV$start_date_record)
 
 
 kidney_atc<-c("B03XA01")
@@ -206,15 +207,15 @@ fwrite(kidney_cov, paste0(output_folder,"kidney.csv"))
 # DIABETES
 
 
-diabetes_names<-c("E_DM12_COV")
-my_rows<-which(Reduce(`|`, lapply(diabetes_names, startsWith, x = as.character(all_codes$full_name))))
+diabetes_names<-c("DM12")
+diabetes_codelist<-all_codes[all_codes$event_abbreviation%in%diabetes_names,]
+diabetes_codelist$event_abbreviation<-"diabetes"
+CreateConceptDatasets(codesheet = diabetes_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-diabetes_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+diabetes_EV<-readRDS(paste0(cov_comorbid_events, "diabetes.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(diabetes_codes, match, x = as.character(EVENTS$event_code))))
-diabetes_EV_ID<-(EVENTS$person_id[my_rows])
-diabetes_EV_Date<- (EVENTS$start_date_record[my_rows])
-
+diabetes_EV_ID<-(diabetes_EV$person_id)
+diabetes_EV_Date<- (diabetes_EV$start_date_record)
 diabetes_atc<-c("A10B","A10A")
 
 my_rows<-which(Reduce(`|`, lapply(diabetes_atc, startsWith, x = as.character(MED$medicinal_product_atc_code))))
@@ -238,14 +239,16 @@ fwrite(diabetes_cov, paste0(output_folder,"diabetes.csv"))
 # UOSL so_source_column='KMI_foer' AND so_source_value="=> 30"
 # --> decided to skip calculated BMI 24/10
 
-obesity_names<-c("L_OBESITY_COV")
-my_rows<-which(Reduce(`|`, lapply(obesity_names, startsWith, x = as.character(all_codes$full_name))))
+obesity_names<-c("OBESITY")
+obesity_codelist<-all_codes[all_codes$event_abbreviation%in%obesity_names,]
+obesity_codelist$event_abbreviation<-"obesity"
+CreateConceptDatasets(codesheet = obesity_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-obesity_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+obesity_EV<-readRDS(paste0(cov_comorbid_events, "obesity.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(obesity_codes, match, x = as.character(EVENTS$event_code))))
-obesity_EV_ID<-(EVENTS$person_id[my_rows])
-obesity_EV_Date<- (EVENTS$start_date_record[my_rows])
+obesity_EV_ID<-(obesity_EV$person_id)
+obesity_EV_Date<- (obesity_EV$start_date_record)
+
 
 obesity_atc<-c("A08AB","A08AA")
 
@@ -263,14 +266,15 @@ fwrite(obesity_cov, paste0(output_folder,"obesity.csv"))
 # SICLECELL
 
 
-sickle_names<-c("B_SICKLECELL_COV")
-my_rows<-which(Reduce(`|`, lapply(sickle_names, startsWith, x = as.character(all_codes$full_name))))
+sickle_names<-c("SICKLECELL")
+sickle_codelist<-all_codes[all_codes$event_abbreviation%in%sickle_names,]
+sickle_codelist$event_abbreviation<-"sickle"
+CreateConceptDatasets(codesheet = sickle_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-sickle_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+sickle_EV<-readRDS(paste0(cov_comorbid_events, "sickle.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(sickle_codes, match, x = as.character(EVENTS$event_code))))
-sickle_EV_ID<-(EVENTS$person_id[my_rows])
-sickle_EV_Date<- (EVENTS$start_date_record[my_rows])
+sickle_EV_ID<-(sickle_EV$person_id)
+sickle_EV_Date<- (sickle_EV$start_date_record)
 
 sickle_atc<-c("L01XX05","B06AX")
 
@@ -288,14 +292,15 @@ fwrite(sickle_cov, paste0(output_folder,"sickle.csv"))
 # IMMUNOSUPRESSION
 
 
-immsup_names<-c("Im_TRANSPLANTRECIPIENT_COV")
-my_rows<-which(Reduce(`|`, lapply(immsup_names, startsWith, x = as.character(all_codes$full_name))))
+immunosupress_names<-c("TRANSPLANTRECIPIENT")
+immunosupress_codelist<-all_codes[all_codes$event_abbreviation%in%immunosupress_names,]
+immunosupress_codelist$event_abbreviation<-"immunosupress"
+CreateConceptDatasets(codesheet = immunosupress_codelist, fil=EVENTS, path = cov_comorbid_events)
 
-immsup_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+immunosupress_EV<-readRDS(paste0(cov_comorbid_events, "immunosupress.rds"))
 
-my_rows<-which(Reduce(`|`, lapply(immsup_codes, match, x = as.character(EVENTS$event_code))))
-immsup_EV_ID<-(EVENTS$person_id[my_rows])
-immsup_EV_Date<- (EVENTS$start_date_record[my_rows])
+immunosupress_EV_ID<-(immunosupress_EV$person_id)
+immunosupress_EV_Date<- (immunosupress_EV$start_date_record)
 
 immsup_atc<-c("L04A","H02")
 
