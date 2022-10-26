@@ -21,7 +21,7 @@ covid_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
-df_observation<-fread(paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
+# df_observation<-fread(paste0(preselect_folder,"ALL_OBS_SPELLS.csv"))
 df_PERSONS<-IMPORT_PATTERN("PERSONS.csv", preselect_folder)
 my_PREG<-fread(paste0(projectFolder, "/preg_trim.csv"))
 ############################################################
@@ -52,9 +52,9 @@ my_PREG<-my_PREG[my_PREG$gestage_greater_44==0,]
 #############################################################################
 
 # person_ids must be in observations
-my_PREG<-my_PREG[my_PREG$person_id%in%df_observation$person_id]
-
-FC_preg_with_spell<-nrow(my_PREG)
+# my_PREG<-my_PREG[my_PREG$person_id%in%df_observation$person_id]
+# 
+# FC_preg_with_spell<-nrow(my_PREG)
 
 ##############################################################################
 
@@ -230,11 +230,11 @@ fwrite(my_PREG[my_PREG$person_id%in%hist_preg_ID_age,],paste0(hist_preg_folder,"
 # FLOWCHART to record attrition
 #########################################################
 
-flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_exclude_44, FC_preg_with_spell, FC_no_red_preg,
+flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_exclude_44, FC_no_red_preg,
                                FC_sufficient_follow_up,   length(unique(pan_preg_ID)), length(unique(pan_preg_ID_age)),pan_PREGNANCIES_age,
                                length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg,length(unique(non_pan_preg_ID)), FC_all_non_pan_preg))
                          
- colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies","total mothers", "pregnancies excluded due to gestation>44 weeks", "pregnancies with spell data","after excluding red pregnancies",
+ colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies","total mothers", "pregnancies excluded due to gestation>44 weeks","after excluding red pregnancies",
                         "pregnancies starting at least 12 months before end of study",   
                         "WOMEN with pandemic pregnancies","WOMEN with pandemic pregnancies with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
                         "women with historical pregnancies with age 12-55 in 2018","women with between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
