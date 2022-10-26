@@ -29,8 +29,8 @@ source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 
 # # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # # written to cohort folders in g_output/covariates/...
-
-  source(paste0(pre_dir,"/covariates_detect.R" ))
+if(DAP!="Bordeaux"){
+  source(paste0(pre_dir,"/covariates_detect.R" ))}else{source(paste0(pre_dir,"/covariates_detect_BPE.R" ))}
 
 # covariate timing combining to pregnancy/covid
 

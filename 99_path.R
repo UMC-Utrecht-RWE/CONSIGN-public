@@ -77,24 +77,27 @@ invisible(if(dir.exists(preselect_folder)==F)
 {dir.create(preselect_folder)})
 
 
-
-case_neonate_folder<-paste0(projectFolder,"/CDMInstances_case_neonate/")
-invisible(if(dir.exists(case_neonate_folder)==F)
-{dir.create(case_neonate_folder)})
-
-control_neonate_folder<-paste0(projectFolder,"/CDMInstances_control_neonate/")
-invisible(if(dir.exists(control_neonate_folder)==F)
-{dir.create(control_neonate_folder)})
-
-historical_neonate_folder<-paste0(projectFolder,"/CDMInstances_historical_neonate/")
-invisible(if(dir.exists(historical_neonate_folder)==F)
-{dir.create(historical_neonate_folder)})
+# 
+# case_neonate_folder<-paste0(projectFolder,"/CDMInstances_case_neonate/")
+# invisible(if(dir.exists(case_neonate_folder)==F)
+# {dir.create(case_neonate_folder)})
+# 
+# control_neonate_folder<-paste0(projectFolder,"/CDMInstances_control_neonate/")
+# invisible(if(dir.exists(control_neonate_folder)==F)
+# {dir.create(control_neonate_folder)})
+# 
+# historical_neonate_folder<-paste0(projectFolder,"/CDMInstances_historical_neonate/")
+# invisible(if(dir.exists(historical_neonate_folder)==F)
+# {dir.create(historical_neonate_folder)})
 
 
 # Checks if folders exist. If they do not, creates them 
 # Main folders (g_intermediate, g_output)
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/")), dir.create(paste0(projectFolder, "/g_intermediate")), FALSE))
 g_intermediate <- paste0(projectFolder, "/g_intermediate/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/")), FALSE))
+g_intermediate_covariates <- paste0(projectFolder, "/g_intermediate/covariates/")
 
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
@@ -143,33 +146,67 @@ output_trimester    <- paste0(projectFolder, "/g_output/trimester/")
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/")), dir.create(paste0(projectFolder, "/g_output/covariates")), FALSE))
 output_cov   <- paste0(projectFolder, "/g_output/covariates/")
 
-
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")), FALSE))
-output_cov_pos_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")
+output_cov_cases   <- paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), FALSE))
-output_cov_neg_pan_preg   <- paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")
+output_cov_nonpregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), FALSE))
-output_cov_pos_non_preg   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
+output_cov_pregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/hist_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/hist_preg/")), FALSE))
-output_hist_preg   <- paste0(projectFolder, "/g_output/covariates/hist_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), FALSE))
+output_cov_pos_pan_preg   <- paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/cov_neg_pan_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/cov_neg_pan_preg/")), FALSE))
+output_cov_neg_pan_preg   <- paste0(projectFolder, "/g_intermediate/covariates/cov_neg_pan_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_non_preg/")), FALSE))
+output_cov_pos_non_preg   <- paste0(projectFolder, "/g_intermediate/covariates/cov_pos_non_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/hist_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/hist_preg/")), FALSE))
+output_hist_preg   <- paste0(projectFolder, "/g_intermediate/covariates/hist_preg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates")), FALSE))
+output_mat_cov   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos")), FALSE))
+output_mat_cov_pan_pos   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg")), FALSE))
+output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist")), FALSE))
+output_mat_cov_hist   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")
+
+
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates")), FALSE))
-output_mat_cov   <- paste0(projectFolder, "/g_output/maternal_covariates/")
-
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates")), FALSE))
-output_mat_cov   <- paste0(projectFolder, "/g_output/maternal_covariates/")
+g_output_mat_cov   <- paste0(projectFolder, "/g_output/maternal_covariates/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/pan_pos/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/pan_pos")), FALSE))
-output_mat_cov_pan_pos   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_pos/")
+g_output_mat_cov_pan_pos   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_pos/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/pan_neg/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/pan_neg")), FALSE))
-output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_neg/")
+g_output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_output/maternal_covariates/pan_neg/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/hist")), FALSE))
-output_mat_cov_hist   <- paste0(projectFolder, "/g_output/maternal_covariates/hist/")
+g_output_mat_cov_hist   <- paste0(projectFolder, "/g_output/maternal_covariates/hist/")
+
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_outcomes/")), dir.create(paste0(projectFolder, "/g_output/maternal_outcomes")), FALSE))
+g_output_mat_out   <- paste0(projectFolder, "/g_output/maternal_outcomes/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_outcomes/pan_pos/")), dir.create(paste0(projectFolder, "/g_output/maternal_outcomes/pan_pos")), FALSE))
+g_output_mat_out_pan_pos   <- paste0(projectFolder, "/g_output/maternal_outcomes/pan_pos/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_outcomes/pan_neg/")), dir.create(paste0(projectFolder, "/g_output/maternal_outcomes/pan_neg")), FALSE))
+g_output_mat_out_pan_neg   <- paste0(projectFolder, "/g_output/maternal_outcomes/pan_neg/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_outcomes/hist/")), dir.create(paste0(projectFolder, "/g_output/maternal_outcomes/hist")), FALSE))
+g_output_mat_out_hist   <- paste0(projectFolder, "/g_output/maternal_outcomes/hist/")
+
 
 
 # Sets path to p_steps (to read codelists)

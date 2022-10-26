@@ -24,5 +24,13 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
-source(paste0(pre_dir, "/CreateConceptDatasets.R"))
+source(paste0(pre_dir, "/lookback_function.R"))
+
+source(paste0(pre_dir, "/lookback_covid_covariates.R"))
+
+source(paste0(pre_dir, "/lookback_maternal_covariates.R"))
+
+source(paste0(pre_dir, "/lookback_maternal_outcomes.R"))
+
+
 

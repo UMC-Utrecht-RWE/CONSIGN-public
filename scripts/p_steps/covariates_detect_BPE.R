@@ -27,25 +27,18 @@ cohort_folder<-unlist(cohort_folders[i])
 
 output_folder<-unlist(output_folders[i])
 
+# for BPE there will be many tables for each group, but IMPORTPATTERN will collate them
+# cohort subsets should be small enough
 
-VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
-EVENTS<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir=cohort_folder)
-MED_OB<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
-SURV_OB<-IMPORT_PATTERN(pat="SURVEY_SLIM", dir=cohort_folder)
-MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
-VACCINES$vx_admin_date<-as.numeric(as.Date(VACCINES$vx_admin_date, format="%Y%m%d"))
-VACCINES$vx_record_date<-as.numeric(as.Date(VACCINES$vx_record_date, format="%Y%m%d"))
 
-# if(DAP!="Bordeaux"){
-# else{
-#   VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
-#   EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
-#   MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
-#   SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
-#   MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
-# }
+  VACCINES<-IMPORT_PATTERN(pat="VACCINES", dir=cohort_folder)
+  EVENTS<-IMPORT_PATTERN(pat="EVENTS", dir=cohort_folder)
+  MED_OB<-IMPORT_PATTERN(pat="MEDICAL_OB", dir=cohort_folder)
+  SURV_OB<-IMPORT_PATTERN(pat="SURVEY_OB", dir=cohort_folder)
+  MED<-IMPORT_PATTERN(pat="MEDICINES", dir=cohort_folder)
 
-if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
+
+MED$drug_date<-MED$date_dispensing
 
 
 
