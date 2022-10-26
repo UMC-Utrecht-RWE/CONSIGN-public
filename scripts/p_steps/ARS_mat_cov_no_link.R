@@ -5,10 +5,10 @@
 
 # due to wide variety of DAP specific criteria, maternal covariates will be coded separately per DAP
 
-preg_cohort_folders<-list(hist_preg_folder, preg_match_folder, cov_pos_pan_preg_folder)
+preg_cohort_folders<-list(hist_preg_folder,preg_match_folder, cases_match_folder)
 output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov_pan_pos)
 
-my_preg_data<-c("my_PREG.csv", "cov_neg_preg.csv", "cov_pos_preg.csv")
+my_preg_data<-c("my_PREG.csv", "preg_trim.csv", "preg_trim.csv")
 
 all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 # only events within 1 year before covid+ pregnancy start date
