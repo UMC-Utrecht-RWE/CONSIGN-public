@@ -12,8 +12,8 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 
-cohort_folders<-list(preg_match_folder, cases_match_folder, cov_match_folder, hist_preg_folder )
-output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg, output_hist_preg)
+cohort_folders<-list(preg_match_folder, cases_match_folder, cov_match_folder)
+output_folders<-list(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
 
 
 all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
@@ -45,8 +45,8 @@ if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date
 #################################################################
 #CARDIO
 
-cardio_names<-c("CAD","CARDIOMYOPATHY", "CMSTRESS","HF","HYPERTENSION")
-cardio_codelist<-all_codes[all_codes$event_abbreviation%in%cardio_names,]
+cardio_names<-c("C_CAD_AESI","C_CARDIOMYOPATHY_COV", "C_CMSTRESS_AESI","C_HF_COV","V_HYPERTENSION_COV")
+cardio_codelist<-all_codes[all_codes$event_match_name%in%cardio_names,]
 cardio_codelist$event_abbreviation<-"CARDIO"
 CreateConceptDatasets(codesheet = cardio_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -70,8 +70,8 @@ fwrite(cardio_cov, paste0(output_folder,"cardio.csv"))
 #################################################################################
 # CANCER
 
-cancer_names<-c("ANYMALIGNANCY")
-cancer_codelist<-all_codes[all_codes$event_abbreviation%in%cancer_names,]
+cancer_names<-c("Onc_ANYMALIGNANCY_COV")
+cancer_codelist<-all_codes[all_codes$event_match_name%in%cancer_names,]
 cancer_codelist$event_abbreviation<-"cancer"
 CreateConceptDatasets(codesheet = cancer_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -97,9 +97,9 @@ fwrite(cancer_cov, paste0(output_folder,"cancer.csv"))
 # RESPIRATORY
 
 
-resp_names<-c("RESPCHRONIC")
+resp_names<-c("R_RESPCHRONIC_COV")
 
-resp_codelist<-all_codes[all_codes$event_abbreviation%in%resp_names,]
+resp_codelist<-all_codes[all_codes$event_match_name%in%resp_names,]
 CreateConceptDatasets(codesheet = resp_codelist, fil=EVENTS, path = cov_comorbid_events)
 
 resp_EV<-readRDS(paste0(cov_comorbid_events, "RESPCHRONIC.rds"))
@@ -124,12 +124,12 @@ fwrite(resp_cov, paste0(output_folder,"respiratory.csv"))
 # LIVER
 
 
-liver_names<-c("ALCOHOLICLIVER" ,
-               "HEPATITISAUTOIMMUNE" ,
-               "LIVERCHRONICALONE" ,
-               "MILDLIVERDISEASE_CH" ,
-               "NONALCOHOLICLIVER")
-liver_codelist<-all_codes[all_codes$event_abbreviation%in%liver_names,]
+liver_names<-c("D_ALCOHOLICLIVER_COV" ,
+               "D_HEPATITISAUTOIMMUNE_COV" ,
+               "D_LIVERCHRONICALONE_COV" ,
+               "D_MILDLIVERDISEASE_CH" ,
+               "D_NONALCOHOLICLIVER_COV")
+liver_codelist<-all_codes[all_codes$event_match_name%in%liver_names,]
 liver_codelist$event_abbreviation<-"liver"
 CreateConceptDatasets(codesheet = liver_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -154,8 +154,8 @@ fwrite(liver_cov, paste0(output_folder,"liver.csv"))
 # HIV
 
 
-HIV_names<-c("HIVNOAIDS")
-HIV_codelist<-all_codes[all_codes$event_abbreviation%in%HIV_names,]
+HIV_names<-c("I_HIVNOAIDS_CH")
+HIV_codelist<-all_codes[all_codes$event_match_name%in%HIV_names,]
 HIV_codelist$event_abbreviation<-"HIV"
 CreateConceptDatasets(codesheet = HIV_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -180,8 +180,8 @@ fwrite(HIV_cov, paste0(output_folder,"HIV.csv"))
 # KIDNEY
 
 
-kidney_names<-c("KDCHRONIC")
-kidney_codelist<-all_codes[all_codes$event_abbreviation%in%kidney_names,]
+kidney_names<-c("G_KDCHRONIC_COV")
+kidney_codelist<-all_codes[all_codes$event_match_name%in%kidney_names,]
 kidney_codelist$event_abbreviation<-"kidney"
 CreateConceptDatasets(codesheet = kidney_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -207,8 +207,8 @@ fwrite(kidney_cov, paste0(output_folder,"kidney.csv"))
 # DIABETES
 
 
-diabetes_names<-c("DM12")
-diabetes_codelist<-all_codes[all_codes$event_abbreviation%in%diabetes_names,]
+diabetes_names<-c("E_DM12_COV")
+diabetes_codelist<-all_codes[all_codes$event_match_name%in%diabetes_names,]
 diabetes_codelist$event_abbreviation<-"diabetes"
 CreateConceptDatasets(codesheet = diabetes_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -239,8 +239,8 @@ fwrite(diabetes_cov, paste0(output_folder,"diabetes.csv"))
 # UOSL so_source_column='KMI_foer' AND so_source_value="=> 30"
 # --> decided to skip calculated BMI 24/10
 
-obesity_names<-c("OBESITY")
-obesity_codelist<-all_codes[all_codes$event_abbreviation%in%obesity_names,]
+obesity_names<-c("L_OBESITY_COV")
+obesity_codelist<-all_codes[all_codes$event_match_name%in%obesity_names,]
 obesity_codelist$event_abbreviation<-"obesity"
 CreateConceptDatasets(codesheet = obesity_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -266,8 +266,8 @@ fwrite(obesity_cov, paste0(output_folder,"obesity.csv"))
 # SICLECELL
 
 
-sickle_names<-c("SICKLECELL")
-sickle_codelist<-all_codes[all_codes$event_abbreviation%in%sickle_names,]
+sickle_names<-c("B_SICKLECELL_COV")
+sickle_codelist<-all_codes[all_codes$event_match_name%in%sickle_names,]
 sickle_codelist$event_abbreviation<-"sickle"
 CreateConceptDatasets(codesheet = sickle_codelist, fil=EVENTS, path = cov_comorbid_events)
 
@@ -292,8 +292,8 @@ fwrite(sickle_cov, paste0(output_folder,"sickle.csv"))
 # IMMUNOSUPRESSION
 
 
-immunosupress_names<-c("TRANSPLANTRECIPIENT")
-immunosupress_codelist<-all_codes[all_codes$event_abbreviation%in%immunosupress_names,]
+immunosupress_names<-c("Im_TRANSPLANTRECIPIENT_COV")
+immunosupress_codelist<-all_codes[all_codes$event_match_name%in%immunosupress_names,]
 immunosupress_codelist$event_abbreviation<-"immunosupress"
 CreateConceptDatasets(codesheet = immunosupress_codelist, fil=EVENTS, path = cov_comorbid_events)
 

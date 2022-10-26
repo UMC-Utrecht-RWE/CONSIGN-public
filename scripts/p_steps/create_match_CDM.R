@@ -18,17 +18,6 @@ cov_control_id<-cov_control$person_id
 preg_control_id<-cov_control$person_id
 cases_id<-cases$person_id
 
-cov_match_folder<-paste0(matched_folder,"CDM_covid_positive/")
-invisible(if(dir.exists(cov_match_folder)==F)
-{dir.create(cov_match_folder)})
-
-preg_match_folder<-paste0(matched_folder,"CDM_preg_negative/")
-invisible(if(dir.exists(preg_match_folder)==F)
-{dir.create(preg_match_folder)})
-
-cases_match_folder<-paste0(matched_folder,"CDM_preg_positive/")
-invisible(if(dir.exists(cases_match_folder)==F)
-{dir.create(cases_match_folder)})
 
 ######################################################################################
 if(DAP=="Bordeaux"){
@@ -71,7 +60,7 @@ for (i in 1:length(table_list)){
 
 for (i in 1:length(table_list)){
   my_table<-fread(paste0(preselect_folder,table_list[i]))
-  my_match_table<- my_table[(my_table$person_id%in%cov_control_id),]
+  my_match_table<- my_table[(my_table$person_id%in%preg_control_id),]
   
   fwrite(my_match_table,paste0(preg_match_folder,table_list[i]))
 }

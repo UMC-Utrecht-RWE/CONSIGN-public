@@ -9,7 +9,8 @@
 #' @param path location to write the RDS files to per concept name
 #' @param method if SQL, a join is used. If loop a loop is used to subset
 
-events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)
+if(DAP!="Bordeaux"){events_tables<-IMPORT_PATTERN(pat="EVENTS_SLIM", dir = preselect_folder)}else{ events_tables<-IMPORT_PATTERN(pat="EVENTS",dir=preselect_folder)}
+
 # something going wrong with codes with leading 0s
 
 full_codelist<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
