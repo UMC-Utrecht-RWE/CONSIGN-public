@@ -22,6 +22,10 @@ DAP<-CDM_source$data_access_provider_name
 # need to pull in age 
 
 control_data<-fread(paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
+persons_cov_control<-fread(paste0(cov_pos_not_preg_folder,"PERSONS.csv"))
+cov_control<-persons_cov_control[persons_cov_control$person_id%in%control_data$person_id,]
+control_data$age_pandemic<-cov_control$age_at_start_pandemic
+
 calendar_months<-seq(pan_start_date,end_study_date,by="month")
 
 pan_months<-months(calendar_months)
@@ -40,8 +44,8 @@ number_moms<-as.numeric(length(unique(control_data_trim$person_id)))
 gest_age_at_cov_median<- NA
 gest_age_at_cov_IQR<- NA
 
-age_at_start_preg_median<-round(median(control_data_trim$age_group),1)
-age_IQR<-round(IQR(control_data_trim$age_group),1)
+age_at_start_preg_median<-round(median(control_data_trim$age_pandemic),1)
+age_IQR<-round(IQR(control_data_trim$age_pandemic),1)
 
 # between includes min and max in the range >= and <=
 age_12_24<-length(control_data_trim$age_at_start_of_pregnancy[between(control_data_trim$age_at_start_of_pregnancy, 12,24)])
