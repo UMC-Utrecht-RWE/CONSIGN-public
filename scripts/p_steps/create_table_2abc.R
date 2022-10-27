@@ -59,71 +59,6 @@ total_cases<-c(number_preg, number_moms, gest_age_at_cov_median, gest_age_at_cov
                age_at_start_preg_median, age_IQR, age_12_24, age_25_39, age_40_55)
 
 
-##############################################################################################
-
-sev_case_data_trim<-case_data_trim[case_data_trim$severity==1,]
-
-number_preg<-as.numeric(nrow(sev_case_data_trim))
-number_moms<-as.numeric(length(unique(sev_case_data_trim$person_id)))
-
-gest_age_at_cov_median<- round( median((sev_case_data_trim$gest_age_cov)/7),1)
-gest_age_at_cov_IQR<- round(IQR((sev_case_data_trim$gest_age_cov)/7),1)
-
-age_at_start_preg_median<-round(median(sev_case_data_trim$age_group),1)
-age_IQR<-round(IQR(sev_case_data_trim$age_group),1)
-
-# between includes min and max in the range >= and <=
-age_12_24<-length(sev_case_data_trim$age_at_start_of_pregnancy[between(sev_case_data_trim$age_at_start_of_pregnancy, 12,24)])
-age_25_39<-length(sev_case_data_trim$age_at_start_of_pregnancy[between(sev_case_data_trim$age_at_start_of_pregnancy, 25,39)])
-age_40_55<-length(sev_case_data_trim$age_at_start_of_pregnancy[between(sev_case_data_trim$age_at_start_of_pregnancy, 40,55)])
-
-# calendar month of infection
-
-cov_month<-months(as.Date(sev_case_data_trim$covid_date))
-cov_year<-year(as.Date(sev_case_data_trim$covid_date))
-
-severe_cov_calendar_month<-paste0(cov_month, "-", cov_year)
-
-
-covid_month_severe<-table(factor(severe_cov_calendar_month, levels=levels_calendar))
-
-severe_cases<-c(number_preg, number_moms, gest_age_at_cov_median, gest_age_at_cov_IQR,
-                age_at_start_preg_median, age_IQR, age_12_24, age_25_39, age_40_55)
-
-
-
-#############################################################################################
-
-nonsev_case_data_trim<-case_data_trim[case_data_trim$severity==0,]
-
-number_preg<-as.numeric(nrow(nonsev_case_data_trim))
-number_moms<-as.numeric(length(unique(nonsev_case_data_trim$person_id)))
-
-gest_age_at_cov_median<- round( median((nonsev_case_data_trim$gest_age_cov)/7),1)
-gest_age_at_cov_IQR<- round(IQR((nonsev_case_data_trim$gest_age_cov)/7),1)
-
-age_at_start_preg_median<-round(median(nonsev_case_data_trim$age_group),1)
-age_IQR<-round(IQR(nonsev_case_data_trim$age_group),1)
-
-# between includes min and max in the range >= and <=
-age_12_24<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev_case_data_trim$age_at_start_of_pregnancy, 12,24)])
-age_25_39<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev_case_data_trim$age_at_start_of_pregnancy, 25,39)])
-age_40_55<-length(nonsev_case_data_trim$age_at_start_of_pregnancy[between(nonsev_case_data_trim$age_at_start_of_pregnancy, 40,55)])
-
-cov_month<-months(as.Date(nonsev_case_data_trim$covid_date))
-cov_year<-year(as.Date(nonsev_case_data_trim$covid_date))
-
-nonsevere_cov_calendar_month<-paste0(cov_month, "-", cov_year)
-
-
-covid_month_nonsevere<-table(factor(nonsevere_cov_calendar_month, levels=levels_calendar))
-
-nonsevere_cases<-c(number_preg, number_moms, gest_age_at_cov_median, gest_age_at_cov_IQR,
-                   age_at_start_preg_median, age_IQR, age_12_24, age_25_39, age_40_55 )
-
-# calendar month of infection
-
-
 #############################################################################################
 
 baseline_rownames<-c("Number_of_pregnancies","Number_of_unique_mothers", "median_gestational_age_at_covid_infection",
@@ -132,7 +67,7 @@ baseline_rownames<-c("Number_of_pregnancies","Number_of_unique_mothers", "median
 
 baseline_output<-as.data.frame(cbind(baseline_rownames,total_cases, severe_cases, nonsevere_cases))
 
-colnames(baseline_output)<-c("output", "all_cases", "severe_cases", "nonsevere_cases")
+colnames(baseline_output)<-c("output", "all_cases")
 
 baseline_covid_month<-as.data.frame(cbind(levels_calendar, as.numeric(covid_month_all), as.numeric(covid_month_severe), as.numeric(covid_month_nonsevere)))
 colnames(baseline_covid_month)<-c("output", "all_cases", "severe_cases", "nonsevere_cases")
