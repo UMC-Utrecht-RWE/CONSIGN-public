@@ -21,7 +21,7 @@ DAP<-CDM_source$data_access_provider_name
 
 # need to pull in age 
 
-control_data<-fread(paste0(matched_folder,"matches_.csv"))
+control_data<-fread(paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 calendar_months<-seq(pan_start_date,end_study_date,by="month")
 
 pan_months<-months(calendar_months)

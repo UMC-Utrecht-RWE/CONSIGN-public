@@ -22,7 +22,7 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
-source(paste0(pre_dir, "/creat_table_3abc.R"))
+source(paste0(pre_dir, "/create_table_3abc.R"))
 
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
