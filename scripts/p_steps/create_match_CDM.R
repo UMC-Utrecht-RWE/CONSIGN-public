@@ -18,7 +18,8 @@ cov_control_id<-cov_control$person_id
 preg_control_id<-preg_control$person_id
 cases_id<-cases$person_id
 
-
+preg_trim<-fread(paste0(projectFolder,"/preg_trim.csv"))
+fwrite(preg_trim, paste0(preselect_folder, "preg_trim.csv"))
 ######################################################################################
 if(DAP=="Bordeaux"){
 actual_tables_CDM<-list()

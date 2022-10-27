@@ -1,0 +1,58 @@
+to_do 16/10
+
+0) covariates- subset MATCHED CDM folders for covariates
+
+1)check obesity covariate- need to add calculated BMI 
+3)neotnatal covariates
+4)timing of covariates
+
+5)tablification (proportions--> percentages)
+
+CHECK 12-55 AGE FILTER ING PREG-FILTER DONE 21/10 
+FISABIO_HSRU only uses date_dispensing (no coalesce prescription and dispensing) drug_date<-date_dispensing DONE 21/10
+USWAN drug_date<- date_prescription DONE 21/10
+
+1) transfer "ghost dates" DONE 19/10
+
+2)mother-child linkage- using mother id (related_id) and approximate date of birth 22/10 added historical pregnancies 23/10
+
+
+
+
+check maternal_death- check dates from events and SO against delivery dates. >_< SOLUTION: USING LOOKBACK function
+
+get matching working DONE 18/10 found bug-- tiago fixed 21/10
+
+Maternal outcomes w/o linkage done for ARS, FISABIO, SWANSEA and OSLO 17/10 ALL DONE 18/10
+
+DAP specific mat_cov NEONATAL death needs mother-child linkage >_<
+
+covid positive NOT pregnant covid data -first observation p.persons DONe 17/10
+
+ARS not generating covid data-- > meet with Claudia TUESDAY 10:00 DONE and caught major problem with severity detection :) all good 19/10
+
+
+
+PICK UP AT CESAREAN ALL DONE (18/10)
+
+to ask EIMIR: on teams folder, some DAPs have MEDICINES filled but not EVENTS or something like that... is it because they don't have records in those tables, or because they don't want the records in those tables to be included? 
+--> might be easier to make a custom covariate script per DAP
+--> answer 17/10 need to customize >_<
+
+strategy:
+--> first extract all the covariates and their signal dates for each cohort
+--> then test dates using lookback function
+
+timing tests for covid covariates: within 1 year of LMP of case pregnancy (must be before pregnancy) HELP (not based on covid date?)
+
+strategy:
+--> first extract all the covariates and their signal dates for each cohort
+--> then test dates using lookback function for covariates (during and after for outcomes)
+
+
+pregnancy RISK FACTOR: within 2 years before LMP of case pregnancy
+
+pregnancy OUTCOMES: during/after CASE pregnancy
+
+table 4 historical baseline (github shell tables)
+
