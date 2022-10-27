@@ -38,8 +38,8 @@ number_moms<-as.numeric(length(unique(case_data_trim$person_id)))
 gest_age_at_cov_median<- round( median((case_data_trim$gest_age_cov)/7),1)
 gest_age_at_cov_IQR<- round(IQR((case_data_trim$gest_age_cov)/7),1)
 
-age_at_start_preg_median<-round(median(case_data_trim$age_group),1)
-age_IQR<-round(IQR(case_data_trim$age_group),1)
+age_at_start_preg_median<-round(median(case_data_trim$age_at_start_of_pregnancy),1)
+age_IQR<-round(IQR(case_data_trim$age_at_start_of_pregnancy),1)
 
 # between includes min and max in the range >= and <=
 age_12_24<-length(case_data_trim$age_at_start_of_pregnancy[between(case_data_trim$age_at_start_of_pregnancy, 12,24)])
