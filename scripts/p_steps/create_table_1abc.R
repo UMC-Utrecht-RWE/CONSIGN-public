@@ -158,8 +158,8 @@ for(i in 1:length(my_tables)){
     num_minus_1<-sum(my_data$minus_30[my_data$cov_trimester==1])
     ci_min_1<-(prop.test(num_minus_1, denom_trim_1, alternative = "two.sided", correct=F))
     prop_minus_trim_1[i]<-(round(ci_min_1$estimate,2))*100
-    CI_low_minus_trim_1[i]<-(round(ci_min_1$conf.int[1],2))*100
-    CI_hi_minus_trim_1[i]<-(round(ci_min_1$conf.int[2],2))*100
+    CI_low_minus_trim_1[i]<-(round(ci_min_1$conf.int[1],3))*100
+    CI_hi_minus_trim_1[i]<-(round(ci_min_1$conf.int[2],3))*100
     final_minus_trim_1[i]<-paste0(prop_minus_trim_1[i], " (", CI_low_minus_trim_1[i],"-",CI_hi_minus_trim_1[i],")" )
   }else{print("no covid infections in trimester 1, denominator=0")}
   
@@ -168,9 +168,9 @@ for(i in 1:length(my_tables)){
   if(denom_trim_2>0){
     num_minus_2<-sum(my_data$minus_30[my_data$cov_trimester==2])
     ci_min_2<-(prop.test(num_minus_2, denom_trim_2, alternative = "two.sided", correct=F))
-    prop_minus_trim_2[i]<-(round(ci_min_2$estimate,2))*100
-    CI_low_minus_trim_2[i]<-(round(ci_min_2$conf.int[1],2))*100
-    CI_hi_minus_trim_2[i]<-(round(ci_min_2$conf.int[2],2))*100
+    prop_minus_trim_2[i]<-(round(ci_min_2$estimate,3))*100
+    CI_low_minus_trim_2[i]<-(round(ci_min_2$conf.int[1],3))*100
+    CI_hi_minus_trim_2[i]<-(round(ci_min_2$conf.int[2],3))*100
     final_minus_trim_2[i]<-paste0(prop_minus_trim_2[i], " (", CI_low_minus_trim_2[i],"-",CI_hi_minus_trim_2[i],")" )
   }else{print("no covid infections in trimester 2, denominator=0")}
   
@@ -178,9 +178,9 @@ for(i in 1:length(my_tables)){
   if(denom_trim_3>0){
     num_minus_3<-sum(my_data$minus_30[my_data$cov_trimester==3])
     ci_min_3<-(prop.test(num_minus_3, denom_trim_3, alternative = "two.sided", correct=F))
-    prop_minus_trim_3[i]<-(round(ci_min_3$estimate,2))*100
-    CI_low_minus_trim_3[i]<-(round(ci_min_3$conf.int[1],2))*100
-    CI_hi_minus_trim_3[i]<-(round(ci_min_3$conf.int[2],2))*100
+    prop_minus_trim_3[i]<-(round(ci_min_3$estimate,3))*100
+    CI_low_minus_trim_3[i]<-(round(ci_min_3$conf.int[1],3))*100
+    CI_hi_minus_trim_3[i]<-(round(ci_min_3$conf.int[2],3))*100
     final_minus_trim_3[i]<-paste0(prop_minus_trim_3[i], " (", CI_low_minus_trim_3[i],"-",CI_hi_minus_trim_3[i],")" )
   }else{print("no covid infections in trimester 3, denominator=0")}
   
@@ -190,9 +190,9 @@ for(i in 1:length(my_tables)){
   if(denom_trim_1>0){
     num_plus_1<-sum(my_data$plus_30[my_data$cov_trimester==1])
     ci_plus_1<-(prop.test(num_plus_1, denom_trim_1, alternative = "two.sided", correct=F))
-    prop_plus_trim_1[i]<-(round(ci_plus_1$estimate,2))*100
-    CI_low_plus_trim_1[i]<-(round(ci_plus_1$conf.int[1],2))*100
-    CI_hi_plus_trim_1[i]<-(round(ci_plus_1$conf.int[2],2))*100
+    prop_plus_trim_1[i]<-(round(ci_plus_1$estimate,3))*100
+    CI_low_plus_trim_1[i]<-(round(ci_plus_1$conf.int[1],3))*100
+    CI_hi_plus_trim_1[i]<-(round(ci_plus_1$conf.int[2],3))*100
     final_plus_trim_1[i]<-paste0(prop_plus_trim_1[i], " (", CI_low_plus_trim_1[i],"-",CI_hi_plus_trim_1[i],")" )
   }else{print("no covid infections in trimester 1, denominator=0")
     prop_plus_trim_1[i]<-NA
@@ -204,9 +204,9 @@ for(i in 1:length(my_tables)){
   if(denom_trim_2>0){
     num_plus_2<-sum(my_data$plus_30[my_data$cov_trimester==2])
     ci_plus_2<-(prop.test(num_plus_2, denom_trim_2, alternative = "two.sided", correct=F))
-    prop_plus_trim_2[i]<-(round(ci_plus_2$estimate,2))*100
-    CI_low_plus_trim_2[i]<-(round(ci_plus_2$conf.int[1],2))*100
-    CI_hi_plus_trim_2[i]<-(round(ci_plus_2$conf.int[2],2))*100
+    prop_plus_trim_2[i]<-(round(ci_plus_2$estimate,3))*100
+    CI_low_plus_trim_2[i]<-(round(ci_plus_2$conf.int[1],3))*100
+    CI_hi_plus_trim_2[i]<-(round(ci_plus_2$conf.int[2],3))*100
     final_plus_trim_2[i]<-paste0(prop_plus_trim_2[i], " (", CI_low_plus_trim_2[i],"-",CI_hi_plus_trim_2[i],")" )
   }else{print("no covid infections in trimester 2, denominator=0")}
   
@@ -214,9 +214,9 @@ for(i in 1:length(my_tables)){
   if(denom_trim_3>0){
     num_plus_3<-sum(my_data$plus_30[my_data$cov_trimester==3])
     ci_plus_3<-(prop.test(num_plus_3, denom_trim_3, alternative = "two.sided", correct=F))
-    prop_plus_trim_3[i]<-(round(ci_plus_3$estimate,2))*100
-    CI_low_plus_trim_3[i]<-(round(ci_plus_3$conf.int[1],2))*100
-    CI_hi_plus_trim_3[i]<-(round(ci_plus_3$conf.int[2],2))*100
+    prop_plus_trim_3[i]<-(round(ci_plus_3$estimate,3))*100
+    CI_low_plus_trim_3[i]<-(round(ci_plus_3$conf.int[1],3))*100
+    CI_hi_plus_trim_3[i]<-(round(ci_plus_3$conf.int[2],3))*100
     final_plus_trim_3[i]<-paste0(prop_plus_trim_3[i], " (", CI_low_plus_trim_3[i],"-",CI_hi_plus_trim_3[i],")" )
   }else{print("no covid infections in trimester 3, denominator=0")}
   
