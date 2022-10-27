@@ -23,6 +23,10 @@ pregnant_matched<-as.data.frame(fread(paste0(matched_folder, "matched_pregnant.c
 pregnant_matched<-pregnant_matched[keep_vars]
 pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
+# need to have only one pregnancy from each control mother
+preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
+preg_data_cov_neg<-preg_control_grouped%>%slice_head()
+
 
 case_data<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 
