@@ -58,6 +58,7 @@ final_minus_trim_3<-vector(length=length(my_tables))
 
 for(i in 1:length(my_tables)){
   my_data<-fread(paste0(output_cov_window_atc_2,my_tables[i]))
+  my_data<-my_data[complete.cases(my_data)==T,]
   print(my_names[[i]])
   # 30 days BEFORE COVID infection date
   
@@ -149,6 +150,7 @@ denom_trim_3<-nrow(my_PREG_NS[my_PREG_NS$cov_trimester==3,])
 
 for(i in 1:length(my_tables)){
   my_data<-fread(paste0(output_cov_window_atc_2,my_tables[i]))
+  my_data<-my_data[complete.cases(my_data)==T,]
   my_data<-my_data[my_data$severity=="0"]
   print(my_names[[i]])
   # 30 days BEFORE COVID infection date
@@ -239,6 +241,7 @@ denom_trim_3<-nrow(my_PREG_S[my_PREG_S$cov_trimester==3,])
 
 for(i in 1:length(my_tables)){
   my_data<-fread(paste0(output_cov_window_atc_2,my_tables[i]))
+  my_data<-my_data[complete.cases(my_data)==T,]
   my_data<-my_data[my_data$severity=="0"]
   print(my_names[[i]])
   # 30 days BEFORE COVID infection date
