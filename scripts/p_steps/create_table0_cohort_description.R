@@ -2,22 +2,6 @@
 # cohort description table 
 
 
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
-
-projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectFolder)
-
-# CHECK/ FILL IN YOUR PARAMETERS FOR PREGNANCY ALGORITHM FILE 
-
-source("params.R")
-
-source("99_path.R")
-
-suppressMessages(source(paste0(pre_dir, "/packages.R")))
-
-
 # Count of calender month of infection
 
 calendar_months<-seq(pan_start_date,end_study_date,by="month")
@@ -64,4 +48,4 @@ cohort_counts<-c(pan_preg_cohort_num, median_age_pan_preg_cohort, cases_preg_num
 
 cohort_description<-as.data.frame(cbind(my_row_names, cohort_counts))
 
-fwrite(cohort_description, paste0(final_output_dir, "cohort_description.csv"))
+fwrite(cohort_description, paste0(final_output_dir, "table0_cohort_description.csv"))

@@ -141,7 +141,7 @@ table_1a<-as.data.frame(cbind((my_names), (final_minus_trim_1),(final_plus_trim_
 
 colnames(table_1a)<-c("Drug", "trim 1, -30 days", "trim 1, +30 days", "trim 2, -30 days", 
                       "trim 2, +30 days","trim 3, -30 days", "trim 3, +30 days")
-fwrite(table_1a, paste0(final_output_dir,DAP, "_table_1_a.csv"))
+fwrite(table_1a, paste0(final_output_dir,"supplement/",DAP,"ATC",j+2, "_table_1_a.csv"))
 
 
 ###############################################################################
@@ -234,7 +234,7 @@ table_1b<-as.data.frame(cbind((my_names), (final_minus_trim_1),(final_plus_trim_
 
 colnames(table_1b)<-c("Drug", "trim 1, -30 days", "trim 1, +30 days", "trim 2, -30 days", 
                       "trim 2, +30 days","trim 3, -30 days", "trim 3, +30 days")
-fwrite(table_1b, paste0(final_output_dir, DAP, "_table_1_b.csv"))
+fwrite(table_1b, paste0(final_output_dir,"supplement/", DAP,"ATC",j+2, "_table_1_b.csv"))
 
 #############################################################################################
 #1c: severe
@@ -325,7 +325,7 @@ table_1c<-as.data.frame(cbind((my_names), (final_minus_trim_1),(final_plus_trim_
 
 colnames(table_1c)<-c("Drug", "trim 1, -30 days", "trim 1, +30 days", "trim 2, -30 days", 
                       "trim 2, +30 days","trim 3, -30 days", "trim 3, +30 days")
-fwrite(table_1c, paste0(final_output_dir, DAP,"_table_1_c.csv"))
+fwrite(table_1c, paste0(final_output_dir,"supplement/", DAP,"ATC",j+2,"_table_1_c.csv"))
 
 print("final outputs with proportions and 95% confidence intervals are stored in g_output/final")
 print("warnings are generated when count==0, ignore them, it's OK")

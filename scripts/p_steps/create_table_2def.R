@@ -18,7 +18,7 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-22)
 
 # denominator is all covid+ pregnancies by trimester
 
-my_PREG<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+my_PREG<-fread( paste0(matched_folder, "preg_matches_data.csv"))
 
 denom_trim_1_all<-nrow(my_PREG[my_PREG$cov_trimester==1,])
 denom_trim_2_all<-nrow(my_PREG[my_PREG$cov_trimester==2,])
@@ -60,7 +60,7 @@ final_minus_trim_2<-vector(length=length(my_tables))
 final_minus_trim_3<-vector(length=length(my_tables))
 
 for(i in 1:length(my_tables)){
-  my_data<-fread(paste0(output_cov_window_atc_2,my_tables[i]))
+  my_data<-fread(paste0(output_CONTROL_PREG_window_atc_2,my_tables[i]))
   my_data<-my_data[complete.cases(my_data)==T,]
   print(my_names[[i]])
   # 30 days BEFORE COVID infection date
@@ -134,12 +134,49 @@ for(i in 1:length(my_tables)){
 
 }
 
-table_1a<-as.data.frame(cbind((my_names), (final_minus_trim_1),(final_plus_trim_1), 
+table_2def<-as.data.frame(cbind((my_names), (final_minus_trim_1),(final_plus_trim_1), 
                         (final_minus_trim_2),(final_plus_trim_2), (final_minus_trim_3), (final_plus_trim_3)))
 
-colnames(table_1a)<-c("Drug", "trim 1, -30 days", "trim 1, +30 days", "trim 2, -30 days", 
-                      "trim 2, +30 days","trim 3, -30 days", "trim 3, +30 days")
-fwrite(table_1a, paste0(final_output_dir,DAP, "_table_2_def.csv"))
+colnames(table_2def)<-c("Drug", " -30 days (controls)", "+30 days (controls)", "-30 days (controls)", 
+                      "+30 days (controls)","-30 days (controls)", "+30 days (controls)")
+
+
+table1a_total<-IMPORT_PATTERN(pat="table_1_a", dir=final_output_dir)
+
+table1b_nonsevere<-IMPORT_PATTERN(pat="table_1_b", dir=final_output_dir)
+
+table1c_severe<-IMPORT_PATTERN(pat="table_1_c", dir=final_output_dir)
+
+# d=trim 1 
+# e=trim 2
+# f=trim 3
+
+cases_table2d<-cbind(table1a_total[,2:3],table1c_severe[,2:3], table1b_nonsevere[,2:3])
+colnames_2d<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+colnames(cases_table2d)<-colnames_2d
+
+table_2d<-cbind(cases_table2d, table_2def[,2:3])
+
+fwrite(table_2d, paste0(final_output_dir,DAP, "_table_2_d.csv"))
+######################################################################
+
+cases_table2e<-cbind(table1a_total[,4:5],table1c_severe[,4:5], table1b_nonsevere[,4:5])
+colnames_2e<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+colnames(cases_table2e)<-colnames_2e
+
+table_2e<-cbind(cases_table2e, table_2def[,4:5])
+
+fwrite(table_2e, paste0(final_output_dir,DAP, "_table_2_e.csv"))
+
+######################################################################
+
+cases_table2f<-cbind(table1a_total[,6:7],table1c_severe[,6:7], table1b_nonsevere[,6:7])
+colnames_2f<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+colnames(cases_table2f)<-colnames_2f
+
+table_2f<-cbind(cases_table2f, table_2def[,6:7])
+
+fwrite(table_2f, paste0(final_output_dir,DAP, "_table_2_f.csv"))
 
 
 
