@@ -341,7 +341,7 @@ table1c_severe<-IMPORT_PATTERN(pat="table_1_c", dir=final_output_dir)
 ##############################################################################################
 cases_table3d<-cbind(table1a_total[,2:3],table1c_severe[,2:3], table1b_nonsevere[,2:3])
 colnames_3d<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
-colnames(cases_table3d)<-colnames_2d
+colnames(cases_table3d)<-colnames_3d
 
 
 control_table3d<-cbind(table_1a[,2:3], table_1c[,2:3], table_1b[,2:3])
