@@ -25,15 +25,23 @@ pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 # need to have only one pregnancy from each control mother
 preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
-preg_data_cov_neg<-preg_control_grouped%>%slice_head()
+preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_max(n = 1, order_by = pregnancy_start_date)))
 
 
-case_data<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+case_data_all<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+case_data_grouped<-case_data_all%>%group_by(person_id)
+case_data<-case_data_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
+
 
 # make sure order is good
 covid_positive_matched<-covid_positive_matched[order(covid_positive_matched$exposed_id),]
 pregnant_matched<-pregnant_matched[order(pregnant_matched$exposed_id),]
 case_data<-case_data[order(case_data$person_id)]
+
+nrow(covid_positive_matched)
+nrow(pregnant_matched)
+length(case_data$person_id)
+length(unique(case_data$person_id))
 
 all(covid_positive_matched$exposed_id==case_data$person_id)
 all(pregnant_matched$exposed_id==case_data$person_id)
@@ -71,7 +79,7 @@ covid_match_with_preg_dates<-cbind(covid_match_data, long_covid_match[,transfer_
 
 fwrite(covid_match_with_preg_dates, paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 
-pregnant_match_data<-preg_data_cov_neg[preg_data_cov_neg$person_id%in%long_pregnant_match$control_id]
+pregnant_match_data<-preg_data_cov_neg[(preg_data_cov_neg$person_id%in%long_pregnant_match$control_id),]
 pregnant_match_data<-pregnant_match_data[order(pregnant_match_data$person_id),]
 all(pregnant_match_data$person_id==long_pregnant_match$control_id)
 
