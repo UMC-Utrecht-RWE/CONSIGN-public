@@ -11,17 +11,18 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 # denominator is all covid+ pregnancies by trimester
-my_PREG<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
-
-denom_trim_1<-nrow(my_PREG[my_PREG$cov_trimester==1,])
-denom_trim_2<-nrow(my_PREG[my_PREG$cov_trimester==2,])
-denom_trim_3<-nrow(my_PREG[my_PREG$cov_trimester==3,])
-
 
 
 my_atc_folders<-c(output_cov_window_atc_3, output_cov_window_atc_4, output_cov_window_atc_5)
 
 for(j in 1:length(my_atc_folders)){
+  
+  my_PREG<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
+  
+  denom_trim_1<-nrow(my_PREG[my_PREG$cov_trimester==1,])
+  denom_trim_2<-nrow(my_PREG[my_PREG$cov_trimester==2,])
+  denom_trim_3<-nrow(my_PREG[my_PREG$cov_trimester==3,])
+  
 my_tables<-list.files(path=my_atc_folders[j])
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-22)
 print(my_names)
