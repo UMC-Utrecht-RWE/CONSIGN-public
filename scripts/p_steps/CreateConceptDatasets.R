@@ -31,7 +31,7 @@ NULL
 #' @export
 
 
-CreateConceptDatasets <- function(codesheet=covid_codelist,file=events_tables, c.voc="coding_system", c.concept="event_abbreviation", c.codes="code", c.startwith = c("ICD9CM", "ICD9", "ICD10-SE", "ICD10", "ICD10CM", "ICD10DA"),
+CreateConceptDatasets <- function(codesheet=covid_codelist,file=events_tables, c.voc="coding_system", c.concept="event_abbreviation", c.codes="code", c.startwith = c("ICD9CM", "ICD9",  "ICD10", "ICD10CM", "ICD10DA"),
                                   f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder, method = "loop", group = T, f.name = NULL, db = NULL ){
   # browser()
   #Get data. If not use copy input dataset may be affected (see data.table properties)
