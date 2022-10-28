@@ -36,7 +36,7 @@ case_data<-case_data_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
 # make sure order is good
 covid_positive_matched<-covid_positive_matched[order(covid_positive_matched$exposed_id),]
 pregnant_matched<-pregnant_matched[order(pregnant_matched$exposed_id),]
-case_data<-case_data[order(case_data$person_id)]
+case_data<-case_data[order(case_data$person_id),]
 
 nrow(covid_positive_matched)
 nrow(pregnant_matched)
