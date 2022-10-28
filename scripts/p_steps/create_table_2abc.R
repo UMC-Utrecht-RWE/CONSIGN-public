@@ -177,5 +177,5 @@ baseline_covid_month<-as.data.frame(cbind(levels_calendar, as.numeric(covid_mont
 colnames(baseline_covid_month)<-c("output", "all_cases", "severe_cases", "nonsevere_cases", "pregnant matched controls")
 baseline_table<-rbind(baseline_output, baseline_covid_month)
 
-fwrite(baseline_table, paste0(final_output_dir,DAP,"_table2", trimgroup[i], "_baseline_cases.csv"))
+fwrite(baseline_table, paste0(final_output_dir,DAP,"_table2", trimgroup[i], "_baseline.csv"))
 }
