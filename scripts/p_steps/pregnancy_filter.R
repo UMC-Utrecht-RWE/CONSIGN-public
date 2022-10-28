@@ -92,14 +92,15 @@ table(df_PERSONS$pregnant_ever)
 
 # add elligibility criteria from CreateEntryExit (in PERSONS) to my_PREG
 my_PREG$elligible_hist<-0
-ell_hist_preg_id<-my_PREG$person_id[df_PERSONS$elligible_historical==1]
+elligible_hist_ID<-df_PERSONS$person_id[df_PERSONS$elligible_historical==1]
+length(elligible_hist_ID)
 my_PREG$elligible_hist[my_PREG$person_id%in%ell_hist_preg_id]<-1
 table(my_PREG$elligible_hist)
 
 my_PREG$elligible_pandemic<-0
-ell_pan_preg_id<-my_PREG$person_id[df_PERSONS$elligible_pandemic==1]
+ell_pan_preg_id<-df_PERSONS$person_id[df_PERSONS$elligible_pandemic==1]
 my_PREG$elligible_pandemic[my_PREG$person_id%in%ell_pan_preg_id]<-1
-
+table(my_PREG$elligible_pandemic)
 # NEVER PREG ONLY IF ELLIGIBLE FOR PANDEMIC COHORT add entry/exit criteria here
 
 never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$pregnant_ever==0 & df_PERSONS$elligible_pandemic==1]
@@ -128,7 +129,8 @@ my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, lower=25, upper=39)
 
 my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy,40,55)]<-3
 
-
+table(my_PREG$age_group)
+hist(my_PREG$age_at_start_of_pregnancy)
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy?
@@ -141,7 +143,7 @@ my_PREG$cohort[(my_PREG$pregnancy_end_date>=covid_start_date)]<-"pandemic"
 
 my_PREG$cohort[between(my_PREG$pregnancy_end_date, historical_end_date, covid_start_date) ]<-"between"
 
-table(my_PREG$cohort)
+
 
 # all the pregnancies included in the study with additional variables:
 
@@ -159,7 +161,7 @@ pan_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="pandemic"])
 hist_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="historical"])
 between_preg_ID<-unique(my_PREG$person_id[my_PREG$cohort=="between"])
 
-df_PERSONS_preg<- df_PERSONS[df_PERSONS$person_id%in%my_PREG$person_id,]
+# df_PERSONS_preg<- df_PERSONS[df_PERSONS$person_id%in%my_PREG$person_id,]
 
 
 actual_tables_preselect<-list()

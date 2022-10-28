@@ -31,6 +31,10 @@ cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
 
 # select only those with covid during pregnancy
 
+cov_neg_preg<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==T,]
+
+fwrite(cov_neg_preg, paste0(cov_neg_pan_preg_folder,"cov_neg_preg.csv"))
+
 cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
 # flag covid dates that are too close to labor to "sandbox" them in severity analysis

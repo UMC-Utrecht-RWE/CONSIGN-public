@@ -28,7 +28,7 @@ t2_all <- read.csv(paste0(dataPregNegDir,"cov_neg_preg.csv"))
 t2_grouped<-t2_all%>%group_by(person_id)
 
 
-t2<-t2_grouped%>%slice_head()
+t2<-t2_grouped%>%slice_max(n = 1, order_by = pregnancy_start_date)
 
 
 # look at first three lines to test

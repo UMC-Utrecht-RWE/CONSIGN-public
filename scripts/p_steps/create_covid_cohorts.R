@@ -15,19 +15,19 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 ###############################################################
 
 cov_preg_data<-fread(paste0(pan_preg_folder,"trim_cov_PREG.csv"))
+cov_neg_pan_preg<-fread(paste0(cov_neg_pan_preg_folder,"cov_neg_preg.csv"))
 
 # check for days to deliver at covid date and remove those within 3 days
 # keep all cov_pos_preg, but overwrite severity if cov_date is within 
 
 cov_preg_data$severity[cov_preg_data$days_cov_before_labor<3]<-9
+table(cov_preg_data$severity)
 cov_preg_at_delivery<-cov_preg_data[cov_preg_data$days_cov_before_labor<=3,]
 fwrite(cov_preg_at_delivery, paste0(output_dir,"covid_within_3_days_delivery.csv"))
 
 
 all_pan_preg<-fread(paste0(pan_preg_folder,"my_PREG.csv"))
 
-cov_neg_pan_preg<-all_pan_preg[(all_pan_preg$person_id%exclude%cov_preg_data$person_id),]
-fwrite(cov_neg_pan_preg, paste0(cov_neg_pan_preg_folder,"cov_neg_preg.csv"))
   
 pan_tables<-list.files(paste0(pan_preg_folder,"/"), pattern = "\\.csv$")
 
@@ -47,7 +47,7 @@ for (i in 1:length(pan_tables)){
   # unlink(paste0(pan_preg_folder,pan_tables[i]))
 }
 
-fwrite(cov_neg_pan_preg, paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
+
 
 unlink(paste0(cov_neg_pan_preg_folder,"my_PREG.csv"))
 unlink(paste0(cov_neg_pan_preg_folder,"trim_cov_PREG.csv"))
@@ -72,8 +72,9 @@ cov_data_pos_not_preg<-cov_data[cov_data$person_id%in%not_preg_PERSONS$person_id
 
 covid_grouped<-cov_data_pos_not_preg%>%group_by(person_id)
 
+first_covid<-covid_grouped%>%slice_min( n = 1, order_by = cov_date)
 
-first_covid<-covid_grouped%>%slice_head()
+# last_covid<-covid_grouped%>%slice_max( n = 1, order_by = cov_date)
 
 fwrite(first_covid, paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
 
@@ -83,11 +84,11 @@ for (i in 1:length(not_preg_tables)){
   fwrite(my_preg_table,paste0(cov_pos_not_preg_folder,not_preg_tables[i]))
   
 }
-
-for (i in 1:length(not_preg_tables)){
-  my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
-  my_preg_table<- my_table[my_table$person_id%exclude%cov_pos_not_preg$person_id,]
-  fwrite(my_preg_table,paste0(cov_neg_not_preg_folder,not_preg_tables[i]))
-  # unlink(paste0(not_preg_folder,not_preg_tables[i]))
-}
+# 
+# for (i in 1:length(not_preg_tables)){
+#   my_table<-fread(paste0(not_preg_folder,not_preg_tables[i]))
+#   my_preg_table<- my_table[my_table$person_id%exclude%cov_pos_not_preg$person_id,]
+#   fwrite(my_preg_table,paste0(cov_neg_not_preg_folder,not_preg_tables[i]))
+#   # unlink(paste0(not_preg_folder,not_preg_tables[i]))
+# }
 

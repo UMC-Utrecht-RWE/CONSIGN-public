@@ -4,6 +4,9 @@
 # 7/9/2022
 # updated 21/10 to fix entry and exit criteria for cohorts
 
+# 28/10 15:00 gone through with a fine tooth comb- several points of improvement 
+# please re-run
+
 # make sure you have covid_data.csv in preselect_folder
 # make sure you have ALL_full_codelist.csv in projectFolder
 
