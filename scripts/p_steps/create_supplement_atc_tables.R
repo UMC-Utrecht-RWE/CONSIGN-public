@@ -247,7 +247,7 @@ denom_trim_3_S<-nrow(my_PREG_S[my_PREG_S$cov_trimester==3,])
 for(i in 1:length(my_tables)){
   my_data<-fread(paste0(my_atc_folders[j],my_tables[i]))
   my_data<-my_data[complete.cases(my_data)==T,]
-  my_data<-my_data[my_data$severity=="0"]
+  my_data<-my_data[my_data$severity=="1"]
   print(my_names[[i]])
   # 30 days BEFORE COVID infection date
   
