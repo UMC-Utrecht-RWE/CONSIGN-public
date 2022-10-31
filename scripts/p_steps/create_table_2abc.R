@@ -23,7 +23,7 @@
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
-case_data<-fread(paste0(cov_pos_pan_preg_folder,"cov_pos_preg.csv"))
+case_data<-fread(paste0(matched_folder,"matches_cases.csv"))
 calendar_months<-seq(pan_start_date,end_study_date,by="month")
 
 # 2 issues with control data: 
