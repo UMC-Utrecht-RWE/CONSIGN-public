@@ -34,9 +34,9 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # GEST_DIAB
   
-  my_event_name<-"GESTDIAB"
+  my_event_name<-"P_GESTDIAB_AESI"
   
-  GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  GEST_DIAB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -52,9 +52,9 @@ for(i in 1:length(preg_cohort_folders)){
   # CAESARIAN
   
   
-  my_event_name<-"CESAREA"
+  my_event_name<-"TP_CESAREA_COV"
   
-  CESAREA_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -70,9 +70,9 @@ for(i in 1:length(preg_cohort_folders)){
   # SPONTANEOUS ABORTION
   
   # FISABIO USES events only
-  my_event_name<-"SPONTABO"
+  my_event_name<-"P_SPONTABO_AESI"
   
-  SPONTABO_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -99,9 +99,9 @@ for(i in 1:length(preg_cohort_folders)){
   
   # FISABIO USES events only
   
-  my_event_name<-"STILLBIRTH"
+  my_event_name<-"P_STILLBIRTH_AESI"
   
-  SB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -127,9 +127,9 @@ for(i in 1:length(preg_cohort_folders)){
   
   # FISABIO USES events only
   
-  my_event_name<-"PREECLAMP"
+  my_event_name<-"P_PREECLAMP_AESI"
   
-  PREECLAMP_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  PREECLAMP_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = PREECLAMP_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))

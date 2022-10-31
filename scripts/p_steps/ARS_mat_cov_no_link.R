@@ -35,9 +35,9 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # GEST_DIAB
   
-  my_event_name<-"GESTDIAB"
+  my_event_name<-"P_GESTDIAB_AESI"
   
-  GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  GEST_DIAB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -52,9 +52,9 @@ for(i in 1:length(preg_cohort_folders)){
   # CAESARIAN
   
   
-  my_event_name<-"CESAREA"
+  my_event_name<-"TP_CESAREA_COV"
   
-  CESAREA_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -84,12 +84,23 @@ for(i in 1:length(preg_cohort_folders)){
   
   # ARS USES PREGNANCY OUTPUT type_of_end=="SA"
   
+  my_event_name<-"P_SPONTABO_AESI"
   
-  SA_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
-  SA_DATE<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
+  SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
+  
+  SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  SA_EV_ID<-(SPONTABO_EV$person_id)
+  SA_EV_Date<- (SPONTABO_EV$start_date_record)
   
   
-  SA_cov<-as.data.frame(cbind(SA_ID,SA_Date))
+  SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
+  SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
+  
+  SA_ID<-c(SA_EV_ID, SA_alg_ID)
+  SA_Date<-c(SA_EV_Date, SA_alg_Date)
+  
+  SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
   colnames(SA_cov)<-c("id", "date")
   fwrite(SA_cov, paste0(output_folder,"Spont_Abort.csv"))
   
@@ -99,7 +110,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   # ARS USES PREGNANCY OUTPUT type_of_end=="SB" AND events data
   
-  my_event_name<-"STILLBIRTH"
+  my_event_name<-"P_STILLBIRTH_AESI"
   
   SB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
   CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
