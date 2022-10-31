@@ -22,8 +22,9 @@ dataPregNegDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_negative/
 t1_all <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
 t1_grouped<-t1_all%>%group_by(person_id)
 t1<-t1_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
+t1<-ungroup(t1)
 
-
+fwrite(t1, paste0( matched_folder, "matches_cases.csv"))
 # # read control file
 # t2 <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
 # read control file
