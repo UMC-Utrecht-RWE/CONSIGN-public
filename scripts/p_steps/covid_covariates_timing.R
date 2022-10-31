@@ -1,5 +1,6 @@
 # covaraite timing: brute force
 
+# need trimester and severity
 
 cohort_covariate_folders<-c(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
 
@@ -19,9 +20,13 @@ for(i in 1:length(cohort_covariate_folders)){
   print(my_names)
   my_covid_data<-fread(cohort_covid_data[i])
 
-  my_output_df<- as.data.frame(matrix(data=NA, nrow=nrow(my_covid_data), ncol=(length(my_names)+1)))
-  colnames(my_output_df)<-c("person_id", my_names)
+  my_output_df<- as.data.frame(matrix(data=NA, nrow=nrow(my_covid_data), ncol=(length(my_names)+3)))
+  colnames(my_output_df)<-c("person_id","severity","covid_trimester", my_names)
+  
   my_output_df$person_id<-my_covid_data$person_id
+  my_output_df$cov_trimester<-my_covid_data$cov_trimester
+  my_output_df$severity<- my_covid_data %>% dplyr:: select(starts_with("sever"))
+  
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
     my_covariate_data<-my_covariate_data[complete.cases(my_covariate_data)==T,]
@@ -32,7 +37,7 @@ for(i in 1:length(cohort_covariate_folders)){
       time_window<-my_id_covariate_data$date-my_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
       if(any(time_window<=0 & time_window>=-365)){covariate_result<-1}else{covariate_result<-0}
-      my_output_df[p,j+1]<-covariate_result
+      my_output_df[p,j+3]<-covariate_result
     }
   
   }
