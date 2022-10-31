@@ -17,7 +17,13 @@ dataNotPregDir<-paste0(projectFolder,"/CDMInstances_not_pregnant/covid_positive/
 dataPregNegDir<-paste0(projectFolder,"/CDMInstances_pan_pregnant/covid_negative/")  
 
 # read exposed file
-t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
+#t1 <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
+
+t1_all <- read.csv(paste0(dataPregPosDir,"cov_pos_preg.csv"))
+t1_grouped<-t1_all%>%group_by(person_id)
+t1<-t1_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
+
+
 # # read control file
 # t2 <- read.csv(paste0(dataNotPregDir,"PERSONS.csv"))
 # read control file
@@ -28,7 +34,7 @@ t2_all <- read.csv(paste0(dataPregNegDir,"cov_neg_preg.csv"))
 t2_grouped<-t2_all%>%group_by(person_id)
 
 
-t2<-t2_grouped%>%slice_max(n = 1, order_by = pregnancy_start_date)
+t2<-t2_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
 
 
 # look at first three lines to test
