@@ -47,7 +47,8 @@ VACCINES$vx_record_date<-as.numeric(as.Date(VACCINES$vx_record_date, format="%Y%
 
 if(DAP!="USWAN"){MED$drug_date<-MED$date_dispensing}else{MED$drug_date<-MED$date_prescription}
 
-
+MED$drug_date<-as.Date(MED$drug_date, format="%Y%m%d")
+MED$drug_date<-as.numeric(MED$drug_date)
 
 #################################################################
 #CARDIO
@@ -373,7 +374,7 @@ vaccine_id<-c(vaccine_MED_id, vaccine_VAC_id)
 vaccine_date<-c(vaccine_MED_date, vaccine_VAC_date)
 
 vaccine_cov<-as.data.frame(cbind(vaccine_id, vaccine_date))
-
+colnames(vaccine_cov)<-c("person_id","date")
 fwrite(vaccine_cov, paste0(output_folder,"vaccine.csv"))
 
 }
