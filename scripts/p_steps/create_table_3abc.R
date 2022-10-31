@@ -31,6 +31,9 @@ control_data<-fread(paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 control_data$gest_age_cov<-control_data$cov_date-control_data$pregnancy_start_date
 control_persons<-fread(paste0(matched_folder,"CDM_covid_positive/PERSONS.csv"))
 
+control_data<-control_data[order(person_id),]
+control_persons<-control_persons[order(person_id),]
+
 all(control_persons$person_id==control_data$person_id)
 
 control_data$age_at_start_of_pregnancy<-control_persons$age_at_start_pandemic

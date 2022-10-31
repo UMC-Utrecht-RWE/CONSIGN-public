@@ -22,9 +22,9 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
 cov_trim_data<-fread(paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 cov_trim_data$severity<-cov_trim_data$severe
-cov_trim_data$covid_date<-cov_trim_data$cov_date
 
-fwrite(cov_trim_data, paste0(matched_folder,"covid_pos_control_data.R"))
+# 
+# fwrite(cov_trim_data, paste0(matched_folder,"covid_pos_control_data.R"))
 
 output_CONTROL_NP_window_atc_2<-paste0(projectFolder,"/g_output/NP_CONTROL_window_atc_2/")
 invisible(if(dir.exists(output_CONTROL_NP_window_atc_2)==F)

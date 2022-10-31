@@ -22,15 +22,11 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 
 cov_trim_data<-fread(paste0(matched_folder,"matches_pregnant_cov_neg.csv"))
 cov_trim_data$gest_age_cov<-cov_trim_data$cov_date-cov_trim_data$pregnancy_start_date
-control_colnames<-colnames(cov_trim_data)
-new_names<-c(control_colnames[1:42],"empty_trim", "empty_date",control_colnames[45:ncol(cov_trim_data)])
 
-colnames(cov_trim_data)<-new_names
-
-cov_trim_data$covid_date<-cov_trim_data$cov_date
+# just a mock severity for data structure
 cov_trim_data$severity<-0
 
-fwrite(cov_trim_data, paste0(matched_folder, "preg_matches_data.csv"))
+# fwrite(cov_trim_data, paste0(matched_folder, "preg_matches_data.csv"))
 
 output_CONTROL_PREG_window_atc_2<-paste0(projectFolder,"/g_output/PREG_CONTROL_window_atc_2/")
 invisible(if(dir.exists(output_CONTROL_PREG_window_atc_2)==F)
