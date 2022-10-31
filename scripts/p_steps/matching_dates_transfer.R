@@ -25,7 +25,7 @@ pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 # need to have only one pregnancy from each control mother
 preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
-preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_max(n = 1, order_by = pregnancy_start_date)))
+preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)))
 
 
 case_data_all<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
