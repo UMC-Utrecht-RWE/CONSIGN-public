@@ -94,7 +94,7 @@ table(df_PERSONS$pregnant_ever)
 my_PREG$elligible_hist<-0
 elligible_hist_ID<-df_PERSONS$person_id[df_PERSONS$elligible_historical==1]
 length(elligible_hist_ID)
-my_PREG$elligible_hist[my_PREG$person_id%in%ell_hist_preg_id]<-1
+my_PREG$elligible_hist[my_PREG$person_id%in%elligible_hist_ID]<-1
 table(my_PREG$elligible_hist)
 
 my_PREG$elligible_pandemic<-0
