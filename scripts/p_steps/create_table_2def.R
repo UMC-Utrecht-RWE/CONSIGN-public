@@ -18,7 +18,7 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-22)
 
 # denominator is all covid+ pregnancies by trimester
 
-my_PREG<-fread( paste0(matched_folder, "preg_matches_data.csv"))
+my_PREG<-fread( paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
 
 denom_trim_1_all<-nrow(my_PREG[my_PREG$cov_trimester==1,])
 denom_trim_2_all<-nrow(my_PREG[my_PREG$cov_trimester==2,])
