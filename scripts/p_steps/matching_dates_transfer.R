@@ -23,6 +23,8 @@ pregnant_matched<-as.data.frame(fread(paste0(matched_folder, "matched_pregnant.c
 pregnant_matched<-pregnant_matched[keep_vars]
 pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
+#3 columns on the end with empty covid data (because they don't have covid) need to remove them
+preg_data_cov_neg<-preg_data_cov_neg[,-c(43,44,45)]
 # need to have only one pregnancy from each control mother
 preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
 preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)))
@@ -77,6 +79,9 @@ all(covid_match_data$person_id==long_covid_match$control_id)
 transfer_vars<-c("age_group", "exposed_id", "pregnancy_start_date", "cov_trimester")
 covid_match_with_preg_dates<-cbind(covid_match_data, long_covid_match[,transfer_vars])
 
+# make sure we have covid dates with cov_date and covid_date names because inconsistency messes things up downstream
+covid_match_with_preg_dates$covid_date<-covid_match_with_preg_dates$cov_date
+
 fwrite(covid_match_with_preg_dates, paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 
 pregnant_match_data<-preg_data_cov_neg[(preg_data_cov_neg$person_id%in%long_pregnant_match$control_id),]
@@ -85,5 +90,8 @@ all(pregnant_match_data$person_id==long_pregnant_match$control_id)
 
 transfer_vars<-c("age_group", "exposed_id", "cov_date", "cov_trimester")
 pregnant_match_with_covid_dates<-cbind(pregnant_match_data, long_pregnant_match[,transfer_vars])
+
+# make sure we have covid dates with cov_date and covid_date names because inconsistency messes things up downstream
+pregnant_match_with_covid_dates$covid_date<-pregnant_match_with_covid_dates$cov_date
 
 fwrite(pregnant_match_with_covid_dates, paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
