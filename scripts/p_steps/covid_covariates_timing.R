@@ -24,7 +24,7 @@ for(i in 1:length(cohort_covariate_folders)){
   colnames(my_output_df)<-c("person_id","severity","covid_trimester", my_names)
   
   my_output_df$person_id<-my_covid_data$person_id
-  my_output_df$cov_trimester<-my_covid_data$cov_trimester
+  my_output_df$covid_trimester<-my_covid_data$cov_trimester
   my_output_df$severity<- my_covid_data %>% dplyr:: select(starts_with("sever"))
   
   for(j in 1:length(my_tables)){
