@@ -1,6 +1,6 @@
 # covaraite timing: brute force (actually doesn't take too long :) 
 
-# maternal covariates -within 2 years BEFORE start of index pregnancy
+# maternal covariates -within 1 year AFTER start of index pregnancy
 
 # need trimester and severity
 
