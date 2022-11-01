@@ -162,10 +162,11 @@ invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos
 output_cov_cases   <- paste0(projectFolder, "/g_output/covariates/cov_pos_pan_preg/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")), FALSE))
-output_cov_nonpregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")
+output_cov_pregnant_control <- paste0(projectFolder, "/g_output/covariates/cov_neg_pan_preg/")
+
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), FALSE))
-output_cov_pregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
+output_cov_nonpregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
 
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), FALSE))

@@ -1,17 +1,19 @@
 # covaraite timing: brute force (actually doesn't take too long :) 
 
+# maternal covariates -within 2 years BEFORE start of index pregnancy
+
 # need trimester and severity
 
-cohort_covariate_folders<-c(output_cov_neg_pan_preg, output_cov_pos_pan_preg, output_cov_pos_non_preg)
+cohort_covariate_folders<-c(output_mat_cov_pan_neg, output_mat_cov_pan_pos)
 
 # we need the cov_date for each case and control
-cohort_covid_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"), 
+cohort_preg_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"), 
                              paste0(matched_folder, "matches_cases.csv"), 
-                             paste0(matched_folder, "matches_cov_pos_non_preg.csv"))
+                             paste0(hist_preg_folder,"my_PREG.csv"))
 
 
-output_folders<-c(output_cov_nonpregnant_control, output_cov_cases,output_cov_pregnant_control)
-cohort_names<-c("covid_positive_nonpregnant_control.csv", "cases.csv", "pregnant_cov_neg_control.csv")
+output_folders<-c(g_output_mat_out_pan_neg, g_output_mat_out_pan_pos)
+cohort_names<-c("covid_negative_pregnant_control.csv", "cases.csv")
 # output should have the person_id of the control, and a column for each covariate with a 0/1 if they have this event within 1 year before covid_date
 
 for(i in 1:length(cohort_covariate_folders)){
@@ -19,26 +21,26 @@ for(i in 1:length(cohort_covariate_folders)){
   my_tables<-list.files(path=cohort_covariate_folders[i])
   my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
   print(my_names)
-  my_covid_data<-fread(cohort_covid_data[i])
+  my_preg_data<-fread(cohort_preg_data[i])
 
-  my_output_df<- as.data.frame(matrix(data=NA, nrow=nrow(my_covid_data), ncol=(length(my_names)+3)))
+  my_output_df<- as.data.frame(matrix(data=NA, nrow=nrow(my_preg_data), ncol=(length(my_names)+3)))
   colnames(my_output_df)<-c("person_id","severity","covid_trimester", my_names)
   
-  my_output_df$person_id<-my_covid_data$person_id
-  my_output_df$covid_trimester<-my_covid_data$cov_trimester
-  my_output_df$severity<-my_covid_data$severity
+  my_output_df$person_id<-my_preg_data$person_id
+  my_output_df$covid_trimester<-my_preg_data$cov_trimester
+  my_output_df$severity<-my_preg_data$severity
   
   
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
     my_covariate_data<-my_covariate_data[complete.cases(my_covariate_data)==T,]
-    for(p in 1:nrow(my_covid_data)){
-      my_id<-my_covid_data$person_id[p]
-      my_date<-my_covid_data$covid_date[p]
+    for(p in 1:nrow(my_preg_data)){
+      my_id<-my_preg_data$person_id[p]
+      my_date<-my_preg_data$pregnancy_start_date[p]
       my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
       time_window<-my_id_covariate_data$date-my_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
-      if(any(time_window<=0 & time_window>=-365)){covariate_result<-1}else{covariate_result<-0}
+      if(any(time_window<=365 & time_window>=0)){covariate_result<-1}else{covariate_result<-0}
       my_output_df[p,j+3]<-covariate_result
     }
   
