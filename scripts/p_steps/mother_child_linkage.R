@@ -29,29 +29,17 @@ DOB<-paste0(CHILDREN$comp_day_birth, "/", CHILDREN$month_of_birth, "/",CHILDREN$
 CHILDREN$DOB<-as.Date(DOB, format="%d/%m/%Y")
 CHILDREN$DOB_numeric<-as.numeric(CHILDREN$DOB)
 
-if(DAP=="TEST"){
-  CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
-  CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
-  all_mom_ids<-c(case_mom_id, controls_mom_id, historical_mom_id)
-  CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
-  all_DOB<-c(case_DOB, controls_DOB, historical_DOB)
-  sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
-  CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
-  CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
-  #
-  #
-  PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
-  fwrite (PERSONS_RELATIONS, paste0(preselect_folder,"PERSONS_RELATIONS.csv"))
-}
+###########################################################
+# bring in pregnancy data to find the children 
 
-case<- fread(paste0(cov_pos_pan_preg_folder,"cov_pos_preg.csv"))
+case<- fread(paste0(matched_folder,"matches_cases.csv"))
 controls<-fread(paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
 historical<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
 
 if(DAP=="TEST"){
-controls$type_of_pregnancy_end<-sample(c("LB", "LB", "LB", "SA"), replace = T,size = nrow(controls))
-case$type_of_pregnancy_end<-sample(c("LB", "LB", "LB","SA"), replace = T, size=nrow(case))
-historical$type_of_pregnancy_end<-sample(c("LB", "LB","LB", "SA"), replace = T, size=nrow(historical))
+controls$type_of_pregnancy_end<-rep("LB", nrow(controls))
+case$type_of_pregnancy_end<-rep("LB", nrow(cases))
+historical$type_of_pregnancy_end<-"LB"
 }
 
 case_mom_id<-case$person_id [case$type_of_pregnancy_end=="LB"]
@@ -71,24 +59,6 @@ historical_child<-list()
 historical_child_DOB_PERSONS<-list()
 
 
-# simulate PR table >_<
-#
-
-if(DAP=="TEST"){
-CHILDREN$related_id<- sample(PERSONS$person_id[PERSONS$year_of_birth<1995], nrow(CHILDREN))
-CHILDREN$meaning_of_relationship<-sample(c("birth_mother", "father"), replace=T,nrow(CHILDREN))
-all_mom_ids<-c(case_mom_id, controls_mom_id, historical_mom_id)
-CHILDREN$related_id[1:length(all_mom_ids)]<-all_mom_ids
-all_DOB<-c(case_DOB, controls_DOB, historical_DOB)
-sample_error<-sample(c(-5:5), replace=T, length(all_DOB))
-CHILDREN$DOB_numeric[1:length(all_DOB)]<-(all_DOB)-sample_error
-CHILDREN$meaning_of_relationship[1:length(all_DOB)]<-"birth_mother"
-#
-#
-PERSONS_RELATIONS<-CHILDREN %>% select("person_id", "related_id", "meaning_of_relationship")
-fwrite (PERSONS_RELATIONS, paste0(preselect_folder,"PERSONS_RELATIONS.csv"))
-}
-# ################################################################################
 
 case_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%case_mom_id,]
 # all children of case mother == child_id == case_PR$person_id
@@ -101,24 +71,7 @@ my_id_vars<-colnames(case_PR)[(colnames(case_PR)%exclude%"related_id")]
 long_case_PR<-melt(case_PR,id.vars = my_id_vars)
 case_all_children$mom_id<-long_case_PR$value
  
-# for each mom_id and case_DOB combination, test DOB of CHILDREN with mom_id
-
-# POSSIBLE that 1 mom has 2 case pregnancies 
-# that's fine- different DOB
-# BUT what about TWINS? 
-
-for(i in 1:length(case_mom_id)){
- mom<- case_mom_id[i]
- my_DOB<-case_DOB[i]
-  offspring<-case_all_children[case_all_children$mom_id==mom,]
-  offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
-  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<40]
-  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<40]
-}
-
-case_target_children<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
-colnames(case_target_children)<-c("person_id", "date_of_birth_PERSONS")
-fwrite(case_target_children, paste0(case_neonate_folder,"case_neonates.csv"))
+fwrite(case_all_children, paste0(case_neonate_folder,"case_neonates.csv"))
 
 ###################################################################
 

@@ -78,17 +78,17 @@ invisible(if(dir.exists(preselect_folder)==F)
 
 
 # 
-# case_neonate_folder<-paste0(projectFolder,"/CDMInstances_case_neonate/")
-# invisible(if(dir.exists(case_neonate_folder)==F)
-# {dir.create(case_neonate_folder)})
-# 
-# control_neonate_folder<-paste0(projectFolder,"/CDMInstances_control_neonate/")
-# invisible(if(dir.exists(control_neonate_folder)==F)
-# {dir.create(control_neonate_folder)})
-# 
-# historical_neonate_folder<-paste0(projectFolder,"/CDMInstances_historical_neonate/")
-# invisible(if(dir.exists(historical_neonate_folder)==F)
-# {dir.create(historical_neonate_folder)})
+case_neonate_folder<-paste0(projectFolder,"/CDMInstances_case_neonate/")
+invisible(if(dir.exists(case_neonate_folder)==F)
+{dir.create(case_neonate_folder)})
+
+control_neonate_folder<-paste0(projectFolder,"/CDMInstances_control_neonate/")
+invisible(if(dir.exists(control_neonate_folder)==F)
+{dir.create(control_neonate_folder)})
+
+historical_neonate_folder<-paste0(projectFolder,"/CDMInstances_historical_neonate/")
+invisible(if(dir.exists(historical_neonate_folder)==F)
+{dir.create(historical_neonate_folder)})
 
 
 # Checks if folders exist. If they do not, creates them 

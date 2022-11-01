@@ -30,8 +30,8 @@ preg_format<-"csv"
 
 # not doing neonates right now
 # # location of your PERSONS_RELATIONSHIP table
-# path_PR<- "C:/Users/Gebruiker/OneDrive/Documents/projects/CONSIGN/CDMInstances_preselect/"
-#   PR_name<-"PERSONS_RELATIONS.csv"
+path_PR<- "C:/Users/Gebruiker/OneDrive/Documents/projects/CONSIGN/CDMInstances_preselect/"
+PR_name<-"PERSONS_RELATIONS.csv"
 
 #######################################################################
 
