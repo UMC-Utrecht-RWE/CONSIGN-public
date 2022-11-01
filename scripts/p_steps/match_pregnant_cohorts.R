@@ -123,14 +123,13 @@ ORDER BY gt2p.person_id"
 # execute matching: 3st round 
 #333333333333333333333333333333333333333333333333333333333333333333333333
 round3p <- sqldf(
-  
-  "WITH 
+"WITH 
 gt1p AS (
   SELECT
   person_id,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY RANDOM()) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0) ORDER BY RANDOM()) AS a_row
   FROM t1p), 
 
 gt2p AS (
@@ -138,7 +137,7 @@ gt2p AS (
   person_id,
   age_group,
   pregnancy_start_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, pregnancy_start_date ORDER BY RANDOM()) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(pregnancy_start_date/28,0) ORDER BY RANDOM()) AS b_row
   FROM t2p
   WHERE t2p.person_id NOT IN (select control1_id from round1p)
   AND t2p.person_id NOT IN (select control2_id from round2p)
