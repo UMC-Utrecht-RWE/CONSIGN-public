@@ -103,6 +103,18 @@ g_intermediate_covariates <- paste0(projectFolder, "/g_intermediate/covariates/"
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/")), dir.create(paste0(projectFolder, "/g_output")), FALSE))
 output_dir     <- paste0(projectFolder, "/g_output/")
 
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/")), dir.create(paste0(projectFolder, "/g_output/neonates/")), FALSE))
+output_neonates     <- paste0(projectFolder, "/g_output/neonates/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/cases/")), dir.create(paste0(projectFolder, "/g_output/neonates/cases/")), FALSE))
+output_neonates_case     <- paste0(projectFolder, "/g_output/neonates/cases")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/controls/")), dir.create(paste0(projectFolder, "/g_output/neonates/controls/")), FALSE))
+output_neonates_control     <- paste0(projectFolder, "/g_output/neonates/controls/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/historical/")), dir.create(paste0(projectFolder, "/g_output/neonates/historical")), FALSE))
+output_neonates_hist    <- paste0(projectFolder, "/g_output/neonates/historical/")
+
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/final/")), dir.create(paste0(projectFolder, "/g_output/final/")), FALSE))
 final_output_dir     <- paste0(projectFolder, "/g_output/final/")
 

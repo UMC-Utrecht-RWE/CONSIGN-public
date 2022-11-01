@@ -38,32 +38,41 @@ source(paste0(pre_dir,"/covid_covariates_timing.R" ))
 
 # covariate timing combining to pregnancy/covid
 
-source(paste0(pre_dir,"/preterm_birth.R" ))
+# source(paste0(pre_dir,"/preterm_birth.R" ))
 
-# if(DAP=="ARS"){
-#   source(paste0(pre_dir,"/ARS_mat_cov_no_link.R" ))}
-#   
-# if(DAP=="Aarhus"){
-#   source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
-# 
-# # only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
-# if(DAP=="Bordeaux"){
-#   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="TEST"){
-#   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="FISABIO"){
-#   source(paste0(pre_dir,"/Fisabio_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="IACS"){
-#   source(paste0(pre_dir,"/IACS_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="Karolinska"){
-#   source(paste0(pre_dir,"/Karolinska_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="UOSL"){
-#   source(paste0(pre_dir,"/Oslo_mat_cov_no_link.R" ))}
-# 
-# if(DAP=="USWAN"){
-#   source(paste0(pre_dir,"/SWANSEA_mat_cov_no_link.R" ))}
+if(DAP=="ARS"){
+  source(paste0(pre_dir,"/ARS_mat_cov_no_link.R" ))}
+if(DAP=="ARS"){
+  source(paste0(pre_dir,"/ARS_neonatal_cov.R" ))}
+
+if(DAP=="Aarhus"){
+  source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
+
+# only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
+if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+
+if(DAP=="TEST"){
+  source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+
+if(DAP=="FISABIO"){
+  source(paste0(pre_dir,"/Fisabio_mat_cov_no_link.R" ))}
+
+if(DAP=="FISABIO"){
+  source(paste0(pre_dir,"/Fisabio_neonatal_cov.R" ))}
+
+if(DAP=="IACS"){
+  source(paste0(pre_dir,"/IACS_mat_cov_no_link.R" ))}
+
+if(DAP=="Karolinska"){
+  source(paste0(pre_dir,"/Karolinska_mat_cov_no_link.R" ))}
+
+if(DAP=="UOSL"){
+  source(paste0(pre_dir,"/OSLO_mat_cov_no_link.R" ))}
+
+if(DAP=="UOSL"){
+  source(paste0(pre_dir,"/OSLO_neonatal_cov.R" ))}
+
+
+if(DAP=="USWAN"){
+  source(paste0(pre_dir,"/SWANSEA_mat_cov_no_link.R" ))}
