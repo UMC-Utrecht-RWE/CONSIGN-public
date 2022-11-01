@@ -24,7 +24,7 @@ pregnant_matched<-pregnant_matched[keep_vars]
 pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
 preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 #3 columns on the end with empty covid data (because they don't have covid) need to remove them
-preg_data_cov_neg<-preg_data_cov_neg[,-c(43,44)]
+
 # don't have a real severity, but need a populated column downstream
 
 # need to have only one pregnancy from each control mother
