@@ -11,6 +11,7 @@
 #lastly, it pulls drug exposure results from ATC_detect 
 
 ################################################################
+'%exclude%' <- function(x,y)!('%in%'(x,y))
 
 #test that date of drug dispensing is within trimester
 
@@ -31,9 +32,6 @@ cov_trim_data<-cov_trimester(preg_data = my_PREG, cov_data=cov_data)
 
 # select only those with covid during pregnancy
 
-cov_neg_preg<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==T,]
-
-fwrite(cov_neg_preg, paste0(cov_neg_pan_preg_folder,"cov_neg_preg.csv"))
 
 cov_trim_data<-cov_trim_data[(is.na(cov_trim_data$cov_trimester))==F,]
 
@@ -45,4 +43,10 @@ cov_trim_data$days_cov_before_labor<-(cov_trim_data$pregnancy_end_date)-(cov_tri
 cov_trim_data$gest_age_cov<-(cov_trim_data$covid_date)-(cov_trim_data$pregnancy_start_date)
 
 fwrite(cov_trim_data, paste0(pan_preg_folder,"trim_cov_PREG.csv"))
+
+###############################################################################
+
+cov_neg_preg<-my_PREG[my_PREG$person_id%exclude%cov_trim_data$person_id,]
+
+fwrite(cov_neg_preg, paste0(cov_neg_pan_preg_folder,"cov_neg_preg.csv"))
 
