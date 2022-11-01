@@ -38,7 +38,7 @@ historical<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
 
 if(DAP=="TEST"){
 controls$type_of_pregnancy_end<-rep("LB", nrow(controls))
-case$type_of_pregnancy_end<-rep("LB", nrow(cases))
+case$type_of_pregnancy_end<-rep("LB", nrow(case))
 historical$type_of_pregnancy_end<-"LB"
 }
 
