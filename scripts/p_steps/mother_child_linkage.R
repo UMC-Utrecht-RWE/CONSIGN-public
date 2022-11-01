@@ -58,20 +58,31 @@ historical_DOB<-historical$pregnancy_end_date[historical$type_of_pregnancy_end==
 historical_child<-list()
 historical_child_DOB_PERSONS<-list()
 
-
+# in each matched cohort (cases, P_control) there's only one pregnancy per woman
+# but a pregnancy may have 2 or more love born babies 
 
 case_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%case_mom_id,]
 # all children of case mother == child_id == case_PR$person_id
   # check child_ids against DOB
 case_all_children<-CHILDREN[CHILDREN$person_id%in%case_PR$person_id]
 
-# multiple children per woman-- need to group by mom_id
-# case_PR wide--> long (melt)
-my_id_vars<-colnames(case_PR)[(colnames(case_PR)%exclude%"related_id")]
-long_case_PR<-melt(case_PR,id.vars = my_id_vars)
-case_all_children$mom_id<-long_case_PR$value
- 
-fwrite(case_all_children, paste0(case_neonate_folder,"case_neonates.csv"))
+case_all_children<-merge(case_PR, case_all_children, by = 'person_id')
+
+# my_DOB is end_date_pregnancy from matched cohort pregnancy data
+
+for(i in 1:length(case_mom_id)){
+  mom<- case_mom_id[i]
+  my_DOB<-case_DOB[i]
+  offspring<-case_all_children[case_all_children$related_id==mom,]
+  offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
+  print(offspring$days_to_DOB)
+  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<40]
+  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<40]
+}
+
+case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
+colnames(case_neonates)<-c("child_id", "DOB")
+fwrite(case_neonates, paste0(case_neonate_folder,"case_neonates.csv"))
 
 ###################################################################
 
@@ -80,27 +91,24 @@ controls_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%controls_mom_id,]
 # check child_ids against DOB
 control_all_children<-CHILDREN[CHILDREN$person_id%in%controls_PR$person_id]
 
-# multiple children per woman-- need to group by mom_id
-# controls_PR wide--> long (melt)
-my_id_vars<-colnames(controls_PR)[(colnames(controls_PR)%exclude%"related_id")]
-long_controls_PR<-melt(controls_PR,id.vars = my_id_vars)
-control_all_children$mom_id<-long_controls_PR$value
+control_all_children<-merge(controls_PR,control_all_children, by="person_id")
 
 # for each mom_id and control_DOB combination, test DOB of CHILDREN with mom_id
 
 for(i in 1:length(controls_mom_id)){
   mom<- controls_mom_id[i]
   my_DOB<-controls_DOB[i]
-  offspring<-control_all_children[control_all_children$mom_id==mom,]
+  offspring<-control_all_children[control_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
+  print(offspring$days_to_DOB)
   control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
   control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
 }
 
-control_target_children<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
-colnames(control_target_children)<-c("person_id", "date_of_birth_PERSONS")
+control_neonates<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
+colnames(control_neonates)<-c("person_id", "DOB")
 
-fwrite(control_target_children, paste0(control_neonate_folder,"control_neonates.csv"))
+fwrite(control_neonates, paste0(control_neonate_folder,"control_neonates.csv"))
 
 ##############################################################################
 
@@ -109,11 +117,8 @@ historical_PR<-PERSONS_RELATIONS[PERSONS_RELATIONS$related_id%in%historical_mom_
 # check child_ids against DOB
 historical_all_children<-CHILDREN[CHILDREN$person_id%in%historical_PR$person_id]
 
-# multiple children per woman-- need to group by mom_id
-# historical_PR wide--> long (melt)
-my_id_vars<-colnames(historical_PR)[(colnames(historical_PR)%exclude%"related_id")]
-long_historical_PR<-melt(historical_PR,id.vars = my_id_vars)
-historical_all_children$mom_id<-long_historical_PR$value
+historical_all_children<-merge(historical_PR,historical_all_children, by="person_id")
+
 
 # for each mom_id and historical_DOB combination, test DOB of CHILDREN with mom_id
 
@@ -124,23 +129,24 @@ historical_all_children$mom_id<-long_historical_PR$value
 for(i in 1:length(historical_mom_id)){
   mom<- historical_mom_id[i]
   my_DOB<-historical_DOB[i]
-  offspring<-historical_all_children[historical_all_children$mom_id==mom,]
+  offspring<-historical_all_children[historical_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
+  print(offspring$days_to_DOB)
   historical_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<31]
   historical_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<31]
 }
 
-historical_target_children<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS)))
-colnames(historical_target_children)<-c("person_id", "date_of_birth_PERSONS")
-fwrite(historical_target_children, paste0(historical_neonate_folder,"historical_neonates.csv"))
+historical_neonates<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS)))
+colnames(historical_neonates)<-c("person_id", "date_of_birth_PERSONS")
+fwrite(historical_neonates, paste0(historical_neonate_folder,"historical_neonates.csv"))
 
 
 ##################################################################################
 # copy over CDM files for neonates
 
-case_neonate_id<-case_target_children$person_id
-control_neonate_id<-control_target_children$person_id
-historical_neonate_id<-historical_target_children$person_id
+case_neonate_id<-case_neonates$person_id
+control_neonate_id<-control_neonates$person_id
+historical_neonate_id<-historical_neonates$person_id
 
 actual_tables_CDM<-list()
     actual_tables_CDM$EVENTS<-list.files(paste0(path_CDM,"/"), pattern="^EVENTS")
