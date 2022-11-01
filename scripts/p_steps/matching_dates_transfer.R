@@ -83,7 +83,7 @@ covid_match_with_preg_dates<-cbind(covid_match_data, long_covid_match[,transfer_
 
 # make sure we have covid dates with cov_date and covid_date names because inconsistency messes things up downstream
 covid_match_with_preg_dates$covid_date<-covid_match_with_preg_dates$cov_date
-
+covid_match_with_preg_dates$severity<-covid_match_with_preg_dates$severe
 fwrite(covid_match_with_preg_dates, paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 
 pregnant_match_data<-preg_data_cov_neg[(preg_data_cov_neg$person_id%in%long_pregnant_match$control_id),]
