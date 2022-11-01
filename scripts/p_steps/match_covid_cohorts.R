@@ -48,14 +48,14 @@ gt1 AS (
   person_id,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group,  round(covid_date/14,0) ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group,  round(covid_date/14,0) ORDER BY RANDOM()) AS a_row
   FROM t1), 
 gt2 AS (
   SELECT
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0) ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0) ORDER BY RANDOM()) AS b_row
   FROM t2
 )
 SELECT gt1.person_id exposed_id,
@@ -82,7 +82,7 @@ gt1 AS (
   person_id ,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY RANDOM()) AS a_row
   FROM t1), 
 
 gt2 AS (
@@ -90,7 +90,7 @@ gt2 AS (
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY RANDOM()) AS b_row
   FROM t2
   WHERE t2.person_id NOT IN (select control1_id from round1)
 
@@ -121,7 +121,7 @@ gt1 AS (
   person_id,
   age_group,
   covid_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY t1.person_id) AS a_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(covid_date/14,0)   ORDER BY RANDOM()) AS a_row
   FROM t1), 
 
 gt2 AS (
@@ -129,7 +129,7 @@ gt2 AS (
   person_id,
   age_group,
   cov_date,
-  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY t2.person_id) AS b_row
+  ROW_NUMBER() OVER (PARTITION BY age_group, round(cov_date/14,0)   ORDER BY RANDOM()) AS b_row
   FROM t2
   WHERE t2.person_id NOT IN (select control1_id from round1)
   AND t2.person_id NOT IN (select control2_id from round2)
