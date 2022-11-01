@@ -1,4 +1,4 @@
-# covaraite timing: brute force
+# covaraite timing: brute force (actually doesn't take too long :) 
 
 # need trimester and severity
 
@@ -25,10 +25,8 @@ for(i in 2:length(cohort_covariate_folders)){
   
   my_output_df$person_id<-my_covid_data$person_id
   my_output_df$covid_trimester<-my_covid_data$cov_trimester
+  my_output_df$severity<-my_covid_data$severity
   
-  my_serverity<-my_covid_data %>% dplyr:: select(starts_with("sever"))
-  
-  my_output_df$severity<-my_serverity
   
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
