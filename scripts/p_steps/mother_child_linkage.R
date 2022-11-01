@@ -76,8 +76,8 @@ for(i in 1:length(case_mom_id)){
   offspring<-case_all_children[case_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
   print(offspring$days_to_DOB)
-  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<40]
-  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<40]
+  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
+  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
 }
 
 case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
