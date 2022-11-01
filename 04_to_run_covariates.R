@@ -34,7 +34,7 @@ DAP<-CDM_source$data_access_provider_name
 if(DAP!="Bordeaux"){
   source(paste0(pre_dir,"/covariates_detect.R" ))}else{source(paste0(pre_dir,"/covariates_detect_BPE.R" ))}
 
-source(paste0(pre_dir,"/covi_covariates_timing.R" ))
+source(paste0(pre_dir,"/covid_covariates_timing.R" ))
 
 # covariate timing combining to pregnancy/covid
 

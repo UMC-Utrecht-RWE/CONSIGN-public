@@ -26,7 +26,7 @@ preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 #3 columns on the end with empty covid data (because they don't have covid) need to remove them
 preg_data_cov_neg<-preg_data_cov_neg[,-c(43,44)]
 # don't have a real severity, but need a populated column downstream
-preg_data_cov_neg$severity<-0
+
 # need to have only one pregnancy from each control mother
 preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
 preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)))
@@ -35,7 +35,7 @@ preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_min(n = 1,
 case_data_all<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 case_data_grouped<-case_data_all%>%group_by(person_id)
 case_data<-case_data_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
-
+case_data<-as.data.frame(ungroup(case_data))
 
 # make sure order is good
 covid_positive_matched<-covid_positive_matched[order(covid_positive_matched$exposed_id),]
@@ -83,7 +83,7 @@ covid_match_with_preg_dates<-cbind(covid_match_data, long_covid_match[,transfer_
 
 # make sure we have covid dates with cov_date and covid_date names because inconsistency messes things up downstream
 covid_match_with_preg_dates$covid_date<-covid_match_with_preg_dates$cov_date
-
+covid_match_with_preg_dates$severity<-covid_match_with_preg_dates$severe
 fwrite(covid_match_with_preg_dates, paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 
 pregnant_match_data<-preg_data_cov_neg[(preg_data_cov_neg$person_id%in%long_pregnant_match$control_id),]
@@ -92,7 +92,7 @@ all(pregnant_match_data$person_id==long_pregnant_match$control_id)
 
 transfer_vars<-c("age_group", "exposed_id", "cov_date", "cov_trimester")
 pregnant_match_with_covid_dates<-cbind(pregnant_match_data, long_pregnant_match[,transfer_vars])
-
+pregnant_match_with_covid_dates$severity<-0
 # make sure we have covid dates with cov_date and covid_date names because inconsistency messes things up downstream
 pregnant_match_with_covid_dates$covid_date<-pregnant_match_with_covid_dates$cov_date
 

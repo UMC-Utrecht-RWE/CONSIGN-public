@@ -37,9 +37,9 @@ for(i in 1:length(preg_cohort_folders)){
   # Bordeaux ALSO uses PROCEDURES
   # origin_of_procedure = "BIOLOGIE" AND procedure_code="0412"
   
-  my_event_name<-"GESTDIAB"
+  my_event_name<-"P_GESTDIAB_AESI"
   
-  GEST_DIAB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  GEST_DIAB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -64,9 +64,9 @@ for(i in 1:length(preg_cohort_folders)){
   # BORDEAUX uses EVENTS and PROC
   # origin_of_procedure = "PROCEDURE" AND procedure_code in ("JQGA002" "JQGA003" "JQGA004" "JQGA003")
   
-  my_event_name<-"CESAREA"
+  my_event_name<-"TP_CESAREA_COV"
   
-  CESAREA_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -92,9 +92,9 @@ for(i in 1:length(preg_cohort_folders)){
   # mo_source_value = "AGE_GES" AND mo_unit = "weeks" AND mo_source_column < 22
   # so_source_column="DIAG" AND so_source_value = "PRE5"
   
-  my_event_name<-"SPONTABO"
+  my_event_name<-"P_SPONTABO_AESI"
   
-  SPONTABO_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -126,9 +126,9 @@ for(i in 1:length(preg_cohort_folders)){
   # mo_source_value = "AGE_GES" AND mo_unit = "weeks" AND mo_source_column >= 22
   # so_cource_column="DIAG" AND so_source_value = "PRE10"
   
-  my_event_name<-"STILLBIRTH"
+  my_event_name<-"P_STILLBIRTH_AESI"
   
-  SB_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
@@ -159,9 +159,9 @@ for(i in 1:length(preg_cohort_folders)){
   
   # BORDEAUX USES events only
   
-  my_event_name<-"PREECLAMP"
+  my_event_name<-"P_PREECLAMP_AESI"
   
-  PREECLAMP_codelist<-all_codes[all_codes$event_abbreviation==my_event_name,]
+  PREECLAMP_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = PREECLAMP_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))

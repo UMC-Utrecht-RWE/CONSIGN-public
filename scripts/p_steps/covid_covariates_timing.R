@@ -1,4 +1,4 @@
-# covaraite timing: brute force
+# covaraite timing: brute force (actually doesn't take too long :) 
 
 # need trimester and severity
 
@@ -11,10 +11,10 @@ cohort_covid_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"),
 
 
 output_folders<-c(output_cov_pregnant_control, output_cov_cases, output_cov_nonpregnant_control)
-cohort_names<-c("pregnant_cov_neg_control.csv", "covid_positive_nonpregnant_control.csv", "cases.csv")
+cohort_names<-c("pregnant_cov_neg_control.csv", "cases.csv", "covid_positive_nonpregnant_control.csv")
 # output should have the person_id of the control, and a column for each covariate with a 0/1 if they have this event within 1 year before covid_date
 
-for(i in 1:length(cohort_covariate_folders)){
+for(i in 2:length(cohort_covariate_folders)){
   my_tables<-list.files(path=cohort_covariate_folders[i])
   my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
   print(my_names)
@@ -25,7 +25,8 @@ for(i in 1:length(cohort_covariate_folders)){
   
   my_output_df$person_id<-my_covid_data$person_id
   my_output_df$covid_trimester<-my_covid_data$cov_trimester
-  my_output_df$severity<- my_covid_data %>% dplyr:: select(starts_with("sever"))
+  my_output_df$severity<-my_covid_data$severity
+  
   
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))

@@ -339,8 +339,8 @@ table1c_severe<-IMPORT_PATTERN(pat="table_1_c", dir=final_output_dir)
 # f=trim 3
 
 ##############################################################################################
-cases_table3d<-cbind(table1a_total[,2:3],table1c_severe[,2:3], table1b_nonsevere[,2:3])
-colnames_3d<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+cases_table3d<-cbind(my_names, table1a_total[,2:3],table1c_severe[,2:3], table1b_nonsevere[,2:3])
+colnames_3d<-c("drug", "-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
 colnames(cases_table3d)<-colnames_3d
 
 
@@ -351,8 +351,8 @@ table_3d<-cbind(my_names,cases_table3d, control_table3d)
 fwrite(table_3d, paste0(final_output_dir,DAP, "_table_3_d.csv"))
 
 ##############################################################################################
-cases_table3e<-cbind(table1a_total[,4:5],table1c_severe[,4:5], table1b_nonsevere[,4:5])
-colnames_3e<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+cases_table3e<-cbind(my_names, table1a_total[,4:5],table1c_severe[,4:5], table1b_nonsevere[,4:5])
+colnames_3e<-c("drug", "-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
 colnames(cases_table3e)<-colnames_3e
 
 control_table3e<-cbind(table_1a[,4:5], table_1c[,4:5], table_1b[,4:5])
@@ -362,8 +362,8 @@ table_3e<-cbind(my_names,cases_table3e, control_table3e)
 fwrite(table_3e, paste0(final_output_dir,DAP, "_table_3_e.csv"))
 
 ##############################################################################################
-cases_table3f<-cbind(table1a_total[,6:7],table1c_severe[,6:7], table1b_nonsevere[,6:7])
-colnames_3f<-c("-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
+cases_table3f<-cbind(my_names, table1a_total[,6:7],table1c_severe[,6:7], table1b_nonsevere[,6:7])
+colnames_3f<-c("drug", "-30 days (total)","+30 days (total)", "-30 days (severe)","+30 days (severe)", "-30 days (nonsevere)","+30 days (nonsevere)")
 colnames(cases_table3f)<-colnames_3f
 
 control_table3f<-cbind(table_1a[,6:7], table_1c[,6:7], table_1b[,6:7])
