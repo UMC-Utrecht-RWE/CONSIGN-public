@@ -44,8 +44,13 @@ for(i in 1:length(neonate_cohort_folders)){
   FGR_EV<-readRDS(paste0(output_folder,"FGR.rds"))
   FGR_EV_ID<-(FGR_EV$person_id)
   FGR_EV_Date<- (FGR_EV$start_date_record)
+  
+  # so_source_colum  = "ACCR_FET" AND so_source_value = 1 
+  
+  FGR_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="ACCR_FET")&(SURV_OB$so_source_value==1))]
+  FGR_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="ACCR_FET")&(SURV_OB$so_source_value==1))]
  
-  FGR_cov<-as.data.frame(cbind(FGR_EV_ID, FGR_EV_Date))
+  FGR_cov<-as.data.frame(cbind(c(FGR_EV_ID, FGR_SO_ID), c(FGR_EV_Date, FGR_SO_Date)))
   colnames(FGR_cov)<-c("id", "date")
   fwrite(FGR_cov, paste0(output_folder,"SGA_FGR.csv"))
   
@@ -64,10 +69,10 @@ for(i in 1:length(neonate_cohort_folders)){
   LBW_EV_ID<-(LBW_EV$person_id)
   LBW_EV_Date<- (LBW_EV$start_date_record)
   
-  # so_source_table= "MDR" AND so_source_column == "peso"  AND so_source_value= <2500
+  # so_source_table = "CAP2" AND so_source_column == "peso" AND so_source_value= <2500
   
-  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
-  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="CAP2")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="CAP2")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
   
   LBW_cov<-as.data.frame(cbind(c(LBW_EV_ID, LBW_SO_ID), c(LBW_EV_Date, LBW_SO_Date)))
   colnames(LBW_cov)<-c("id", "date")
@@ -86,7 +91,12 @@ for(i in 1:length(neonate_cohort_folders)){
   APGARLOW_EV_ID<-(APGARLOW_EV$person_id)
   APGARLOW_EV_Date<- (APGARLOW_EV$start_date_record)
   
-  APGARLOW_cov<-as.data.frame(cbind(APGARLOW_EV_ID, APGARLOW_EV_Date))
+  # so_source_column  = "APGAR" AND so_source_value= "0" or "1" or "2" or "3"
+  
+  APGARLOW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="APGAR")&(SURV_OB$so_source_value%in%c(0,1,2,3)))]
+  APGARLOW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="APGAR")&(SURV_OB$so_source_value%in%c(0,1,2,3)))]
+  
+  APGARLOW_cov<-as.data.frame(cbind(c(APGARLOW_EV_ID, APGARLOW_SO_ID), c(APGARLOW_EV_Date, APGARLOW_SO_Date)))
   colnames(APGARLOW_cov)<-c("id", "date")
   fwrite(APGARLOW_cov, paste0(output_folder,"APGARLOW.csv"))
 
