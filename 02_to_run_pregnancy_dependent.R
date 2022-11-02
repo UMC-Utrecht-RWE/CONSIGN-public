@@ -28,10 +28,10 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 source(paste0(pre_dir,"/CreateEntryExit.R"))
-
-# adding variables to pregnancy data
-# calculates trimester dates AND maternal age categories and adds these variables to original pregnancy data
-source(paste0(pre_dir, "/trimester_create.R"))
+# 
+# # adding variables to pregnancy data
+# # calculates trimester dates AND maternal age categories and adds these variables to original pregnancy data
+# source(paste0(pre_dir, "/trimester_create.R"))
 
 # creates column age_group for matching
 #applying exclusion criteria and creating pregnancy cohorts 

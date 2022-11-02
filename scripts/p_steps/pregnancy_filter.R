@@ -83,11 +83,7 @@ FC_sufficient_follow_up<-nrow(my_PREG)
 
 ###########################################################################
 
-# adding pregnancy 0/1 to PERSONS for subsetting
 
-df_PERSONS$pregnant_ever<-0
-df_PERSONS$pregnant_ever[df_PERSONS$person_id%in%my_PREG$person_id]<-1
-table(df_PERSONS$pregnant_ever)
 
 
 # add elligibility criteria from CreateEntryExit (in PERSONS) to my_PREG
@@ -130,12 +126,11 @@ my_PREG$cohort[between(my_PREG$pregnancy_end_date, historical_end_date, covid_st
 
 # NEVER PREG ONLY IF ELLIGIBLE FOR PANDEMIC COHORT add entry/exit criteria here
 
-never_PREG_ID<-df_PERSONS$person_id[df_PERSONS$pregnant_ever==0]
-FC_never_preg<-length(never_PREG_ID)
 
 # NOT pregnant in 2020 from march-december (preg_end_date< jan 1 2020) --> non_preg cohort
 pandemic_id<-my_PREG$person_id[my_PREG$cohort=="pandemic"]
-non_pan_preg_PERSONS<-PERSONS[PERSONS$person_id%exclude%pandemic_id,]
+
+non_pan_preg_PERSONS<-df_PERSONS[df_PERSONS$person_id%exclude%pandemic_id,]
 non_pan_preg_PERSONS_age<-non_pan_preg_PERSONS[between(non_pan_preg_PERSONS$year_of_birth, 1965, 2008),]
 
 fwrite(non_pan_preg_PERSONS_age, paste0(not_preg_folder, "PERSONS.csv"))
@@ -180,7 +175,7 @@ actual_tables_preselect$MEDICINES<-list.files(paste0(preselect_folder,"/"), patt
 actual_tables_preselect$VACCINES<-list.files(paste0(preselect_folder,"/"), pattern="^VACCINES")
 actual_tables_preselect$SURVEY_ID<-list.files(paste0(preselect_folder,"/"), pattern="^SURVEY_ID")
 actual_tables_preselect$EUROCAT<-list.files(paste0(preselect_folder,"/"), pattern="^EUROCAT")
-actual_tables_preselect$PERSONS<-list.files(paste0(preselect_folder,"/"), pattern="^PERSONS")
+actual_tables_preselect$PERSONS<-list.files(paste0(preselect_folder,"/"), pattern="^PERSONS.csv")
 
 all_actual_tables<-list.files(paste0(preselect_folder,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_preselect)
@@ -232,12 +227,12 @@ fwrite(my_PREG[my_PREG$cohort=="historical"&my_PREG$elligible_hist==1,],paste0(h
 
 flowchart<-as.data.frame(cbind(FC_OG_person_ID, FC_OG_preg, FC_OG_mom, FC_exclude_44, FC_no_red_preg,
                                FC_sufficient_follow_up,   length(unique(pan_preg_ID)), length(unique(pan_preg_ID_age)),pan_PREGNANCIES_age,
-                               length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID), FC_never_preg, FC_all_non_pan_preg))
+                               length(hist_preg_ID),length(hist_preg_ID_age), length(between_preg_ID),  FC_all_non_pan_preg))
                          
  colnames(flowchart)<-c("All women of reproductive age between 2018-2021", "total pregnancies","total mothers", "pregnancies excluded due to gestation>44 weeks","after excluding red pregnancies",
                         "pregnancies starting at least 12 months before end of study",   
-                        "WOMEN with pandemic pregnancies","WOMEN with pandemic pregnancies with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
-                        "women with historical pregnancies with age 12-55 in 2018","women with between pregnancies", "women with no pregnancies EVER", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
+                        "WOMEN with pandemic pregnancies","pandemic PREGNANCIES with age 12-55 in 2020","number of included pandemic PREGNANCIES", "women with historical pregnancies",
+                        "historical PREGNANCIES with age 12-55 in 2018","women with between pregnancies", "women with no pregnancy DURING pandemic age 12-55 in 2020") 
  
  fwrite(flowchart, paste0(output_dir,"flowchart_study_pop.csv"))
  
