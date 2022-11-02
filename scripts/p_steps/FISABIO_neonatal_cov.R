@@ -111,7 +111,7 @@ for(i in 1:length(neonate_cohort_folders)){
   
   # major congenital anomoly P_MAJORCA_AESI
   
-  my_event_name<-c("  P_MAJORCA_AESI")
+  my_event_name<-c("P_MAJORCA_AESI")
   
   MAJORCA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   

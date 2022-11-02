@@ -130,8 +130,8 @@ for(i in 1:length(neonate_cohort_folders)){
   
   # so_source_column= "malforma" AND so_source_value> "0"
   
-   MAJORCA_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="malforma")&(SURV_OB$so_source_value>0)]
-   MAJORCA_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="malforma")&(SURV_OB$so_source_value>0)]
+   MAJORCA_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="malforma")&(SURV_OB$so_source_value>0))]
+   MAJORCA_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="malforma")&(SURV_OB$so_source_value>0))]
   
   MAJORCA_cov<-as.data.frame(cbind(c(MAJORCA_EV_ID,MAJORCA_SO_ID), c(MAJORCA_EV_Date, MAJORCA_SO_Date)))
   colnames(MAJORCA_cov)<-c("id", "date")
