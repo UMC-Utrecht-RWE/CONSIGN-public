@@ -42,5 +42,5 @@ source(paste0(pre_dir,"/create_match_CDM.R"))
 
 # find children resulting from case and pregnant_control pregnancies and subset CDM for neonatal outcomes
 
-source(paste0(pre_dir,"/mother_child_linkage.R"))
+# source(paste0(pre_dir,"/mother_child_linkage.R"))
 
