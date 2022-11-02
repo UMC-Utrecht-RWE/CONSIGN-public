@@ -29,6 +29,8 @@ source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
+source(paste0(pre_dir,"/mother_child_linkage.R" ))
+
 # # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
 # # written to cohort folders in g_output/covariates/...
 if(DAP!="Bordeaux"){
@@ -47,10 +49,16 @@ if(DAP=="ARS"){
 
 if(DAP=="Aarhus"){
   source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
+if(DAP=="Aarhus"){
+  source(paste0(pre_dir,"/Aarhus_neonatal_cov.R" ))}
+
 
 # only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
 if(DAP=="Bordeaux"){
   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_neonatal_cov.R" ))}
+
 
 if(DAP=="TEST"){
   source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
@@ -63,9 +71,13 @@ if(DAP=="FISABIO"){
 
 if(DAP=="IACS"){
   source(paste0(pre_dir,"/IACS_mat_cov_no_link.R" ))}
+if(DAP=="IACS"){
+  source(paste0(pre_dir,"/IACS_neonatal_cov.R" ))}
 
 if(DAP=="Karolinska"){
   source(paste0(pre_dir,"/Karolinska_mat_cov_no_link.R" ))}
+if(DAP=="Karolinska"){
+  source(paste0(pre_dir,"/Karolinska_neonatal_cov.R" ))}
 
 if(DAP=="UOSL"){
   source(paste0(pre_dir,"/OSLO_mat_cov_no_link.R" ))}
@@ -76,3 +88,6 @@ if(DAP=="UOSL"){
 
 if(DAP=="USWAN"){
   source(paste0(pre_dir,"/SWANSEA_mat_cov_no_link.R" ))}
+if(DAP=="USWAN"){
+  source(paste0(pre_dir,"/SWANSEA_neonatal_cov.R" ))}
+
