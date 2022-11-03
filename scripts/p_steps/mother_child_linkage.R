@@ -15,6 +15,11 @@
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
 
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+
 PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
 
 
@@ -97,14 +102,16 @@ control_all_children<-merge(controls_PR,control_all_children, by="person_id")
 
 # for each mom_id and control_DOB combination, test DOB of CHILDREN with mom_id
 
+if(DAP!="Bordeaux"){buffer<-30} else{buffer<-225}
+
 for(i in 1:length(controls_mom_id)){
   mom<- controls_mom_id[i]
   my_DOB<-controls_DOB[i]
   offspring<-control_all_children[control_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
   print(offspring$days_to_DOB)
-  control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
-  control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
+  control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
+  control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
 }
 
 control_neonates<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
