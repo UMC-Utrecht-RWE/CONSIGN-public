@@ -7,7 +7,7 @@
 #This script pulls drug exposure window results from trimester_drug_exposure.R 
 # and transforms the data into table 1 (a,b,c) format
 ################################################################
-CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 my_tables<-list.files(path=output_cov_window_atc_2)

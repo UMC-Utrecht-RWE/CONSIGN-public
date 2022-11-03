@@ -10,7 +10,7 @@
 # CONTROLS PREGNANT DURING PANDEMIC BUT NO COVID (COVID_Date from matched CASE)
 
 ################################################################
-CDM_source<-fread(paste0(path_CDM,"CDM_source.csv"))
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 my_tables<-list.files(path=output_CONTROL_PREG_window_atc_2)
