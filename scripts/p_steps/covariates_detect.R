@@ -360,6 +360,7 @@ my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACC
 
 vaccine_VAC_id<-(VACCINES$person_id[my_rows])
 vaccine_VAC_date<- (VACCINES$vx_admin_date[my_rows])}else{
+  vaccine_atc<-("J07BX")
   vaccine_VAC_id<-NA
   vaccine_VAC_date<-NA}
 
