@@ -19,6 +19,7 @@ covid_positive_matched<-covid_positive_matched[keep_vars]
 covid_positive_matched<-covid_positive_matched %>% mutate_all(na_if,"")
 cov_data_non_preg_controls<-fread(paste0(cov_pos_not_preg_folder, "covid_data_not_preg.csv"))
 
+
 pregnant_matched<-as.data.frame(fread(paste0(matched_folder, "matched_pregnant.csv")))
 pregnant_matched<-pregnant_matched[keep_vars]
 pregnant_matched<-pregnant_matched %>% mutate_all(na_if,"")
@@ -30,12 +31,13 @@ preg_data_cov_neg<-fread(paste0(cov_neg_pan_preg_folder, "cov_neg_preg.csv"))
 # need to have only one pregnancy from each control mother
 preg_control_grouped<-preg_data_cov_neg%>%group_by(person_id)
 preg_data_cov_neg<-as.data.frame(ungroup(preg_control_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)))
-
+preg_data_cov_neg<-preg_data_cov_neg[duplicated(preg_data_cov_neg$person_id)==F,]
 
 case_data_all<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 case_data_grouped<-case_data_all%>%group_by(person_id)
 case_data<-case_data_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
 case_data<-as.data.frame(ungroup(case_data))
+casae_data<-casae_data[duplicated(casae_data$person_id)==F,]
 
 # make sure order is good
 covid_positive_matched<-covid_positive_matched[order(covid_positive_matched$exposed_id),]
