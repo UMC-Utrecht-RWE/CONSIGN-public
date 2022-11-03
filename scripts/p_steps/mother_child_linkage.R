@@ -21,6 +21,7 @@ PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
 PERSONS<-fread(paste0(path_CDM,"PERSONS.csv"), select = c("person_id", "day_of_birth", "month_of_birth", "year_of_birth"))
 
 CHILDREN<-PERSONS[PERSONS$year_of_birth>2017,]
+CHILDREN<-CHILDREN[duplicated(CHILDREN$person_id)==F,]
 
 CHILDREN$comp_day_birth<-CHILDREN$day_of_birth
 CHILDREN$comp_day_birth[is.na(CHILDREN$day_of_birth)]<-15
@@ -82,6 +83,7 @@ for(i in 1:length(case_mom_id)){
 
 case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
 colnames(case_neonates)<-c("child_id", "DOB")
+
 fwrite(case_neonates, paste0(case_neonate_folder,"case_neonates.csv"))
 
 ###################################################################
