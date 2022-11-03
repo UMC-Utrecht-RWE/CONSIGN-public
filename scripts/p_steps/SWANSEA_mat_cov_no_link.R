@@ -38,10 +38,12 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_event_name<-"P_GESTDIAB_AESI"
   
+  my_file_name<-"GESTDIAB"
+  
   GEST_DIAB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = GEST_DIAB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
   GEST_DIAB_EV_ID<-(GEST_DIAB_EV$person_id)
   GEST_DIAB_EV_Date<- (GEST_DIAB_EV$start_date_record)
  
@@ -56,10 +58,12 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_event_name<-"TP_CESAREA_COV"
   
+  my_file_name<-"CESAREA"
+  
   CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
   CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
   CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
   
@@ -101,14 +105,14 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_event_name<-"P_STILLBIRTH_AESI"
   
+  my_file_name<-"STILLBIRTH"
+  
   SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
   SB_EV_ID<-(SB_EV$person_id)
   SB_EV_Date<- (SB_EV$start_date_record)
-  
-  
   
   
   SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
@@ -129,10 +133,12 @@ for(i in 1:length(preg_cohort_folders)){
   
   my_event_name<-"P_PREECLAMP_AESI"
   
+  my_file_name<-"PREECLAMP"
+  
   PREECLAMP_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = PREECLAMP_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+  PREECLAMP_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
   PREECLAMP_EV_ID<-(PREECLAMP_EV$person_id)
   PREECLAMP_EV_Date<- (PREECLAMP_EV$start_date_record)
   
