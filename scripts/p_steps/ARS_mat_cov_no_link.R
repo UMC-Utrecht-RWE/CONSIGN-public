@@ -73,11 +73,11 @@ for(i in 1:length(preg_cohort_folders)){
   
  
  
-  CESAREA_SO_ID<-SURV_OB$person_id[(SURV_OB$so_source_column==CESAREA_codes& SURV_OB$so_source_value==1)]
-  CESAREA_SO_Date<- SURV_OB$so_date[(SURV_OB$so_source_column==CESAREA_codes& SURV_OB$so_source_value==1)]
+  CESAREA_SO_ID<-SURV_OB$person_id[(SURV_OB$so_source_column=="CESAREO_ARSNEW"& SURV_OB$so_source_value==1)]
+  CESAREA_SO_Date<- SURV_OB$so_date[(SURV_OB$so_source_column=="CESAREO_ARSNEW"& SURV_OB$so_source_value==1)]
   
   CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
-  CESAREA_DATE<-c(CESAREA_EV_Date,CESAREA_SO_Date)
+  CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date)
   
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
@@ -223,7 +223,7 @@ dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_o
 dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
 
 dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
+dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
 
 maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
 maternal_death_pers_Date<-maternal_death$death_date
