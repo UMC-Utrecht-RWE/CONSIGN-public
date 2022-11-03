@@ -107,7 +107,7 @@ invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/")), dir.
 output_neonates     <- paste0(projectFolder, "/g_output/neonates/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/cases/")), dir.create(paste0(projectFolder, "/g_output/neonates/cases/")), FALSE))
-output_neonates_case     <- paste0(projectFolder, "/g_output/neonates/cases")
+output_neonates_case     <- paste0(projectFolder, "/g_output/neonates/cases/")
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/neonates/controls/")), dir.create(paste0(projectFolder, "/g_output/neonates/controls/")), FALSE))
 output_neonates_control     <- paste0(projectFolder, "/g_output/neonates/controls/")
