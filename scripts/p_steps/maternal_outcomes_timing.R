@@ -4,7 +4,7 @@
 
 # need trimester and severity
 
-cohort_covariate_folders<-c(output_mat_cov_pan_neg, output_mat_cov_pan_pos)
+cohort_covariate_folders<-c(output_mat_cov_pan_neg, output_mat_cov_pan_pos, hist_preg_folder)
 
 # we need the cov_date for each case and control
 cohort_preg_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"), 
