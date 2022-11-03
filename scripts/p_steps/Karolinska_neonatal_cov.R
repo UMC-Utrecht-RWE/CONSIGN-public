@@ -51,8 +51,7 @@ for(i in 1:length(neonate_cohort_folders)){
   
   #################################################################################
   # LBW
-  # events and survey observations
-  # so_source_table= "MDR" AND so_source_column == "peso"  AND so_source_value= <2500
+  # events only
   
   my_event_name<-c("P_LBW_AESI")
   
