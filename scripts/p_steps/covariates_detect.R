@@ -355,7 +355,7 @@ vaccine_MED_id<-NA
 vaccine_MED_date<-NA}
 
 if(DAP%in%c("ARS","FISABIO", "USWAN","UOSL", "TEST")){
-
+  vaccine_atc<-("J07BX")
 my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACCINES$vx_atc))))
 
 vaccine_VAC_id<-(VACCINES$person_id[my_rows])
@@ -364,6 +364,7 @@ vaccine_VAC_date<- (VACCINES$vx_admin_date[my_rows])}else{
   vaccine_VAC_date<-NA}
 
 if(DAP=="Bordeaux"){
+  vaccine_atc<-("J07BX")
   my_rows<-which(Reduce(`|`, lapply(vaccine_atc, startsWith, x = as.character(VACCINES$vx_atc))))
   
   vaccine_VAC_id<-(VACCINES$person_id[my_rows])
