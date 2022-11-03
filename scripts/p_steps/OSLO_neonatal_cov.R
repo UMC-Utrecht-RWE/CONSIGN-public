@@ -37,8 +37,8 @@ for(i in 1:length(neonate_cohort_folders)){
   
   # so_source_column= "zscore_bw_ga"  AND so_source_value= "<-1.282"
   
-  FGR_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="zscore_bw_ga")&(SURV_OB$so_source_value<=1.282))]
-  FGR_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="zscore_bw_ga")&(SURV_OB$so_source_value<=1.282))]
+  FGR_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="zscore_bw_ga")&(SURV_OB$so_source_value<=(-1.282)))]
+  FGR_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="zscore_bw_ga")&(SURV_OB$so_source_value<=(-1.282)))]
  
   FGR_cov<-as.data.frame(cbind( FGR_SO_ID, FGR_SO_Date))
   colnames(FGR_cov)<-c("id", "date")
@@ -81,9 +81,10 @@ for(i in 1:length(neonate_cohort_folders)){
   
 ###################################################################################  
   
-  # major congenital anomoly P_MAJORCA_AESI
+  # major congenital anomoly SO table only
   
   # so_source_column= "misd"  AND so_source_value= "1"
+  
  MAJORCA_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="misd")&(SURV_OB$so_source_value==1))]
  MAJORCA_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="misd")&(SURV_OB$so_source_value==1))]
   
