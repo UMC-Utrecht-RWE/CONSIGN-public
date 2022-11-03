@@ -72,7 +72,7 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_SO_Date<- (SURV_OB$so_date[my_rows])
   
   CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
-  CESAREA_DATE<-c(CESAREA_EV_Date, CESAREA_SO_Date)
+  CESAREA_Date<-c(CESAREA_EV_Date, CESAREA_SO_Date)
   
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
