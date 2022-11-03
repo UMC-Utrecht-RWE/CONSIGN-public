@@ -194,15 +194,15 @@ for(i in 1:length(preg_cohort_folders)){
 
 # same for all DAPs : EVENTS codes tagged as P_MATERNALDEATH_AESI in VAC4EU all_codes
 
-maternal_death_names<-"P_MATERNALDEATH_AESI"
-
- maternal_death_codelist<-all_codes[all_codes$event_match_name==maternal_death_names,]
-  CreateConceptDatasets(codesheet =maternal_death_codelist, fil=EVENTS, path = maternal_covariates_events)
-  
- maternal_death_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
- maternal_death_EV_ID<-(PREECLAMP_EV$person_id)
- maternal_death_EV_Date<- (PREECLAMP_EV$start_date_record)
- 
+# maternal_death_names<-"P_MATERNALDEATH_AESI"
+# 
+#  maternal_death_codelist<-all_codes[all_codes$event_match_name==maternal_death_names,]
+#   CreateConceptDatasets(codesheet =maternal_death_codelist, fil=EVENTS, path = maternal_covariates_events)
+#   
+#  maternal_death_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
+#  maternal_death_EV_ID<-(PREECLAMP_EV$person_id)
+#  maternal_death_EV_Date<- (PREECLAMP_EV$start_date_record)
+#  
 dead_PERSONS<-PERSONS[is.na(PERSONS$year_of_death)==F,]
 dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]<-paste0(0,(dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]))
 dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]))
@@ -212,13 +212,13 @@ dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%
 df_preg<- fread(paste0(cohort_folder, df_preg_data[i]))
 
 dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
-
+dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
 maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
 maternal_death_pers_Date<-maternal_death$death_date
 maternal_death_pers_ID<-maternal_death$person_id
 
-maternal_death_id<-c(maternal_death_EV_ID, maternal_death_pers_ID)
-maternal_death_date<-c(maternal_death_EV_Date, maternal_death_pers_Date)
+maternal_death_id<-c( maternal_death_pers_ID)
+maternal_death_date<-c( maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
 colnames(maternal_death_outcome)<-c("id", "date")
 fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
