@@ -82,7 +82,7 @@ for(i in 1:length(case_mom_id)){
 }
 
 case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
-colnames(case_neonates)<-c("child_id", "DOB")
+colnames(case_neonates)<-c("person_id", "DOB")
 
 fwrite(case_neonates, paste0(case_neonate_folder,"case_neonates.csv"))
 
