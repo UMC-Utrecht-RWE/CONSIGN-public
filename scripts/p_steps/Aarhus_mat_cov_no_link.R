@@ -66,7 +66,7 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
   
   
-  my_rows<-which(SURV_OB$so_source_column%in%c("KEJSERSNIT_MODERSOENSKE", "Markoer_kejsersnit")& (is.na(SURV_OB$so_source_value)==F))
+  my_rows<-which(SURV_OB$so_source_column%in%c("KEJSERSNIT_MODERSOENSKE", "MARKOER_KEJSERSNIT")& (is.na(SURV_OB$so_source_value)==F))
   CESAREA_SO_ID<-SO$person_id[my_rows]
   CESAREA_SO_Date<-SO$so_date[my_rows]
   
@@ -80,7 +80,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # Aarhus USES events only
+  # Aarhus USES events and output of the pregnancy algorithm 
   my_event_name<-"P_SPONTABO_AESI"
   
   SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]

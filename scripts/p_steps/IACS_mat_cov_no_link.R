@@ -78,7 +78,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # IACS USES events only
+  # IACS USES events and pregnancy algorithm outputs
   
   my_event_name<-"P_SPONTABO_AESI"
   
@@ -106,42 +106,40 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # IACS USES EVENTS AND SURVEY_OB
+  # IACS USES EVENTS, SURVEY_OB and PREGNANCY ALGORITHM
   # 1)(so_source_column="edadgest" AND so_source_value>=23)
   # 2) (so_source_column="exitus"  AND so_source_value=1) 
   # 3) (so_source_column="fecexitus"  AND so_source_value<=so_date )
  
   
-  my_event_name<-"P_STILLBIRTH_AESI"
+#  my_event_name<-"P_STILLBIRTH_AESI"
   
-  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
+#  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+#  CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
-  SB_EV_ID<-(SB_EV$person_id)
-  SB_EV_Date<- (SB_EV$start_date_record)
+#  SB_EV<-readRDS(paste0(maternal_covariates_events,my_event_name,".rds"))
+#  SB_EV_ID<-(SB_EV$person_id)
+#  SB_EV_Date<- (SB_EV$start_date_record)
   
-  my_rows1<-which(SURV_OB$so_source_column=="edadgest" & SURV_OB$so_source_value>=23)
-  my_rows2<-which(SURV_OB$so_source_column=="exitus" & SURV_OB$so_source_value==1)
-  my_rows3<-which(SURV_OB$so_source_column=="fecexitus" & (SURV_OB$so_source_value<=SURV_OB$so_date))
+#  my_rows1<-which(SURV_OB$so_source_column=="edadgest" & SURV_OB$so_source_value>=23)
+#  my_rows2<-which(SURV_OB$so_source_column=="exitus" & SURV_OB$so_source_value==1)
+#  my_rows3<-which(SURV_OB$so_source_column=="fecexitus" & (SURV_OB$so_source_value<=SURV_OB$so_date))
   
-  my_rows<-unique(c(my_rows1, my_rows2, my_rows3))
+#  my_rows<-unique(c(my_rows1, my_rows2, my_rows3))
   
-  SB_SO_ID<-SURV_OB$person_id[my_rows]
-  SB_SO_Date<-SURV_OB$so_date[my_rows]
+#  SB_SO_ID<-SURV_OB$person_id[my_rows]
+#  SB_SO_Date<-SURV_OB$so_date[my_rows]
   
- 
-  
-  
-  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
-  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
 
-  SB_ID<-c(SB_EV_ID, SB_SO_ID, SB_alg_ID)
-  SB_ID<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
+#  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
+#  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
+
+#  SB_ID<-c(SB_EV_ID, SB_SO_ID, SB_alg_ID)
+#  SB_ID<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
   
-  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
-  colnames(SB_cov)<-c("id", "date")
-  fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
+#  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
+#  colnames(SB_cov)<-c("id", "date")
+#  fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
   
   #################################################################################

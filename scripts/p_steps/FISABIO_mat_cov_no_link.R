@@ -67,7 +67,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # FISABIO USES events only
+  # FISABIO USES events and pregnancy algorithm
   
   my_event_name<-"P_SPONTABO_AESI"
   
@@ -94,7 +94,7 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # FISABIO USES events only
+  # FISABIO USES events and pregrancy algorithm
   
   my_event_name<-"P_STILLBIRTH_AESI"
   
@@ -158,7 +158,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PRE-TERM BIRTH
   
-  # FISABIO USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
+  # FISABIO USES pregnancy algorithm output
   
   
   

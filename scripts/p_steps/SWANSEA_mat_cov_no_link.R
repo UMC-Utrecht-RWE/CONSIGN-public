@@ -144,7 +144,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # TOPFA
   
-  # SWANSEA USES events AND EUROCAT type=4 signifies termination
+  # SWANSEA USES EUROCAT type=4 signifies termination
   
   
   # TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )

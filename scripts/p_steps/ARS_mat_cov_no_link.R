@@ -82,7 +82,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SA"
+  # ARS USES EVENTS AND PREGNANCY OUTPUT type_of_end=="SA"
   
   my_event_name<-"P_SPONTABO_AESI"
   
@@ -173,7 +173,7 @@ SB_Date<-c(SB_EV_Date, SB_alg_Date)
   #################################################################################
   # PRE-TERM BIRTH
   
-  # ARS USES event_code=code in "P_PRETERMBIRTH_AESI" AND pregnancy algorithm output
+  # ARS USES pregnancy algorithm output
   
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7

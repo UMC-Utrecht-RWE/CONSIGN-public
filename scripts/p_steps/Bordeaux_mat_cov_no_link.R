@@ -88,7 +88,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # BORDEAUX uses EVENTS, AND MED_OB and SURV_OB
+  # BORDEAUX uses EVENTS, SURV_OB and the pregnancy algorithm
   # mo_source_value = "AGE_GES" AND mo_unit = "weeks" AND mo_source_column < 22
   # so_source_column="DIAG" AND so_source_value = "PRE5"
   
@@ -122,7 +122,7 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # Bordeaux uses Events, survey_ob and med_ob
+  # Bordeaux uses Events, pregnancy algorithm and survey_ob 
   # mo_source_value = "AGE_GES" AND mo_unit = "weeks" AND mo_source_column >= 22
   # so_cource_column="DIAG" AND so_source_value = "PRE10"
   

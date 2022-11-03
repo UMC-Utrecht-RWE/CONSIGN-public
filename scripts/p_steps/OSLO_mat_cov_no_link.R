@@ -93,10 +93,9 @@ for(i in 1:length(preg_cohort_folders)){
   # STILL BIRTH
   
   # OSLO same specs for SB as SA
+  # Using SURVEY_OBSERVATIONS
+  #TODO : missing specification
 
-  
-  
-  
   
   SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
   SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]

@@ -69,7 +69,7 @@ for(i in 1:length(preg_cohort_folders)){
  #################################################################################
   # SPONTANEOUS ABORTION
   
-  # FISABIO USES events only
+  # KI USES events and pregnancy algorithm outputs
   my_event_name<-"P_SPONTABO_AESI"
   
   SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
@@ -97,7 +97,7 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # FISABIO USES events only
+  # KI USES events and pregnancy algorithm output
   
   my_event_name<-"P_STILLBIRTH_AESI"
   
@@ -125,7 +125,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PREECLAMPSIA
   
-  # FISABIO USES events only
+  # KI USES events only
   
   my_event_name<-"P_PREECLAMP_AESI"
   
@@ -145,7 +145,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # TOPFA
   
-  # FISABIO USES events only
+  # KI USES events only
   
   # TOPFA_names<-c("P_SUSPFETANOM_AESI","P_ELECTTERM_AESI" )
   # 
@@ -165,7 +165,7 @@ for(i in 1:length(preg_cohort_folders)){
   #################################################################################
   # PRE-TERM BIRTH
   
-  # FISABIO  pregnancy algorithm output
+  # KI  pregnancy algorithm output
   
   
   
