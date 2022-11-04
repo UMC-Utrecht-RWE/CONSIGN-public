@@ -10,8 +10,8 @@ cohort_covid_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"),
                              paste0(matched_folder, "matches_cov_pos_non_preg.csv"))
 
 
-output_folders<-c(output_cov_nonpregnant_control, output_cov_cases,output_cov_pregnant_control)
-cohort_names<-c("covid_positive_nonpregnant_control.csv", "cases.csv", "pregnant_cov_neg_control.csv")
+output_folders<-c(output_cov_pregnant_control, output_cov_cases, output_cov_nonpregnant_control)
+cohort_names<-c("pregnant_cov_neg_control.csv", "cases.csv", "covid_positive_nonpregnant_control.csv")
 # output should have the person_id of the control, and a column for each covariate with a 0/1 if they have this event within 1 year before covid_date
 
 for(i in 1:length(cohort_covariate_folders)){
