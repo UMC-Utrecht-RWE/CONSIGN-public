@@ -17,6 +17,16 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 case_data<-fread(paste0(output_cov_cases, "cases.csv"))
+# vaccination separate
+case_vaccine<-case_data$vaccine
+case_data<-case_data[,-"vaccine"]
+
+# create "any comorbidity" column
+
+case_data$any<-rowSums(case_data[,4:ncol(case_data)])
+case_data$any[case_data$any>0]<-1
+
+
 case_data_a<-case_data[(case_data$covid_trimester==1),]
 case_data_severe_a<-case_data_a[case_data_a$severity==1,]
 case_data_nonsevere_a<-case_data_a[case_data_a$severity==0,]
@@ -49,6 +59,12 @@ case_data_nonsevere_c<-case_data_nonsevere_c[,c(-1,-2,-3)]
 ####################################################
 
 control_data<-fread(paste0(output_cov_pregnant_control, "pregnant_cov_neg_control.csv"))
+control_vaccine<-control_data$vaccine
+control_data<-control_data[,-"vaccine"]
+
+control_data$any<-rowSums(control_data[,4:ncol(control_data)])
+control_data$any[control_data$any>0]<-1
+
 control_data_a<-control_data[control_data$covid_trimester==1,]
 control_data_a<-control_data_a[,c(-1,-2,-3)]
 
@@ -90,6 +106,12 @@ if((nrow(my_df)==0)==T){
 results<-paste0(total_cases_sums,"(", my_percent,"%)")}
 results_a[,(j+1)]<-results}
 
+vaccine_a<-vector(length=length(my_data))
+
+
+
+results_a<-rbind(vaccine_a, any_result)
+
 fwrite(results_a, paste0(final_output_dir, DAP,"_table2a_comorbid.csv"))
 
 #####################################################################
@@ -119,6 +141,11 @@ for(j in 1:length(my_data)){
     results<-paste0(total_cases_sums,"(", my_percent,"%)")}
   results_b[,(j+1)]<-results}
 
+vaccine_b<-vector(length=length(my_data))
+
+
+results_b<-rbind(vaccine_b, any_result)
+
 fwrite(results_b, paste0(final_output_dir, DAP,"_table2b_comorbid.csv"))
 
 #####################################################################
@@ -147,5 +174,11 @@ for(j in 1:length(my_data)){
     
     results<-paste0(total_cases_sums,"(", my_percent,"%)")}
   results_c[,(j+1)]<-results}
+
+vaccine_c<-vector(length=length(my_data))
+
+
+
+results_c<-rbind(vaccine_c, any_result)
 
 fwrite(results_c,paste0(final_output_dir, DAP,"_table2c_comorbid.csv"))
