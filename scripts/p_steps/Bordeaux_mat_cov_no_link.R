@@ -249,7 +249,7 @@ for(i in 1:length(preg_cohort_folders)){
   dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
   
   dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
-  dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
+  dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
   maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
   maternal_death_pers_Date<-maternal_death$death_date
   maternal_death_pers_ID<-maternal_death$person_id
