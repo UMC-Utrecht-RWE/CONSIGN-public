@@ -25,6 +25,9 @@ PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
 
 PERSONS<-fread(paste0(path_CDM,"PERSONS.csv"), select = c("person_id", "day_of_birth", "month_of_birth", "year_of_birth"))
 
+PERSONS_RELATIONS$person_id <- as.character(PERSONS_RELATIONS$person_id)
+PERSONS$person_id <- as.character(PERSONS$person_id)
+
 CHILDREN<-PERSONS[PERSONS$year_of_birth>2017,]
 CHILDREN<-CHILDREN[duplicated(CHILDREN$person_id)==F,]
 
