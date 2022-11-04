@@ -37,7 +37,7 @@ case_data_all<-fread(paste0(cov_pos_pan_preg_folder, "cov_pos_preg.csv"))
 case_data_grouped<-case_data_all%>%group_by(person_id)
 case_data<-case_data_grouped%>%slice_min(n = 1, order_by = pregnancy_start_date)
 case_data<-as.data.frame(ungroup(case_data))
-case_data<-casae_data[duplicated(casae_data$person_id)==F,]
+case_data<-case_data[duplicated(case_data$person_id)==F,]
 
 # make sure order is good
 covid_positive_matched<-covid_positive_matched[order(covid_positive_matched$exposed_id),]
