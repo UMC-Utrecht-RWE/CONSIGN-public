@@ -8,6 +8,8 @@
 # covariates described in Teams file CONSIGN_Variables.xlsx using version 10/15/22
 
 
+# c.startwith = c("ICD9CM", "ICD9",  "ICD10", "ICD10CM", "ICD10DA"), SET IN THE SOURCED FILE "CREATECONCEPTDATASET.R"
+
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
