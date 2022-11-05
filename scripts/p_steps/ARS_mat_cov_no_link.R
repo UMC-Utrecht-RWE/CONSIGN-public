@@ -32,6 +32,10 @@ for(i in 1:length(preg_cohort_folders)){
   MED$drug_date<-MED$date_dispensing
   MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
   
+  if(DAP=="TEST"){
+    df_preg$type_of_pregnancy_end<-sample(c("SA", "LB", "SB"), nrow(df_preg), replace=T)
+  }
+  
   #################################################################################
   # GEST_DIAB
   
@@ -134,7 +138,7 @@ for(i in 1:length(preg_cohort_folders)){
 SB_ID<-c(SB_EV_ID, SB_alg_ID)
 SB_Date<-c(SB_EV_Date, SB_alg_Date)
    
- SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
+ SB_cov<-as.data.frame(cbind(c(SB_EV_ID, SB_alg_ID),c(SB_EV_Date, SB_alg_Date)))
  colnames(SB_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
