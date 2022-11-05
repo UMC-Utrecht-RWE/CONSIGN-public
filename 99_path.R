@@ -184,14 +184,17 @@ output_hist_preg   <- paste0(projectFolder, "/g_intermediate/covariates/hist_pre
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates")), FALSE))
 output_mat_cov   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos")), FALSE))
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")), FALSE))
 output_mat_cov_pan_pos   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_pos/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg")), FALSE))
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")), FALSE))
 output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/pan_neg/")
 
-invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist")), FALSE))
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")), FALSE))
 output_mat_cov_hist   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/hist/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/maternal_covariates/covid_positive_match/")), dir.create(paste0(projectFolder, "/g_intermediate/maternal_covariates/covid_positive_match/")), FALSE))
+output_mat_cov_covid_pos_match   <- paste0(projectFolder, "/g_intermediate/maternal_covariates/covid_positive_match/")
 
 
 
@@ -206,6 +209,10 @@ g_output_mat_cov_pan_neg   <- paste0(projectFolder, "/g_output/maternal_covariat
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/hist/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/hist")), FALSE))
 g_output_mat_cov_hist   <- paste0(projectFolder, "/g_output/maternal_covariates/hist/")
+
+invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_covariates/covid_positive_matches/")), dir.create(paste0(projectFolder, "/g_output/maternal_covariates/covid_positive_matches")), FALSE))
+g_output_mat_covariate_covid_pos_match   <- paste0(projectFolder, "/g_output/maternal_covariates/covid_positive_matches/")
+
 
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/maternal_outcomes/")), dir.create(paste0(projectFolder, "/g_output/maternal_outcomes")), FALSE))

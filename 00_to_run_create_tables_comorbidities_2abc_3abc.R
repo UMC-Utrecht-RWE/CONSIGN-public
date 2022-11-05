@@ -27,9 +27,14 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir, "/create_table_2abc_cormobidities.R"))
 
+source(paste0(pre_dir, "/create_table_2abc_maternal.R"))
+
+
 ###########################################################
 
 source(paste0(pre_dir, "/create_table_3abc_cormobidities.R"))
+
+source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
 
 
 ############################################################
