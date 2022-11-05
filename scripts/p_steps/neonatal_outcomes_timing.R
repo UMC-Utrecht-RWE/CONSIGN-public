@@ -26,7 +26,10 @@ for(i in 1:length(cohort_covariate_folders)){
   my_child_data$comp_day_birth<-my_child_data$day_of_birth
   my_child_data$comp_day_birth[is.na(my_child_data$day_of_birth)]<-15
   
-  DOB<-paste0(my_child_data$comp_day_birth, "/", my_child_data$month_of_birth, "/",my_child_data$year_of_birth)
+  my_child_data$comp_month_birth<-my_child_data$month_of_birth
+  my_child_data$comp_month_birth[is.na(my_child_data$month_of_birth)]<-6
+  
+  DOB<-paste0(my_child_data$comp_day_birth, "/", my_child_data$comp_month_birth, "/",my_child_data$year_of_birth)
   my_child_data$DOB<-as.Date(DOB, format="%d/%m/%Y")
   my_child_data$DOB_numeric<-as.numeric(my_child_data$DOB)
 
