@@ -3,6 +3,11 @@
 # maternal covariates -within 2 years BEFORE start of index pregnancy
 
 # need trimester and severity
+hist_preg<-fread(paste0(hist_preg_folder,"my_PREG.csv"))
+hist_preg$severity<-NA
+hist_preg$cov_trimester<-NA
+fwrite(hist_preg, paste0(hist_preg_folder,"my_PREG.csv"))
+
 
 cohort_covariate_folders<-c(output_mat_cov_pan_neg, output_mat_cov_pan_pos, output_mat_cov_hist)
 
