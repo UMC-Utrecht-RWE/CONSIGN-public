@@ -24,7 +24,7 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
-source(paste0(pre_dir,"/CreateEntryExit.R"))
+source(paste0(pre_dir,"/CreateEntryExit_BPE.R"))
 
 # adding variables to pregnancy data
 # calculates trimester dates AND maternal age categories and adds these variables to original pregnancy data
