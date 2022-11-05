@@ -19,6 +19,8 @@
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
+# number of days "persons date of birth" can vary from "end of pregnancy"
+if(DAP!="Bordeaux"){buffer<-30} else{buffer<-(366/2)}
 
 PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
 
@@ -34,7 +36,10 @@ CHILDREN<-CHILDREN[duplicated(CHILDREN$person_id)==F,]
 CHILDREN$comp_day_birth<-CHILDREN$day_of_birth
 CHILDREN$comp_day_birth[is.na(CHILDREN$day_of_birth)]<-15
 
-DOB<-paste0(CHILDREN$comp_day_birth, "/", CHILDREN$month_of_birth, "/",CHILDREN$year_of_birth)
+CHILDREN$comp_month_birth<-CHILDREN$month_of_birth
+CHILDREN$comp_month_birth[is.na(CHILDREN$month_of_birth)]<-6
+
+DOB<-paste0(CHILDREN$comp_day_birth, "/", CHILDREN$comp_month_birth, "/",CHILDREN$year_of_birth)
 CHILDREN$DOB<-as.Date(DOB, format="%d/%m/%Y")
 CHILDREN$DOB_numeric<-as.numeric(CHILDREN$DOB)
 
@@ -85,8 +90,8 @@ for(i in 1:length(case_mom_id)){
   offspring<-case_all_children[case_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
   print(offspring$days_to_DOB)
-  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<30]
-  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<30]
+  case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
+  case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
 }
 
 case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
@@ -105,7 +110,6 @@ control_all_children<-merge(controls_PR,control_all_children, by="person_id")
 
 # for each mom_id and control_DOB combination, test DOB of CHILDREN with mom_id
 
-if(DAP!="Bordeaux"){buffer<-30} else{buffer<-225}
 
 for(i in 1:length(controls_mom_id)){
   mom<- controls_mom_id[i]
@@ -144,8 +148,8 @@ for(i in 1:length(historical_mom_id)){
   offspring<-historical_all_children[historical_all_children$related_id==mom,]
   offspring$days_to_DOB<- (offspring$DOB_numeric)-(my_DOB)
   print(offspring$days_to_DOB)
-  historical_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<31]
-  historical_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<31]
+  historical_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
+  historical_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
 }
 
 historical_neonates<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS)))
