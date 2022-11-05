@@ -129,7 +129,7 @@ for(i in 1:length(preg_cohort_folders)){
   SB_ID<-c(SB_SO_ID, SB_alg_ID)
   SB_Date<-c(SB_SO_Date, SB_alg_Date)
   
-  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
+  SB_cov<-as.data.frame(cbind(c(SB_SO_ID, SB_alg_ID),c(SB_SO_Date,SB_ID,SB_alg_Date)))
   colnames(SB_cov)<-c("id", "date")
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
