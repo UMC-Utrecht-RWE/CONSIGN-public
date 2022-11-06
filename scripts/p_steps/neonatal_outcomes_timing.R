@@ -35,7 +35,7 @@ for(i in 1:length(cohort_covariate_folders)){
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
     my_covariate_data<-my_covariate_data[complete.cases(my_covariate_data)==T,]
-    for(p in 1:nrow(my_preg_data)){
+    for(p in 1:nrow(my_child_data)){
       my_id<-my_child_data$person_id[p]
       my_date<-my_child_data$DOB_numeric[p]
       my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
