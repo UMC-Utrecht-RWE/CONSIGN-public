@@ -7,9 +7,9 @@
 cohort_covariate_folders<-c(output_neonates_case,output_neonates_control, output_neonates_hist)
 
 # we need the cov_date for each case and control
-cohort_child_data<-c(paste0(case_neonate_folder,"PERSONS.csv"), 
-                             paste0(control_neonate_folder, "PERSONS.csv"), 
-                             paste0(historical_neonate_folder,"PERSONS.csv"))
+cohort_child_data<-c(paste0(case_neonate_folder,"case_neonates.csv"), 
+                             paste0(control_neonate_folder, "control_neonates.csv"), 
+                             paste0(historical_neonate_folder,"historical_neonates.csv"))
 
 
 output_folders<-c(output_neonates_case, output_neonates_control, output_neonates_hist)
@@ -23,15 +23,7 @@ for(i in 1:length(cohort_covariate_folders)){
   print(my_names)
   my_child_data<-fread(cohort_child_data[i])
   
-  my_child_data$comp_day_birth<-my_child_data$day_of_birth
-  my_child_data$comp_day_birth[is.na(my_child_data$day_of_birth)]<-15
   
-  my_child_data$comp_month_birth<-my_child_data$month_of_birth
-  my_child_data$comp_month_birth[is.na(my_child_data$month_of_birth)]<-6
-  
-  DOB<-paste0(my_child_data$comp_day_birth, "/", my_child_data$comp_month_birth, "/",my_child_data$year_of_birth)
-  my_child_data$DOB<-as.Date(DOB, format="%d/%m/%Y")
-  my_child_data$DOB_numeric<-as.numeric(my_child_data$DOB)
 
   my_output_df<- as.data.frame(matrix(data=NA, nrow=nrow(my_child_data), ncol=(length(my_names)+1)))
   colnames(my_output_df)<-c("person_id", my_names)
