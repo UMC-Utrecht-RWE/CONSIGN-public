@@ -197,7 +197,7 @@ results_a$standard_diff_controls<-results_sdif_control
 
 
 
-fwrite(results_a, paste0(final_output_dir, DAP,"_table3a_comorbid.csv"))
+fwrite(results_a, paste0(final_output_dir, DAP,"_table3a_maternal.csv"))
 
 #####################################################################
 # case columns table b (trim 2)
@@ -265,7 +265,7 @@ results_b$standard_diff_controls<-results_sdif_control
 
 
 
-fwrite(results_b, paste0(final_output_dir, DAP,"_table3b_comorbid.csv"))
+fwrite(results_b, paste0(final_output_dir, DAP,"_table3b_maternal.csv"))
 
 #####################################################################
 # case columns table c (trim 3)
@@ -333,4 +333,4 @@ results_c$standard_diff_controls<-results_sdif_control
 
 
 
-fwrite(results_c,paste0(final_output_dir, DAP,"_table3c_comorbid.csv"))
+fwrite(results_c,paste0(final_output_dir, DAP,"_table3c_maternal.csv"))
