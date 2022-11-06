@@ -28,9 +28,6 @@ cov_trim_data$severity<-0
 
 # fwrite(cov_trim_data, paste0(matched_folder, "preg_matches_data.csv"))
 
-output_CONTROL_PREG_window_atc_2<-paste0(projectFolder,"/g_output/PREG_CONTROL_window_atc_2/")
-invisible(if(dir.exists(output_CONTROL_PREG_window_atc_2)==F)
-{dir.create(output_CONTROL_PREG_window_atc_2)})
 
 
 # now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis

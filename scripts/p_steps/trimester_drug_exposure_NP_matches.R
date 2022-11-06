@@ -23,18 +23,15 @@ my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-4)
 cov_trim_data<-fread(paste0(matched_folder,"matches_cov_pos_non_preg.csv"))
 cov_trim_data$severity<-cov_trim_data$severe
 
-# 
-# fwrite(cov_trim_data, paste0(matched_folder,"covid_pos_control_data.R"))
+table(table(cov_trim_data$person_id))
 
-output_CONTROL_NP_window_atc_2<-paste0(projectFolder,"/g_output/NP_CONTROL_window_atc_2/")
-invisible(if(dir.exists(output_CONTROL_NP_window_atc_2)==F)
-{dir.create(output_CONTROL_NP_window_atc_2)})
-
+length(my_names)
 
 # now I need to test the dates of dispensing by person against each pregnancy trimester of covid diagnosis
 
 
 for(i in 1:length(my_tables)){
+  print(i)
  my_data<-fread(paste0(raw_atc_2_counts,my_tables[i]))
   atc_result<-as.data.frame(during_cov_window(atc_data = my_data, trim_data = cov_trim_data))
   fwrite(atc_result, paste0(output_CONTROL_NP_window_atc_2,my_names[i],"_cov_window_counts.csv" ))

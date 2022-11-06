@@ -5,13 +5,13 @@
 
 during_cov_window<-function(atc_data, trim_data){
  
-  
+  atc_data<-atc_data[complete.cases(atc_data),]
     # select person IDs in ATC data matching pregnancy cohort
   overlap_id<-unique(atc_data$person_id[atc_data$person_id%in%trim_data$person_id])
   atc_data<-atc_data[atc_data$person_id%in%overlap_id,]
   trim_data<-trim_data[trim_data$person_id%in%overlap_id,]
   
-  atc_data<-atc_data[complete.cases(atc_data),]
+  # atc_data<-atc_data[complete.cases(atc_data),]
  
 
   if(nrow(atc_data)>0){
