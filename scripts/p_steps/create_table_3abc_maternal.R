@@ -15,6 +15,9 @@
 #all covid positive non pregnant matches
 # stratify by severity
 
+# add standardized difference between severe and non-severe
+# The standardized difference is defined as the difference between the mean divided by the overall standard deviation.
+
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
@@ -155,6 +158,42 @@ if((nrow(my_df)==0)==T){
 results<-paste0(total_cases_sums,"(", my_percent,"%)")}
 results_a[,(j+1)]<-results}
 
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_a)>0)&(nrow(case_data_nonsevere_a)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_a)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_a)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_a$standard_diff_cases<-results_sdif_case
+
+results_sdif_control<-vector()
+
+
+if((nrow(control_data_severe_a)>0)&(nrow(control_data_nonsevere_a)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(control_data_severe_a)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(control_data_nonsevere_a)[,i])
+    # print(mycohort2)
+    results_sdif_control[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_control<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_a$standard_diff_controls<-results_sdif_control
+
 
 
 
@@ -187,6 +226,43 @@ for(j in 1:length(my_data)){
     results<-paste0(total_cases_sums,"(", my_percent,"%)")}
   results_b[,(j+1)]<-results}
 
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_b)>0)&(nrow(case_data_nonsevere_b)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_b)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_b)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_b$standard_diff_cases<-results_sdif_case
+
+results_sdif_control<-vector()
+
+
+if((nrow(control_data_severe_b)>0)&(nrow(control_data_nonsevere_b)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(control_data_severe_b)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(control_data_nonsevere_b)[,i])
+    # print(mycohort2)
+    results_sdif_control[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_control<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_b$standard_diff_controls<-results_sdif_control
+
+
 
 
 fwrite(results_b, paste0(final_output_dir, DAP,"_table3b_comorbid.csv"))
@@ -217,6 +293,43 @@ for(j in 1:length(my_data)){
     
     results<-paste0(total_cases_sums,"(", my_percent,"%)")}
   results_c[,(j+1)]<-results}
+
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_c)>0)&(nrow(case_data_nonsevere_c)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_c)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_c)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_c$standard_diff_cases<-results_sdif_case
+
+results_sdif_control<-vector()
+
+
+if((nrow(control_data_severe_c)>0)&(nrow(control_data_nonsevere_c)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(control_data_severe_c)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(control_data_nonsevere_c)[,i])
+    # print(mycohort2)
+    results_sdif_control[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_control<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+results_c$standard_diff_controls<-results_sdif_control
+
 
 
 
