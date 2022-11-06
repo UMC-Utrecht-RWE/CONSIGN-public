@@ -22,17 +22,22 @@ source("99_path.R")
 
 suppressMessages(source(paste0(pre_dir, "/packages.R")))
 
+# you may see this message in RED- it's OK- the correct output is being created
+# Warning messages:
+# 1: In vaccine_a[j] <- results :
+  # number of items to replace is not a multiple of replacement length
+
 
 ###########################################################
 
-source(paste0(pre_dir, "/create_table_2abc_cormobidities.R"))
+source(paste0(pre_dir, "/create_table_2abc_comorbidities.R"))
 
 source(paste0(pre_dir, "/create_table_2abc_maternal.R"))
 
 
 ###########################################################
 
-source(paste0(pre_dir, "/create_table_3abc_cormobidities.R"))
+source(paste0(pre_dir, "/create_table_3abc_comorbidities.R"))
 
 source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
 

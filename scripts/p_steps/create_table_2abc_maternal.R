@@ -115,7 +115,7 @@ my_df<-my_data[[j]]
 print(j)
 if((nrow(my_df)==0)==T){  
     results<-rep("no records", length(my_names))
-        print(paste0(i,": no records in this group"))
+        print(paste0(j,": no records in this group"))
             }else{print("records found for this group")
               if(nrow(my_df>1)){total_cases_sums<-colSums(my_df)} else{(total_cases_sums<-my_df[1,])}
 
@@ -145,7 +145,7 @@ for(j in 1:length(my_data)){
   print(j)
   if((nrow(my_df)==0)==T){  
     results<-rep("no records", length(my_names))
-    print(paste0(i,": no records in this group"))
+    print(paste0(j,": no records in this group"))
   }else{print("records found for this group")
     if(nrow(my_df>1)){total_cases_sums<-colSums(my_df)} else{(total_cases_sums<-my_df[1,])}
     
@@ -175,7 +175,7 @@ for(j in 1:length(my_data)){
   print(j)
   if((nrow(my_df)==0)==T){  
     results<-rep("no records", length(my_names))
-    print(paste0(i,": no records in this group"))
+    print(paste0(j,": no records in this group"))
   }else{print("records found for this group")
     if(nrow(my_df>1)){total_cases_sums<-colSums(my_df)} else{(total_cases_sums<-my_df[1,])}
     

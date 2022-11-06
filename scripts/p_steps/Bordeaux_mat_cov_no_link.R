@@ -119,7 +119,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   
   SA_ID<-c(SA_EV_ID,SA_SO_ID, SA_alg_ID)
-  SA_Date<-C(SA_EV_Date, SA_SO_Date, SA_alg_Date)
+  SA_Date<-c(SA_EV_Date, SA_SO_Date, SA_alg_Date)
   
   SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
   colnames(SA_cov)<-c("id", "date")

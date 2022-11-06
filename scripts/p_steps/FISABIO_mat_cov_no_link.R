@@ -209,7 +209,6 @@ dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(de
 dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_of_death,dead_PERSONS$day_of_death)
 dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
 
-df_preg<- fread(paste0(cohort_folder, df_preg_data[i]))
 
 dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
 dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]

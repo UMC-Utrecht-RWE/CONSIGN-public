@@ -60,17 +60,20 @@ case_mom_id<-case$person_id [case$type_of_pregnancy_end=="LB"]
 case_DOB<-case$pregnancy_end_date[case$type_of_pregnancy_end=="LB"]
 case_child<-list()
 case_child_DOB_PERSONS<-list()
+case_child_preg_DOB<-list()
 
 
 controls_mom_id<-controls$person_id[controls$type_of_pregnancy_end=="LB"]
 controls_DOB<-controls$pregnancy_end_date[controls$type_of_pregnancy_end=="LB"]
 control_child<-list()
 control_child_DOB_PERSONS<-list()
+conrol_child_preg_DOB<-list()
 
 historical_mom_id<-historical$person_id[historical$type_of_pregnancy_end=="LB"]
 historical_DOB<-historical$pregnancy_end_date[historical$type_of_pregnancy_end=="LB"]
 historical_child<-list()
 historical_child_DOB_PERSONS<-list()
+hist_child_preg_DOB<-list()
 
 # in each matched cohort (cases, P_control) there's only one pregnancy per woman
 # but a pregnancy may have 2 or more love born babies 
@@ -92,10 +95,11 @@ for(i in 1:length(case_mom_id)){
   print(offspring$days_to_DOB)
   case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
   case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
+  case_child_preg_DOB[[i]]<-rep(my_DOB, length(case_child[[i]]))
 }
 
-case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS)))
-colnames(case_neonates)<-c("person_id", "DOB")
+case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS), unlist(case_child_preg_DOB)))
+colnames(case_neonates)<-c("person_id", "DOB_persons", "DOB")
 
 fwrite(case_neonates, paste0(case_neonate_folder,"case_neonates.csv"))
 
@@ -119,10 +123,11 @@ for(i in 1:length(controls_mom_id)){
   print(offspring$days_to_DOB)
   control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
   control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
+  conrol_child_preg_DOB[[i]]<-rep(my_DOB, length(control_child[[i]]))
 }
 
-control_neonates<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS)))
-colnames(control_neonates)<-c("person_id", "DOB")
+control_neonates<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS), unlist(conrol_child_preg_DOB)))
+colnames(control_neonates)<-c("person_id", "DOB_persons", "DOB")
 
 fwrite(control_neonates, paste0(control_neonate_folder,"control_neonates.csv"))
 
@@ -150,10 +155,11 @@ for(i in 1:length(historical_mom_id)){
   print(offspring$days_to_DOB)
   historical_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
   historical_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
+  hist_child_preg_DOB[[i]]<-rep(my_DOB, length(historical_child[[i]]))
 }
 
-historical_neonates<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS)))
-colnames(historical_neonates)<-c("person_id", "date_of_birth_PERSONS")
+historical_neonates<-as.data.frame(cbind(unlist(historical_child), unlist(historical_child_DOB_PERSONS), unlist(hist_child_preg_DOB)))
+colnames(historical_neonates)<-c("person_id", "DOB_persons", "DOB")
 fwrite(historical_neonates, paste0(historical_neonate_folder,"historical_neonates.csv"))
 
 

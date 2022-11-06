@@ -32,9 +32,7 @@ for(i in 1:length(preg_cohort_folders)){
   MED$drug_date<-MED$date_dispensing
   MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
   
-  if(DAP=="TEST"){
-    df_preg$type_of_pregnancy_end<-sample(c("SA", "LB", "SB"), nrow(df_preg), replace=T)
-  }
+  
   
   #################################################################################
   # GEST_DIAB
