@@ -13,6 +13,10 @@
 
 #all pregnant (covid negative) matches
 
+# add standardized difference between severe and non-severe
+# The standardized difference is defined as the difference between the mean divided by the overall standard deviation.
+
+
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
@@ -168,6 +172,47 @@ vaccine_a<-c("flu vaccine", vaccine_a)
 
 results_a<-rbind(results_a, vaccine_a)
 
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_a)>0)&(nrow(case_data_nonsevere_a)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_a)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_a)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+# vaccines 
+
+results_vac_sdif_case<-vector()
+
+# case vaccine
+
+if((nrow(case_vaccine_severe_a)>0)&(nrow(case_vaccine_nonsevere_a)>0)){
+  mycohort1<-unlist((as.data.frame(case_vaccine_severe_a))[,1])
+  print(mycohort1)
+  mycohort2<-unlist((as.data.frame(case_vaccine_nonsevere_a))[,1])
+  print(mycohort2)
+  results_vac_sdif_case<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)
+}else{results_vac_sdif_case<-("one or both cohorts empty")}
+
+
+
+
+st_dif_case<-c(results_sdif_case, results_vac_sdif_case)
+
+
+results_a$standard_diff_cases<-st_dif_case
+
+
 fwrite(results_a, paste0(final_output_dir, DAP,"_table2a_comorbid.csv"))
 
 #####################################################################
@@ -224,6 +269,47 @@ vaccine_b<-c("flu vaccine", vaccine_b)
 
 results_b<-rbind(results_b, vaccine_b)
 
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_b)>0)&(nrow(case_data_nonsevere_b)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_b)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_b)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+# vaccines 
+
+results_vac_sdif_case<-vector()
+
+# case vaccine
+
+if((nrow(case_vaccine_severe_b)>0)&(nrow(case_vaccine_nonsevere_b)>0)){
+  mycohort1<-unlist((as.data.frame(case_vaccine_severe_b))[,1])
+  print(mycohort1)
+  mycohort2<-unlist((as.data.frame(case_vaccine_nonsevere_b))[,1])
+  print(mycohort2)
+  results_vac_sdif_case<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)
+}else{results_vac_sdif_case<-("one or both cohorts empty")}
+
+
+
+
+st_dif_case<-c(results_sdif_case, results_vac_sdif_case)
+
+
+results_b$standard_diff_cases<-st_dif_case
+
+
 fwrite(results_b, paste0(final_output_dir, DAP,"_table2b_comorbid.csv"))
 
 #####################################################################
@@ -279,5 +365,46 @@ vaccine_c<-c("flu vaccine", vaccine_c)
 
 
 results_c<-rbind(results_c, vaccine_c)
+
+#############################################################################
+# standardized difference
+
+
+results_sdif_case<-vector()
+
+
+if((nrow(case_data_severe_c)>0)&(nrow(case_data_nonsevere_c)>0)){
+  for(i in 1:length(my_names)){
+    mycohort1<-(as.data.frame(case_data_severe_c)[,i])
+    # print(mycohort1)
+    mycohort2<-(as.data.frame(case_data_nonsevere_c)[,i])
+    # print(mycohort2)
+    results_sdif_case[i]<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)}
+}else{results_sdif_case<-rep("one or both cohorts empty", length(my_names))}
+
+
+
+# vaccines 
+
+results_vac_sdif_case<-vector()
+
+# case vaccine
+
+if((nrow(case_vaccine_severe_c)>0)&(nrow(case_vaccine_nonsevere_c)>0)){
+  mycohort1<-unlist((as.data.frame(case_vaccine_severe_c))[,1])
+  print(mycohort1)
+  mycohort2<-unlist((as.data.frame(case_vaccine_nonsevere_c))[,1])
+  print(mycohort2)
+  results_vac_sdif_case<-standard_diff(cohort1 = mycohort1, cohort2 = mycohort2)
+}else{results_vac_sdif_case<-("one or both cohorts empty")}
+
+
+
+
+st_dif_case<-c(results_sdif_case, results_vac_sdif_case)
+
+
+results_c$standard_diff_cases<-st_dif_case
+
 
 fwrite(results_c,paste0(final_output_dir, DAP,"_table2c_comorbid.csv"))
