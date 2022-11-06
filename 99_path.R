@@ -168,6 +168,13 @@ output_cov_pregnant_control <- paste0(projectFolder, "/g_output/covariates/cov_n
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), dir.create(paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")), FALSE))
 output_cov_nonpregnant_control   <- paste0(projectFolder, "/g_output/covariates/cov_pos_non_preg/")
 
+output_CONTROL_NP_window_atc_2<-paste0(projectFolder,"/g_output/NP_CONTROL_window_atc_2/")
+invisible(if(dir.exists(output_CONTROL_NP_window_atc_2)==F)
+{dir.create(output_CONTROL_NP_window_atc_2)})
+
+output_CONTROL_PREG_window_atc_2<-paste0(projectFolder,"/g_output/PREG_CONTROL_window_atc_2/")
+invisible(if(dir.exists(output_CONTROL_PREG_window_atc_2)==F)
+{dir.create(output_CONTROL_PREG_window_atc_2)})
 
 invisible(ifelse(!dir.exists(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), dir.create(paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")), FALSE))
 output_cov_pos_pan_preg   <- paste0(projectFolder, "/g_intermediate/covariates/cov_pos_pan_preg/")
