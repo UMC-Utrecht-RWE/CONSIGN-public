@@ -12,12 +12,12 @@ cov_ev_data<-IMPORT_PATTERN(pat="covid19_diagnosis_", dir=preselect_folder)
 
 covid_dap_data<-fread(paste0(preselect_folder,"COVID_data_dap.csv"))
 
-if(nrow(covid_ev_data>0)){
-  covid_ev_data<-select(.data = covid_ev_data, person_id, start_date_record, meaning_of_event)
-  colnames(covid_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
+if(nrow(cov_ev_data>0)){
+  cov_ev_data<-select(.data = cov_ev_data, person_id, start_date_record, meaning_of_event)
+  colnames(cov_ev_data)<-colnames(covid_dap_data)}else{print("no COVID cases detect in EVENTS")}
 
 
-if((nrow(covid_ev_data)>0)){covid_data<-as.data.frame(rbind(covid_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
+if((nrow(cov_ev_data)>0)){covid_data<-as.data.frame(rbind(cov_ev_data, covid_dap_data))}else{covid_data<-covid_dap_data}
 
 
 # remove rows with missing data

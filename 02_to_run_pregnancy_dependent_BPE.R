@@ -47,7 +47,7 @@ source(paste0(pre_dir, "/covid_detect_function_BPE.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
-source(paste0(pre_dir,"/severity_detect.R"))
+source(paste0(pre_dir,"/severity_detect_BPE.R"))
 
 
 # tests covid_dates against pregnancy dates
@@ -64,7 +64,7 @@ source(paste0(pre_dir, "/create_covid_cohorts.R"))
 # checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 
-source(paste0(pre_dir, "/trimester_drug_exposure.R"))
+source(paste0(pre_dir, "/trimester_drug_exposure_BPE.R"))
 
 # source(paste0(pre_dir, "/create_table_1abc.R"))
 
