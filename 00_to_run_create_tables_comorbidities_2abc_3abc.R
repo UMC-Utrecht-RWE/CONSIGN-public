@@ -27,6 +27,7 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 # 1: In vaccine_a[j] <- results :
   # number of items to replace is not a multiple of replacement length
 
+source(paste0(pre_dir, "/function_standard_difference.R"))
 
 ###########################################################
 
