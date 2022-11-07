@@ -5,8 +5,8 @@
 
 # due to wide variety of DAP specific criteria, NEONATAL covariates will be coded separately per DAP
 
-neonate_cohort_folders<-list(case_neonate_folder,control_neonate_folder, historical_neonate_folder)
-output_folders<-list(output_neonates_case, output_neonates_control, output_neonates_hist)
+neonate_cohort_folders<-list( historical_neonate_folder)
+output_folders<-list( output_neonates_hist)
 
 
 all_codes<-fread(paste0(projectFolder,"/codelist_CONSIGN.csv"))

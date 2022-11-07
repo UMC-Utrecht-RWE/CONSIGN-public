@@ -5,10 +5,10 @@
 
 # due to wide variety of DAP specific criteria, maternal covariates will be coded separately per DAP
 
-preg_cohort_folders<-list(hist_preg_folder,preg_match_folder, cases_match_folder, cov_match_folder)
-output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov_pan_pos, output_mat_cov_covid_pos_match)
+preg_cohort_folders<-list(hist_preg_folder)
+output_folders<-list(output_mat_cov_hist)
 
-my_preg_data<-c("my_PREG.csv", "preg_trim.csv", "preg_trim.csv", "preg_trim.csv")
+my_preg_data<-c("my_PREG.csv")
 
 all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
