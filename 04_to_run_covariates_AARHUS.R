@@ -41,4 +41,3 @@ source(paste0(pre_dir,"/mother_child_linkage_AARHUS.R" ))
 
   source(paste0(pre_dir,"/Aarhus_neonatal_cov.R" ))
 
-source(paste0(pre_dir, "create_table_4"))
