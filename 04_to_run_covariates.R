@@ -36,7 +36,6 @@ source(paste0(pre_dir,"/mother_child_linkage.R" ))
 if(DAP!="Bordeaux"){
   source(paste0(pre_dir,"/covariates_detect.R" ))}else{source(paste0(pre_dir,"/covariates_detect_BPE.R" ))}
 
-source(paste0(pre_dir,"/covid_covariates_timing.R" ))
 
 # covariate timing combining to pregnancy/covid
 
@@ -61,7 +60,8 @@ if(DAP=="Bordeaux"){
 
 
 if(DAP=="TEST"){
-  source(paste0(pre_dir,"/FISABIO_mat_cov_no_link.R" ))}
+  source(paste0(pre_dir,"/OSLO_mat_cov_no_link.R" ))
+  source(paste0(pre_dir,"/OSLO_neonatal_cov.R" ))}
 
 if(DAP=="FISABIO"){
   source(paste0(pre_dir,"/FISABIO_mat_cov_no_link.R" ))}
