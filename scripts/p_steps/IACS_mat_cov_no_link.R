@@ -144,7 +144,7 @@ for(i in 1:length(preg_cohort_folders)){
  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
 
  SB_ID<-c(SB_EV_ID, SB_SO_ID, SB_alg_ID)
- SB_ID<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
+ SB_Date<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
 
  SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
  colnames(SB_cov)<-c("id", "date")
