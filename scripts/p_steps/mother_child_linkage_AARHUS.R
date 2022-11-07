@@ -20,7 +20,7 @@ CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
 # number of days "persons date of birth" can vary from "end of pregnancy"
-if(DAP!="Bordeaux"){buffer<-30} else{buffer<-(366/2)}
+buffer<-30
 
 PERSONS_RELATIONS<- fread(paste0(path_PR,PR_name))
 
