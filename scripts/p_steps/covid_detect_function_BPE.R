@@ -12,7 +12,7 @@
 
 
 
-events_tables_list<-list.files(paste0(preselect_folder), pattern = "EVENTS")
+events_tables_list<-list.files(paste0(preselect_folder), pattern = "EVENTS_2020")
 
 # something going wrong with codes with leading 0s
 
@@ -25,14 +25,20 @@ full_codelist<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
 
 covid_codelist<-full_codelist[full_codelist$event_definition=="COVID19 diagnosis",]
 
+event_tables_rownum<-vector()
+
 for(i in 1:length(events_tables_list)){
   events_tables<-fread(paste0(preselect_folder, events_tables_list[i]))
+  print(i)
+  event_tables_rownum[i]<-(nrow(events_tables))
 
   CreateConceptDatasets(codesheet = covid_codelist, file = events_tables, c.voc="coding_system", 
                       c.concept="event_definition", c.codes="code", c.startwith = c("ICD9CM", "ICD9",  "ICD10", "ICD10CM", "ICD10DA"),
-                      f.code="event_code", f.voc="event_record_vocabulary", path = preselect_folder,
+                      f.code="event_code", f.voc="event_record_vocabulary", path = g_intermediate,
                       method = "loop", group = T, f.name = NULL, db = NULL )
-  cov_ev_data<-readRDS(paste0(preselect_folder,"COVID19 diagnosis.rds"))
+  cov_ev_data<-readRDS(paste0(g_intermediate,"COVID19 diagnosis.rds"))
+  print(head(cov_ev_data))
+  # unlist(paste0(g_intermediate,"COVID19 diagnosis.rds"))
   fwrite(cov_ev_data, paste0(preselect_folder, "covid19_diagnosis_",i,".csv"))
   }
 
