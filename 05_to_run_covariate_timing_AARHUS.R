@@ -26,11 +26,11 @@ source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 
 # source(paste0(pre_dir, "/covid_covariates_timing.R"))
 
-source(paste0(pre_dir, "/maternal_covariates_timing.R"))
+source(paste0(pre_dir, "/maternal_covariates_timing_AARHUS.R"))
 
-source(paste0(pre_dir, "/maternal_outcomes_timing.R"))
+# source(paste0(pre_dir, "/maternal_outcomes_timing.R"))
 
-source(paste0(pre_dir, "/neonatal_outcomes_timing.R"))
+source(paste0(pre_dir, "/neonatal_outcomes_timing_AARHUS.R"))
 
 source(paste0(pre_dir, "create_table_4"))
 
