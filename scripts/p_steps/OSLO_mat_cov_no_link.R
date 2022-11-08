@@ -104,6 +104,8 @@ for(i in 1:length(preg_cohort_folders)){
   SB_Date<-c(SB_alg_Date)
   
   SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
+  
+  fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   #################################################################################
   # PREECLAMPSIA
   
