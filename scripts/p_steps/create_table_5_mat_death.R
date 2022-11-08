@@ -12,6 +12,10 @@ colnames(maternal_death_output)<-c("names", "all cases", "severe cases", "non se
 my_rows<-c("# deaths trim1", "# preg trim1", "% trim1","# deaths trim2", "# preg trim2", "% trim2", "# deaths trim3", "# preg trim3", "% trim3" )
    
 maternal_death_output$names<-my_rows
+
+my_vars<-colnames(case_mat_outcome[,4:(ncol(case_mat_outcome)-1)])
+
+
                                   
 trim1<-list()
 
