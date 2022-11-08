@@ -7,6 +7,12 @@ suppressPackageStartupMessages(library(RSQLite))
 if(!require(sqldf)){install.packages("sqldf")}
 suppressPackageStartupMessages(library(sqldf))
 
+if(!require(sandwich)){install.packages("sandwich")}
+suppressPackageStartupMessages(library(sandwich))
+
+if(!require(lmtest)){install.packages("lmtest")}
+suppressPackageStartupMessages(library(lmtest))
+
 if(!require(rlist)){install.packages("rlist")}
 suppressPackageStartupMessages(library(rlist))
 
