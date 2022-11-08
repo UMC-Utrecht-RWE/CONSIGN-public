@@ -38,7 +38,7 @@ for(i in 1:length(cohort_covariate_folders)){
     for(p in 1:nrow(my_child_data)){
       my_id<-my_child_data$person_id[p]
       my_date<-my_child_data$DOB_numeric[p]
-      my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
+      my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
       time_window<-my_id_covariate_data$date-my_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
       if(any(time_window<=90 & time_window>=0)){covariate_result<-1}else{covariate_result<-0}

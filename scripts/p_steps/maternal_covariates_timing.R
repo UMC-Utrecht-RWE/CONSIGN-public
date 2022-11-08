@@ -42,7 +42,7 @@ for(i in 1:length(cohort_covariate_folders)){
     for(p in 1:nrow(my_preg_data)){
       my_id<-my_preg_data$person_id[p]
       my_date<-my_preg_data$pregnancy_start_date[p]
-      my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
+      my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
       time_window<-my_id_covariate_data$date-my_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
       if(any(time_window<=0 & time_window>=-730)){covariate_result<-1}else{covariate_result<-0}
@@ -79,7 +79,7 @@ for(j in 1:length(my_tables)){
   for(p in 1:nrow(hist_preg)){
     my_id<-hist_preg$person_id[p]
     my_date<-hist_preg$pregnancy_end_date[p]
-    my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
+    my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
     time_window<-my_id_covariate_data$date-my_date
     # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
     if(any(time_window<=0 & time_window>=-730)){covariate_result<-1}else{covariate_result<-0}

@@ -47,7 +47,7 @@ for(i in 1:length(cohort_covariate_folders)){
       my_id<-my_preg_data$person_id[p]
       my_start_date<-my_preg_data$pregnancy_start_date[p]
       my_end_date<-my_preg_data$pregnancy_end_date[p]
-      my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
+      my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
       time_window_start<-my_id_covariate_data$date-my_start_date
       time_window_end<-my_id_covariate_data$date-my_end_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
