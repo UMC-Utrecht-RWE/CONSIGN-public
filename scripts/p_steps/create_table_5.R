@@ -33,10 +33,10 @@ control_mat_cov$SA_SB<-(control_mat_cov$Spont_Abort+control_mat_cov$Still_Birth)
 control_mat_cov$SA_SB[control_mat_cov$SA_SB>0]<-1
 control_mat_cov<-control_mat_cov[,c("person_id", "severity", "covid_trimester","gest_diab", "Preeclampsia", "SA_SB")]
 
-# create "any maternality" column
-
-control_mat_cov$any_mat<-rowSums(control_mat_cov[,4:ncol(control_mat_cov)])
-control_mat_cov$any_mat[control_mat_cov$any_mat>0]<-1
+    # create "any maternality" column
+    
+    control_mat_cov$any_mat<-rowSums(control_mat_cov[,4:ncol(control_mat_cov)])
+    control_mat_cov$any_mat[control_mat_cov$any_mat>0]<-1
 
 ########################################################################
 # import covid comorbidity data
@@ -52,13 +52,13 @@ control_cov_comorb$any_cov[control_cov_comorb$any_cov>0]<-1
 ###################################################################
 # create "cohort" variable for modelling
 
-case_mat_outcome$cohort<-"case"
-case_cov_comorb$cohort<-"case"
-case_mat_cov$cohort<-"case"
+case_mat_outcome$cohort<-1
+case_cov_comorb$cohort<-1
+case_mat_cov$cohort<-1
 
-control_cov_comorb$cohort<-"control"
-control_mat_cov$cohort<-"control"
-control_mat_outcome$cohort<-"control"
+control_cov_comorb$cohort<-0
+control_mat_cov$cohort<-0
+control_mat_outcome$cohort<-0
 
 # SEPARTE OUT TRIMESTERS AND SEVERITY
 
@@ -148,8 +148,13 @@ control_model_data$any_mat<-T1_control_mat_cov$any_mat
 
 model_data<-rbind(case_model_data, control_model_data)
 
-CESAREA_all<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")
-CESAREA_est<-CESAREA_all$coefficients
+CESAREA_model<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")
+CESAREA_output<-summary(CESAREA_model)
+CESAREA_est<-CESAREA_output$coefficients[2,1]
+CESAREA_SD<-CESAREA_output$coefficients[2,2]
+CESAREA_P<-CESAREA_output$coefficients[2,4]
+
+
 }else{CESAREA_all_results<-"insufficient data"}
 
 # severe to match 
@@ -173,7 +178,15 @@ control_model_data$any_mat<-T1_control_mat_cov$any_mat
 
 model_data<-rbind(case_model_data, control_model_data)
 
-CESAREA_severe<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")}else{CESAREA_severe_results<-"insufficient data"}
+CESAREA_model<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")
+CESAREA_output<-summary(CESAREA_model)
+CESAREA_est<-CESAREA_output$coefficients[2,1]
+CESAREA_SD<-CESAREA_output$coefficients[2,2]
+CESAREA_P<-CESAREA_output$coefficients[2,4]
+
+
+
+}else{CESAREA_severe_results<-"insufficient data"}
 
 # nonsevere to match 
 
@@ -197,6 +210,14 @@ control_model_data$any_mat<-T1_control_mat_cov$any_mat
 
 model_data<-rbind(case_model_data, control_model_data)
 
-CESAREA_nonsevere<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")}else{CESAREA_non_severe_results<-"insufficient data"}
+CESAREA_model<-glm(formula=(outcome~cohort+any_cov+any_mat), data=model_data,family = "poisson")
+CESAREA_output<-summary(CESAREA_model)
+CESAREA_est<-CESAREA_output$coefficients[2,1]
+CESAREA_SD<-CESAREA_output$coefficients[2,2]
+CESAREA_P<-CESAREA_output$coefficients[2,4]
+
+
+
+}else{CESAREA_non_severe_results<-"insufficient data"}
 
 
