@@ -21,14 +21,13 @@
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
-case_data<-fread(paste0(output_cov_cases, "cases.csv"))
 case_data<-fread(paste0(g_output_mat_cov_pan_pos, "cases.csv"))
 
 # gest_diab
 # preeclamp
 # adverse outcome (SB, SA)
 
-case_data$SA_SB<-sum(case_data$Spont_Abort, case_data$Still_Birth)
+case_data$SA_SB<-case_data$Spont_Abort+ case_data$Still_Birth
 case_data$SA_SB[case_data$SA_SB>0]<-1
 
 #subset only maternal covariates for table 2abc
@@ -81,7 +80,7 @@ case_data_nonsevere_c<-case_data_nonsevere_c[,c(-1,-2,-3)]
 
 control_data<-fread(paste0(g_output_mat_covariate_covid_pos_match, "covid_positive_control.csv"))
 
-control_data$SA_SB<-sum(control_data$Spont_Abort, control_data$Still_Birth)
+control_data$SA_SB<-control_data$Spont_Abort+control_data$Still_Birth
 control_data$SA_SB[control_data$SA_SB>0]<-1
 
 #subset only maternal covariates for table 2abc
