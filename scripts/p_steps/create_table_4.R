@@ -16,7 +16,7 @@ my_rownames<- c("Maternal death",
 "Gestational diabetes",
 "Pre-eclampsia (and eclampsia )",
 "Spontaneous abortion",
-"Termination of Pregnancy for Fetal Anomaly (TOPFA)",
+"(TOPFA)",
 "Caesarean section",
 "Pre-term birth",
 "Stillbirth",
@@ -54,7 +54,7 @@ micro<-sum(hist_neonates$MICROCEPHALY)
 
 denominators<-c(denom_all, denom_20_weeks, denom_20_weeks, denom_all, denom_all, denom_all, denom_LB, denom_22_weeks, rep(denom_LB,6))
 
-outcomes<-c(mat_death, gest_diab, preeclamp, preterm, spontabort, topfa, casearean,still_birth, neonatal_death, LBW, FGA, apgar, majorca, micro)
+outcomes<-c(mat_death, gest_diab, preeclamp,  spontabort, topfa, casearean,preterm,still_birth, neonatal_death, LBW, FGA, apgar, majorca, micro)
 my_perc<-vector()
 
 for(i in 1:length(outcomes)){
