@@ -34,10 +34,15 @@ for(i in 1:length(cohort_covariate_folders)){
   
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
+    date<-as.Date(as.character(my_covariate_data$date), format = "%Y%m%d")
+    date_num<-as.numeric(date)
+    my_covariate_data$date<-date_num
+    print(my_names[j])
+    print(my_covariate_data)
     my_covariate_data<-my_covariate_data[complete.cases(my_covariate_data)==T,]
     for(p in 1:nrow(my_child_data)){
       my_id<-my_child_data$person_id[p]
-      my_date<-my_child_data$DOB_numeric[p]
+      my_date<-my_child_data$DOB[p]
       my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
       time_window<-my_id_covariate_data$date-my_date
       # all covariate signal dates - covid_date--> if any of these dates are between -365 and 0 --> covariate==1
