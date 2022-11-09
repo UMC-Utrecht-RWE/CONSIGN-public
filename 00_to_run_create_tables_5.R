@@ -44,6 +44,23 @@ source(paste0(pre_dir, "/create_table_5_mat_death.R"))
 
 source(paste0(pre_dir, "/create_table_5_cesarean.R"))
 
+source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
+
+# clear environment between maternal and neonatal to prevent incorrect object assignment
+
+rm(list=ls())
+if(!require(rstudioapi)){install.packages("rstudioapi")}
+library(rstudioapi)
+
+projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(projectFolder)
+
+# CHECK/ FILL IN YOUR PARAMETERS 
+
+source("params.R")
+
+source("99_path.R")
+
 source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
 
 source(paste0(pre_dir, "/create_table_5_neonate_data.R"))

@@ -74,21 +74,28 @@ control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id",
 control_mat_outcome<-merge(control_mat_outcome, control_other_vars, by="person_id")
 control_mat_outcome$cohort<-0
 
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+if(DAP=="TEST"){
+  source(paste0(pre_dir, "/impute_model_data.R"))
+}
+
 # SEPARTE OUT TRIMESTERS AND SEVERITY
 
 # maternal outcomes
 
 T1_case_mat_outcome<-case_mat_outcome[case_mat_outcome$covid_trimester==1,]
-T1S_case_mat_outcome<-T1_case_mat_outcome[T1_case_mat_outcome$severity==1,]
-T1NS_case_mat_outcome<-T1_case_mat_outcome[T1_case_mat_outcome$severity==0,]
+T1_S_case_mat_outcome<-T1_case_mat_outcome[T1_case_mat_outcome$severity==1,]
+T1_NS_case_mat_outcome<-T1_case_mat_outcome[T1_case_mat_outcome$severity==0,]
 
 T2_case_mat_outcome<-case_mat_outcome[case_mat_outcome$covid_trimester==2,]
-T2S_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==1,]
-T2NS_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==0,]
+T2_S_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==1,]
+T2_NS_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==0,]
 
 T3_case_mat_outcome<-case_mat_outcome[case_mat_outcome$covid_trimester==3,]
-T3S_case_mat_outcome<-T3_case_mat_outcome[T3_case_mat_outcome$severity==1,]
-T3NS_case_mat_outcome<-T3_case_mat_outcome[T3_case_mat_outcome$severity==0,]
+T3_S_case_mat_outcome<-T3_case_mat_outcome[T3_case_mat_outcome$severity==1,]
+T3_NS_case_mat_outcome<-T3_case_mat_outcome[T3_case_mat_outcome$severity==0,]
 
 
 T1_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester==1,]
@@ -143,7 +150,7 @@ T3_22_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trime
 
 
 ############################################3
-#20 gest_weeks
+#Live Birth
 
 # maternal outcomes
 

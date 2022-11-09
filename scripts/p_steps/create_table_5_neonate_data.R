@@ -12,11 +12,13 @@
 
 # import maternal outcome data
 case_neo_outcome<-fread(paste0(output_neonates_case, "case_neonates_outcomes.csv"))
+case_neo_outcome<-case_neo_outcome[,-("case_neonates_outcomes")]
 case_mom_data<-fread(paste0(case_neonate_folder,"case_neonates.csv"))
 
 neo_vars<-colnames(case_neo_outcome[,2:ncol(case_neo_outcome)])
 
 control_neo_outcome<-fread(paste0(output_neonates_control, "control_neonates_outcomes.csv"))
+control_neo_outcome<-control_neo_outcome[,-("control_neonates_outcomes")]
 control_mom_data<-fread(paste0(control_neonate_folder,"control_neonates.csv"))
 # import maternal covariate data and compute "any" column
 
@@ -87,6 +89,14 @@ control_mom_link<-merge(control_mom_data, control_cov_comorb[,c("mom_id", "covid
 control_neo_outcome<-merge(control_mom_link, control_neo_outcome, by="person_id")
 control_neo_outcome<-merge(control_neo_outcome, control_mat_cov[,c('mom_id', "any_mat")], by="mom_id")
 control_neo_outcome<-merge(control_neo_outcome, control_cov_comorb[,c('mom_id', "any_cov")], by="mom_id")
+
+
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+if(DAP=="TEST"){
+  source(paste0(pre_dir, "/impute_NEO_model_data.R"))
+}
 
 # SEPARTE OUT TRIMESTERS AND SEVERITY
 

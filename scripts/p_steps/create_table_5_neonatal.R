@@ -19,39 +19,44 @@ my_rows<-c("# outcome trim1", "# preg trim1", "% trim1","Relative Risk 95%CI",
 my_output$names<-my_rows
 
 
+fwrite(my_output, paste0(final_output_dir,"table_5_",my_var, ".csv"))
 
 trim1<-list()
 
 trim1[[1]]<-sum(T1_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1_case_neo_outcome[[my_var]])
+if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
-
+}else{trim1[[3]]<-"no observations"}
 my_output[1:3,2]<-unlist(trim1)
 
 trim1<-list()
 
+
 trim1[[1]]<-sum(T1S_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1S_case_neo_outcome[[my_var]])
+if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
-
+}else{trim1[[3]]<-"no observations"}
 my_output[1:3,3]<-unlist(trim1)
 
 trim1<-list()
 
 trim1[[1]]<-sum(T1NS_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1NS_case_neo_outcome[[my_var]])
+if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
-
+}else{trim1[[3]]<-"no observations"}
 my_output[1:3,4]<-unlist(trim1)
 
 
 trim1_model<-list()
 
 
-if(nrow(T1_case_neo_outcome)>0){
+if(nrow(T1_case_neo_outcome)>0 & nrow(T1_control_neo_outcome)>0){
   
   case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T1_case_neo_outcome)))
   colnames(case_model_data)<-c("outcome", "cohort", "any_cov", "any_mat")
@@ -158,9 +163,10 @@ trim2<-list()
 
 trim2[[1]]<-sum(T2_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2_case_neo_outcome[[my_var]])
+if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
-
+}else{trim2[[3]]<-"no observations"}
 my_output[5:7,2]<-unlist(trim2)
 
 
@@ -169,9 +175,10 @@ trim2<-list()
 
 trim2[[1]]<-sum(T2S_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2S_case_neo_outcome[[my_var]])
+if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
-
+}else{trim2[[3]]<-"no observations"}
 my_output[5:7,3]<-unlist(trim2)
 
 
@@ -180,9 +187,10 @@ trim2<-list()
 
 trim2[[1]]<-sum(T2NS_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2NS_case_neo_outcome[[my_var]])
+if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
-
+}else{trim2[[3]]<-"no observations"}
 my_output[5:7,4]<-unlist(trim2)
 
 
@@ -190,7 +198,7 @@ my_output[5:7,4]<-unlist(trim2)
 trim2_model<-list()
 
 
-if(nrow(T2_case_neo_outcome)>0){
+if(nrow(T2_case_neo_outcome)>0 & nrow(T2_control_neo_outcome)>0){
   
   case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T2_case_neo_outcome)))
   colnames(case_model_data)<-c("outcome", "cohort", "any_cov", "any_mat")
@@ -296,33 +304,36 @@ trim3<-list()
 
 trim3[[1]]<-sum(T3_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3_case_neo_outcome[[my_var]])
+if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
-
+}else{trim3[[3]]<-"no observations"}
 my_output[9:11,2]<-unlist(trim3)
 
 trim3<-list()
 
 trim3[[1]]<-sum(T3S_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3S_case_neo_outcome[[my_var]])
+if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
-
+}else{trim3[[3]]<-"no observations"}
 my_output[9:11,3]<-unlist(trim3)
 
 trim3<-list()
 
 trim3[[1]]<-sum(T3NS_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3NS_case_neo_outcome[[my_var]])
+if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
-
+}else{trim3[[3]]<-"no observations"}
 my_output[9:11,4]<-unlist(trim3)
 
 trim3_model<-list()
 
 
-if(nrow(T3_case_neo_outcome)>0){
+if(nrow(T3_case_neo_outcome)>0 & nrow(T3_control_neo_outcome)>0 ){
   
   case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3_case_neo_outcome)))
   colnames(case_model_data)<-c("outcome", "cohort", "any_cov", "any_mat")
@@ -430,27 +441,30 @@ trim1<-list()
 
 trim1[[1]]<-sum(T1_control_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1_control_neo_outcome[[my_var]])
+if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
-
+}else{trim1[[3]]<-"no observations"}
 my_output[1:3,5]<-unlist(trim1)
 
 trim2<-list()
 
 trim2[[1]]<-sum(T2_control_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2_control_neo_outcome[[my_var]])
+if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
-
+}else{trim2[[3]]<-"no observations"}
 my_output[5:7,5]<-unlist(trim2)
 
 trim3<-list()
 
 trim3[[1]]<-sum(T3_control_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3_control_neo_outcome[[my_var]])
+if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
-
+}else{trim3[[3]]<-"no observations"}
 my_output[9:11,5]<-unlist(trim3)
 
 fwrite(my_output, paste0(final_output_dir,"table_5_",my_var, ".csv"))
