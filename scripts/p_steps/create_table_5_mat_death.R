@@ -13,7 +13,7 @@ my_rows<-c("# deaths trim1", "# preg trim1", "% trim1","# deaths trim2", "# preg
    
 maternal_death_output$names<-my_rows
 
-my_vars<-colnames(case_mat_outcome[,4:(ncol(case_mat_outcome)-1)])
+my_vars<-colnames(case_mat_outcome[,4:(ncol(case_mat_outcome)-5)])
 
 
                                   
@@ -48,8 +48,8 @@ maternal_death_output[7:9,2]<-unlist(trim3)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1S_case_mat_outcome$maternal_death)
-trim1[[2]]<-length(T1S_case_mat_outcome$maternal_death)
+trim1[[1]]<-sum(T1_S_case_mat_outcome$maternal_death)
+trim1[[2]]<-length(T1_S_case_mat_outcome$maternal_death)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -57,8 +57,8 @@ maternal_death_output[1:3,3]<-unlist(trim1)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2S_case_mat_outcome$maternal_death)
-trim2[[2]]<-length(T2S_case_mat_outcome$maternal_death)
+trim2[[1]]<-sum(T2_S_case_mat_outcome$maternal_death)
+trim2[[2]]<-length(T2_S_case_mat_outcome$maternal_death)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -66,8 +66,8 @@ maternal_death_output[4:6,3]<-unlist(trim2)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3S_case_mat_outcome$maternal_death)
-trim3[[2]]<-length(T3S_case_mat_outcome$maternal_death)
+trim3[[1]]<-sum(T3_S_case_mat_outcome$maternal_death)
+trim3[[2]]<-length(T3_S_case_mat_outcome$maternal_death)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 

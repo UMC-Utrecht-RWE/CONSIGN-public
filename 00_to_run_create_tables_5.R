@@ -46,6 +46,17 @@ source(paste0(pre_dir, "/create_table_5_cesarean.R"))
 
 source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
 
+source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
+
+source(paste0(pre_dir, "/create_table_5_preterm.R"))
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+if(DAP=="SWANSEA"){
+  source(paste0(pre_dir, "/Create_table_5_topfa.R"))
+}
+
+
 # clear environment between maternal and neonatal to prevent incorrect object assignment
 
 rm(list=ls())
