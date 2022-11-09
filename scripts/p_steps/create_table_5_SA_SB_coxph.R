@@ -87,14 +87,15 @@ model_data_nonsevere<-rbind(case_preg[case_preg$severity==0,], control_preg)
 
 all_case_cox<-coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=model_data) 
 
+
 t1_model_data<-(model_data[model_data$cov_trimester==1,])
-T1_all_case_cox<-coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t1_model_data)
+T1_all_case_cox<-summary(coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t1_model_data))
 
 t2_model_data<-(model_data[model_data$cov_trimester==2,])
-T2_all_case_cox<-coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t2_model_data)
+T2_all_case_cox<-summary(coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t2_model_data))
 
 t3_model_data<-(model_data[model_data$cov_trimester==3,])
-T3_all_case_cox<-coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t3_model_data)
+T3_all_case_cox<-summary(coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=t3_model_data))
 
 ######################################################################
 # rest of table

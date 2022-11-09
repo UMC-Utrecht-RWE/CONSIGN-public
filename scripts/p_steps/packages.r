@@ -4,6 +4,10 @@
 if(!require(RSQLite)){install.packages("RSQLite")}
 suppressPackageStartupMessages(library(RSQLite))
 
+if(!require(survival)){install.packages("survival")}
+suppressPackageStartupMessages(library(survival))
+
+
 if(!require(sqldf)){install.packages("sqldf")}
 suppressPackageStartupMessages(library(sqldf))
 
