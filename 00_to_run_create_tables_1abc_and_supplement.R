@@ -30,10 +30,16 @@ source(paste0(pre_dir, "/create_table0_cohort_description.R"))
 
 ###########################################################
 
+source(paste0(pre_dir, "/cov_window_exposure_function.R"))
+
+source(paste0(pre_dir, "/trimester_drug_exposure.R"))
+
 source(paste0(pre_dir, "/create_table_1abc.R"))
 
 ##########################################################
 # lower ATC for supplement
+
+source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
 
  source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
 

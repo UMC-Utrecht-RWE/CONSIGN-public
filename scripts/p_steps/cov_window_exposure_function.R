@@ -66,7 +66,7 @@ during_cov_window<-function(atc_data, trim_data){
         # date_dispensing-start_date : want values between 0 and window_days
         cov_expos_days <- as.data.frame(apply(my_date,2,function(x) atc_data_wide[,2:ncol(atc_data_wide)] - x ))
         
-        minus30<-between(cov_expos_days, -30, 0)
+        minus30<-between(cov_expos_days, -30, -1)
         plus30<-between(cov_expos_days,  0,30)
         
         minus30_sum<- apply(minus30,1,sum, na.rm=T)
