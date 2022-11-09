@@ -7,6 +7,10 @@
 # make sure you have covid_data.csv in preselect_folder
 # make sure you have ALL_full_codelist.csv in projectFolder
 
+
+# please rerun 9/11/22 11:17 Thanks!
+
+
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}
 library(rstudioapi)
