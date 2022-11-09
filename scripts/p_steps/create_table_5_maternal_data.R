@@ -12,8 +12,12 @@
 
 # import maternal outcome data
 case_mat_outcome<-fread(paste0(g_output_mat_out_pan_pos, "cases.csv"))
-
+case_preg_data<-fread(paste0(matched_folder,"matches_cases.csv"))
+case_preg_data$gest_weeks<-((case_preg_data$pregnancy_end_date)-(case_preg_data$pregnancy_start_date))/7  
+  
 control_mat_outcome<-fread(paste0(g_output_mat_out_pan_neg, "covid_negative_pregnant_control.csv"))
+control_preg_data<-fread(paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
+control_preg_data$gest_weeks<-((control_preg_data$pregnancy_end_date)-(control_preg_data$pregnancy_start_date))/7  
 
 # import maternal covariate data and compute "any" column
 
@@ -52,12 +56,22 @@ control_cov_comorb$any_cov[control_cov_comorb$any_cov>0]<-1
 ###################################################################
 # create "cohort" variable for modelling
 
-case_mat_outcome$cohort<-1
-case_cov_comorb$cohort<-1
-case_mat_cov$cohort<-1
 
-control_cov_comorb$cohort<-0
-control_mat_cov$cohort<-0
+case_other_vars<-merge(case_mat_cov[,c("person_id", "any_mat")], 
+                       case_cov_comorb[,c("person_id","any_cov")], by="person_id")
+
+case_other_vars<- merge(case_other_vars, case_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end")], by="person_id")
+
+case_mat_outcome<-merge(case_mat_outcome, case_other_vars, by="person_id")
+case_mat_outcome$cohort<-1
+
+
+control_other_vars<-merge(control_mat_cov[,c("person_id", "any_mat")], 
+                       control_cov_comorb[,c("person_id","any_cov")], by="person_id")
+
+control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end")], by="person_id")
+
+control_mat_outcome<-merge(control_mat_outcome, control_other_vars, by="person_id")
 control_mat_outcome$cohort<-0
 
 # SEPARTE OUT TRIMESTERS AND SEVERITY
@@ -81,43 +95,73 @@ T1_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester=
 T2_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester==2,]
 T3_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester==3,]
 
-# maternal covariate data
+############################################3
+#LB gest_weeks
 
-T1_case_mat_cov<-case_mat_cov[case_mat_cov$covid_trimester==1,]
-T1S_case_mat_cov<-T1_case_mat_cov[T1_case_mat_cov$severity==1,]
-T1NS_case_mat_cov<-T1_case_mat_cov[T1_case_mat_cov$severity==0,]
+# maternal outcomes
 
-T2_case_mat_cov<-case_mat_cov[case_mat_cov$covid_trimester==2,]
-T2S_case_mat_cov<-T2_case_mat_cov[T2_case_mat_cov$severity==1,]
-T2NS_case_mat_cov<-T2_case_mat_cov[T2_case_mat_cov$severity==0,]
+T1_20_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==1)&(case_mat_outcome$gest_weeks>=20)),]
+T1_20S_case_mat_outcome<-T1_20_case_mat_outcome[T1_20_case_mat_outcome$severity==1,]
+T1_20NS_case_mat_outcome<-T1_20_case_mat_outcome[T1_20_case_mat_outcome$severity==0,]
 
-T3_case_mat_cov<-case_mat_cov[case_mat_cov$covid_trimester==3,]
-T3S_case_mat_cov<-T3_case_mat_cov[T3_case_mat_cov$severity==1,]
-T3NS_case_mat_cov<-T3_case_mat_cov[T3_case_mat_cov$severity==0,]
+T2_20_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&(case_mat_outcome$gest_weeks>=20)),]
+T2_20S_case_mat_outcome<-T2_20_case_mat_outcome[T2_20_case_mat_outcome$severity==1,]
+T2_20NS_case_mat_outcome<-T2_20_case_mat_outcome[T2_20_case_mat_outcome$severity==0,]
 
-
-T1_control_mat_cov<-control_mat_cov[control_mat_cov$covid_trimester==1,]
-T2_control_mat_cov<-control_mat_cov[control_mat_cov$covid_trimester==2,]
-T3_control_mat_cov<-control_mat_cov[control_mat_cov$covid_trimester==3,]
+T3_20_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$gest_weeks>=20)),]
+T3_20S_case_mat_outcome<-T3_20_case_mat_outcome[T3_20_case_mat_outcome$severity==1,]
+T3_20NS_case_mat_outcome<-T3_20_case_mat_outcome[T3_20_case_mat_outcome$severity==0,]
 
 
-
-# covid comorbidity data
-
-T1_case_cov_comorb<-case_cov_comorb[case_cov_comorb$covid_trimester==1,]
-T1S_case_cov_comorb<-T1_case_cov_comorb[T1_case_cov_comorb$severity==1,]
-T1NS_case_cov_comorb<-T1_case_cov_comorb[T1_case_cov_comorb$severity==0,]
-
-T2_case_cov_comorb<-case_cov_comorb[case_cov_comorb$covid_trimester==2,]
-T2S_case_cov_comorb<-T2_case_cov_comorb[T2_case_cov_comorb$severity==1,]
-T2NS_case_cov_comorb<-T2_case_cov_comorb[T2_case_cov_comorb$severity==0,]
-
-T3_case_cov_comorb<-case_cov_comorb[case_cov_comorb$covid_trimester==3,]
-T3S_case_cov_comorb<-T3_case_cov_comorb[T3_case_cov_comorb$severity==1,]
-T3NS_case_cov_comorb<-T3_case_cov_comorb[T3_case_cov_comorb$severity==0,]
+T1_20_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==1)&(control_mat_outcome$gest_weeks>=20)),]
+T2_20_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==2)&(control_mat_outcome$gest_weeks>=20)),]
+T3_20_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==3)&(control_mat_outcome$gest_weeks>=20)),]
 
 
-T1_control_cov_comorb<-control_cov_comorb[control_cov_comorb$covid_trimester==1,]
-T2_control_cov_comorb<-control_cov_comorb[control_cov_comorb$covid_trimester==2,]
-T3_control_cov_comorb<-control_cov_comorb[control_cov_comorb$covid_trimester==3,]
+
+############################################3
+#22 gest_weeks
+
+# maternal outcomes
+
+T1_22_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==1)&(case_mat_outcome$gest_weeks>=22)),]
+T1_22S_case_mat_outcome<-T1_22_case_mat_outcome[T1_22_case_mat_outcome$severity==1,]
+T1_22NS_case_mat_outcome<-T1_22_case_mat_outcome[T1_22_case_mat_outcome$severity==0,]
+
+T2_22_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&(case_mat_outcome$gest_weeks>=22)),]
+T2_22S_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==1,]
+T2_22NS_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==0,]
+
+T3_22_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$gest_weeks>=22)),]
+T3_22S_case_mat_outcome<-T3_22_case_mat_outcome[T3_22_case_mat_outcome$severity==1,]
+T3_22NS_case_mat_outcome<-T3_22_case_mat_outcome[T3_22_case_mat_outcome$severity==0,]
+
+
+T1_22_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==1)&(control_mat_outcome$gest_weeks>=22)),]
+T2_22_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==2)&(control_mat_outcome$gest_weeks>=22)),]
+T3_22_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==3)&(control_mat_outcome$gest_weeks>=22)),]
+
+
+############################################3
+#20 gest_weeks
+
+# maternal outcomes
+
+T1_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==1)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
+T1_LBS_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==1,]
+T1_LBNS_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==0,]
+
+T2_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
+T2_LBS_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==1,]
+T2_LBNS_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==0,]
+
+T3_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
+T3_LBS_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==1,]
+T3_LBNS_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==0,]
+
+
+T1_LB_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==1)&(control_mat_outcome$type_of_pregnancy_end=="LB")),]
+T2_LB_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==2)&(control_mat_outcome$type_of_pregnancy_end=="LB")),]
+T3_LB_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==3)&(control_mat_outcome$type_of_pregnancy_end=="LB")),]
+
 
