@@ -49,8 +49,8 @@ for(i in 1:length(neonate_cohort_folders)){
   # events and survey observations
   #so_source_column= "vekt"  AND so_source_value= "<2500"
   
-  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="vekt")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
-  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="vekt")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="vekt")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="vekt")&(SURV_OB$so_source_value<=2500))]
   
   LBW_cov<-as.data.frame(cbind(LBW_SO_ID, LBW_SO_Date))
   colnames(LBW_cov)<-c("id", "date")

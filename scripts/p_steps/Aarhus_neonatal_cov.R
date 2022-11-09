@@ -70,8 +70,8 @@ for(i in 1:length(neonate_cohort_folders)){
   
   #so_source_column= "VAEGT_BARN"  AND AND so_source_value= <2500
   
-  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="VAEGT_BARN")&(SURV_OB$so_source_value<=2500))]
-  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="VAEGT_BARN")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="VAEGT_BARN")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="VAEGT_BARN")&(SURV_OB$so_source_value<=2500))]
   
   LBW_cov<-as.data.frame(cbind(c(LBW_EV_ID, LBW_SO_ID), c(LBW_EV_Date, LBW_SO_Date)))
   colnames(LBW_cov)<-c("id", "date")
