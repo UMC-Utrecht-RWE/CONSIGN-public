@@ -60,7 +60,7 @@ control_cov_comorb$any_cov[control_cov_comorb$any_cov>0]<-1
 case_other_vars<-merge(case_mat_cov[,c("person_id", "any_mat")], 
                        case_cov_comorb[,c("person_id","any_cov")], by="person_id")
 
-case_other_vars<- merge(case_other_vars, case_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end")], by="person_id")
+case_other_vars<- merge(case_other_vars, case_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end", "gest_age_cov")], by="person_id")
 
 case_mat_outcome<-merge(case_mat_outcome, case_other_vars, by="person_id")
 case_mat_outcome$cohort<-1
@@ -103,7 +103,7 @@ T2_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester=
 T3_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester==3,]
 
 ############################################3
-#LB gest_weeks
+#at least 20 gest_weeks
 
 # maternal outcomes
 
@@ -139,6 +139,11 @@ T2_22_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&
 T2_22S_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==1,]
 T2_22NS_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==0,]
 
+T2_22_SA_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&(case_mat_outcome$gest_weeks>=22)&(case_mat_outcome$gest_age_cov<(22*7))),]
+T2_22S_SA_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==1,]
+T2_22NS_SA_case_mat_outcome<-T2_22_case_mat_outcome[T2_22_case_mat_outcome$severity==0,]
+
+
 T3_22_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$gest_weeks>=22)),]
 T3_22S_case_mat_outcome<-T3_22_case_mat_outcome[T3_22_case_mat_outcome$severity==1,]
 T3_22NS_case_mat_outcome<-T3_22_case_mat_outcome[T3_22_case_mat_outcome$severity==0,]
@@ -155,16 +160,17 @@ T3_22_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trime
 # maternal outcomes
 
 T1_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==1)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
-T1_LBS_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==1,]
-T1_LBNS_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==0,]
+T1_LB_S_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==1,]
+T1_LB_NS_case_mat_outcome<-T1_LB_case_mat_outcome[T1_LB_case_mat_outcome$severity==0,]
 
 T2_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==2)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
-T2_LBS_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==1,]
-T2_LBNS_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==0,]
+T2_LB_S_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==1,]
+T2_LB_NS_case_mat_outcome<-T2_LB_case_mat_outcome[T2_LB_case_mat_outcome$severity==0,]
 
-T3_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$type_of_pregnancy_end=="LB")),]
-T3_LBS_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==1,]
-T3_LBNS_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==0,]
+# covid infection must occur before week 37
+T3_LB_case_mat_outcome<-case_mat_outcome[((case_mat_outcome$covid_trimester==3)&(case_mat_outcome$type_of_pregnancy_end=="LB")& case_mat_outcome$gest_age_cov<(37*7)),]
+T3_LB_S_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==1,]
+T3_LB_NS_case_mat_outcome<-T3_LB_case_mat_outcome[T3_LB_case_mat_outcome$severity==0,]
 
 
 T1_LB_control_mat_outcome<-control_mat_outcome[((control_mat_outcome$covid_trimester==1)&(control_mat_outcome$type_of_pregnancy_end=="LB")),]
