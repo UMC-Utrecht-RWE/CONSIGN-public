@@ -30,9 +30,9 @@ colnames(DU_LBW_outcome)<-c("drug group", "(T1) Exposed to medication in 30 days
 # restrict to pregnancies with 20 weeks
 # only trimeser 1
 
-my_LBW_data_list<- list(T1_case_neo_outcome[,c("person_id", "LBW")], 
-                            T2_case_neo_outcome[,c("person_id", "LBW")],
-                            T3_case_neo_outcome[,c("person_id", "LBW")])
+my_LBW_data_list<- list(T1_case_neo_outcome[,c("mom_id", "LBW")], 
+                            T2_case_neo_outcome[,c("mom_id", "LBW")],
+                            T3_case_neo_outcome[,c("mom_id", "LBW")])
 my_cols<-list(c(2:4), c(5:7), c(8:10))
 for(j in 1:3){
 input_col<-my_cols[[j]]
@@ -41,11 +41,12 @@ my_LBW_data<-my_LBW_data[my_LBW_data$LBW==1,]
 
 for(i in 1:length(my_drug_names)){
 results<-list()
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[6]]))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==j,]
+my_drug_data$mom_id<-my_drug_data$person_id
 my_denom<-nrow(my_drug_data)
 if(my_denom>0){
-my_LBW_drug<-merge(my_LBW_data, my_drug_data, by="person_id")
+my_LBW_drug<-merge(my_LBW_data, my_drug_data, by="mom_id")
 my_numer_minus30<-nrow(my_LBW_drug[my_LBW_drug$minus_30==1,])
 my_numer_plus30<-nrow(my_LBW_drug[my_LBW_drug$plus_30==1,])
 my_numer_nonexposed_plus30<-nrow(my_LBW_drug[my_LBW_drug$plus_30==0,])
