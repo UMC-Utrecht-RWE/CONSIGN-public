@@ -50,6 +50,8 @@ source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
 
 source(paste0(pre_dir, "/create_table_5_preterm.R"))
 
+source(paste0(pre_dir,"/create_table_5_SA_SB_coxph.R" ))
+
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 if(DAP=="SWANSEA"){
