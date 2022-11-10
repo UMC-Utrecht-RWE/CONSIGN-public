@@ -36,6 +36,11 @@ suppressMessages(source(paste0(pre_dir, "/packages.R")))
 # 2: In prop.test(trim1[[1]], trim1[[2]]) :
 #   Chi-squared approximation may be incorrect
 
+
+# if the Chi Squared warning ocurrs for many outcomes, you will see this in RED:
+# There were 50 or more warnings (use warnings() to see the first 50)
+# it's OK, just means the numerator was 0 (the outcome didn't happen in that cohort/timeframe)
+
 source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
 
 # when there are 0 observations- prop.test prints a warning about Chi squared test- it's OK
