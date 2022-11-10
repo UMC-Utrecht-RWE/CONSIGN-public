@@ -86,7 +86,7 @@ for(i in 1:length(case_mom_id)){
   case_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
   case_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
   case_child_preg_DOB[[i]]<-rep(my_DOB, length(case_child[[i]]))
-  case_child_mom_id[[i]]<-mom
+  case_child_mom_id[[i]]<-rep(mom, length(unlist(case_child[[i]])))
 }
 
 case_neonates<-as.data.frame(cbind(unlist(case_child), unlist(case_child_DOB_PERSONS), unlist(case_child_preg_DOB), unlist(case_child_mom_id)))
@@ -116,7 +116,7 @@ for(i in 1:length(controls_mom_id)){
   control_child[[i]]<-offspring$person_id[abs(offspring$days_to_DOB)<buffer]
   control_child_DOB_PERSONS[[i]]<-offspring$DOB_numeric[abs(offspring$days_to_DOB)<buffer]
   conrol_child_preg_DOB[[i]]<-rep(my_DOB, length(control_child[[i]]))
-  control_child_mom_id[[i]]<-mom
+  control_child_mom_id[[i]]<-rep(mom, length(unlist(control_child[[i]])))
 }
 
 control_neonates<-as.data.frame(cbind(unlist(control_child), unlist(control_child_DOB_PERSONS), unlist(conrol_child_preg_DOB), unlist(control_child_mom_id)))
