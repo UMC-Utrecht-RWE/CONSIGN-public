@@ -70,6 +70,8 @@ source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
 source(paste0(pre_dir, "/create_table_6_LBW.R"))
 
+source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
+
 
 
 
