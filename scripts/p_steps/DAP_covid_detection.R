@@ -53,7 +53,7 @@ if(DAP=="FISABIO"){
 
 if(DAP=="SAIL Databank"){
   my_data<-IMPORT_PATTERN(pat="MED_OB_SLIM", dir=cohort_folder)
-  my_data<-my_data[(my_data$mo_meaning=='COVID_LIMS_TESTRESULTS'& my_data$mo_source_value%in%(c("ND6","ND7"))),]
+  my_data<-my_data[(my_data$mo_meaning=='COVID_LIMS_TESTRESULTS'& my_data$mo_source_value%in%(c("D6","D4","LL7","D7"))),]
   
   person_id<-my_data$person_id
   cov_date<-my_data$mo_date

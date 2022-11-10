@@ -64,7 +64,7 @@ for(i in 1:length(neonate_cohort_folders)){
   LBW_EV_Date<- (LBW_EV$start_date_record)
   
   
-  LBW_cov<-as.data.frame(cbind(LWB_EV_ID, LWB_EV_Date))
+  LBW_cov<-as.data.frame(cbind(LBW_EV_ID, LBW_EV_Date))
   colnames(LBW_cov)<-c("id", "date")
   fwrite(LBW_cov, paste0(output_folder,"LBW.csv"))
   

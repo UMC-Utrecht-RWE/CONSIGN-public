@@ -75,8 +75,8 @@ for(i in 1:length(preg_cohort_folders)){
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name, ".rds"))
-  CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
-  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
+  CESAREA_EV_ID<-(CESAREA_EV$person_id)
+  CESAREA_EV_Date<- (CESAREA_EV$start_date_record)
   
   
   my_rows<-which(PROC$origin_of_procedure=="PROCEDURE"& PROC$procedure_code%in%c("JQGA002", "JQGA003", "JQGA004", "JQGA005"))
@@ -248,10 +248,18 @@ for(i in 1:length(preg_cohort_folders)){
   dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]))
   dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_of_death,dead_PERSONS$day_of_death)
   dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
+ 
+  #Selection of variables
   
-  dead_mother<-df_preg[df_preg$person_id%in%dead_PERSONS$person_id]
+  VarSelec <- dead_PERSONS %>% select (person_id, death_date)
+  
+  VarSelec$person_id<-as.numeric(VarSelec$person_id)
+  
+  #Integration in dead_mother database
+  
+  dead_mother <- inner_join(dead_mother, VarSelec, by="person_id")
   dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
-  maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
+  maternal_death<-dead_mother[between(dead_mother$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
   maternal_death_pers_Date<-maternal_death$death_date
   maternal_death_pers_ID<-maternal_death$person_id
   
@@ -260,3 +268,11 @@ for(i in 1:length(preg_cohort_folders)){
   maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
   colnames(maternal_death_outcome)<-c("id", "date")
   fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
+
+
+
+
+
+
+
+
