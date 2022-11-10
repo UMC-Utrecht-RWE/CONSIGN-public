@@ -40,48 +40,7 @@ source(paste0(pre_dir, "/create_table_5_maternal_data.R"))
 
 # when there are 0 observations- prop.test prints a warning- it's OK
 
-source(paste0(pre_dir, "/create_table_5_mat_death.R"))
 
-source(paste0(pre_dir, "/create_table_5_cesarean.R"))
-
-source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
-
-source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
-
-source(paste0(pre_dir, "/create_table_5_preterm.R"))
 
 source(paste0(pre_dir,"/create_table_5_SA_SB_coxph.R" ))
-
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
-if(DAP=="SWANSEA"){
-  source(paste0(pre_dir, "/Create_table_5_topfa.R"))
-}
-
-
-# clear environment between maternal and neonatal to prevent incorrect object assignment
-
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
-
-projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectFolder)
-
-# CHECK/ FILL IN YOUR PARAMETERS 
-
-source("params.R")
-
-source("99_path.R")
-
-source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
-
-source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
-
-source(paste0(pre_dir, "/create_table_5_neonatal.R"))
-
-
-
-
-
 
