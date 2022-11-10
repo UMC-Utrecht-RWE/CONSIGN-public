@@ -199,8 +199,8 @@ SA_output[1:3,3]<-unlist(trim1)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_NS22_case_mat_outcome$Spont_Abort)
-trim1[[2]]<-length(T1_NS22_case_mat_outcome$Spont_Abort)
+trim1[[1]]<-sum(T1_22NS_case_mat_outcome$Spont_Abort)
+trim1[[2]]<-length(T1_22NS_case_mat_outcome$Spont_Abort)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -410,8 +410,8 @@ SB_output[1:3,3]<-unlist(trim1)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_NS22_case_mat_outcome$Still_Birth)
-trim1[[2]]<-length(T1_NS22_case_mat_outcome$Still_Birth)
+trim1[[1]]<-sum(T1_22NS_case_mat_outcome$Still_Birth)
+trim1[[2]]<-length(T1_22NS_case_mat_outcome$Still_Birth)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
