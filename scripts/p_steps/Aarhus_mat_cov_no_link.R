@@ -66,8 +66,8 @@ for(i in 1:length(preg_cohort_folders)){
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
-  CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
-  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
+  CESAREA_EV_ID<-(CESAREA_EV$person_id)
+  CESAREA_EV_Date<- (CESAREA_EV$start_date_record)
   
   
   my_rows<-which(SURV_OB$so_source_column%in%c("KEJSERSNIT_MODERSOENSKE", "MARKOER_KEJSERSNIT")& (is.na(SURV_OB$so_source_value)==F))

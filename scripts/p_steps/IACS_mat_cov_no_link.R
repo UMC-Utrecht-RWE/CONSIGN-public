@@ -64,10 +64,9 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
-  CESAREA_EV_ID<-(GEST_DIAB_EV$person_id)
-  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
-  
+  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name, ".rds"))
+  CESAREA_EV_ID<-(CESAREA_EV$person_id)
+  CESAREA_EV_Date<- (CESAREA_EV$start_date_record)
   
   my_rows<-which(PROC$origin_of_procedure=="CMBD"&PROC$procedure_code%in%CESAREA_codelist)
   CESAREA_PROC_ID<-PROC$person_id[my_rows]
