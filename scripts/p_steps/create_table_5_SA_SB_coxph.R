@@ -86,8 +86,14 @@ model_data_severe<-as.data.frame(rbind(model_data_severe_cases, control_preg))
 model_data_nonsevere_cases<-case_preg[case_preg$severity==0,]
 model_data_nonsevere<-as.data.frame(rbind(model_data_nonsevere_cases, control_preg))
 
+
+
+
 ########################################################
 #modeling
+########################################################
+
+
 
 all_case_cox<-summary(coxph(Surv(duration, SA) ~ cohort+any_cov+any_mat , data=model_data))
 
@@ -226,8 +232,8 @@ SA_output[5:7,3]<-unlist(trim2)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2__22NS_case_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2__22NS_case_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_22NS_case_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_22NS_case_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -437,8 +443,8 @@ SB_output[5:7,3]<-unlist(trim2)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2__22NS_case_mat_outcome$Still_Birth)
-trim2[[2]]<-length(T2__22NS_case_mat_outcome$Still_Birth)
+trim2[[1]]<-sum(T2_22NS_case_mat_outcome$Still_Birth)
+trim2[[2]]<-length(T2_22NS_case_mat_outcome$Still_Birth)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -500,6 +506,6 @@ trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$co
 
 SB_output[9:11,5]<-unlist(trim3)
 
-fwrite(SB_output, paste0(final_output_dir, "table_5_Spont_Abort.csv"))
+fwrite(SB_output, paste0(final_output_dir, "table_5_Still_Birth.csv"))
 
 
