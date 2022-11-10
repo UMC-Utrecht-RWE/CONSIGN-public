@@ -308,8 +308,8 @@ preterm_output_df[9:11,3]<-unlist(trim3)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3NS_case_mat_outcome$PRETERM)
-trim3[[2]]<-length(T3NS_case_mat_outcome$PRETERM)
+trim3[[1]]<-sum(T3_NS_case_mat_outcome$PRETERM)
+trim3[[2]]<-length(T3_NS_case_mat_outcome$PRETERM)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 
@@ -384,14 +384,14 @@ if(nrow(T3_LB_S_case_mat_outcome)>0){
 trim3_model[[2]]<-PRETERM_severe_results
 # nonsevere to match 
 
-if(nrow(T3NS_case_mat_outcome)>0){
-  case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3NS_case_mat_outcome)))
+if(nrow(T3_NS_case_mat_outcome)>0){
+  case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3_NS_case_mat_outcome)))
   colnames(case_model_data)<-c("outcome", "cohort", "any_cov", "any_mat")
   
-  case_model_data$outcome<-T3NS_case_mat_outcome$PRETERM
-  case_model_data$cohort<-T3NS_case_mat_outcome$cohort
-  case_model_data$any_cov<-T3NS_case_mat_outcome$any_cov
-  case_model_data$any_mat<-T3NS_case_mat_outcome$any_mat
+  case_model_data$outcome<-T3_NS_case_mat_outcome$PRETERM
+  case_model_data$cohort<-T3_NS_case_mat_outcome$cohort
+  case_model_data$any_cov<-T3_NS_case_mat_outcome$any_cov
+  case_model_data$any_mat<-T3_NS_case_mat_outcome$any_mat
   
   
   control_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3_LB_control_mat_outcome)))

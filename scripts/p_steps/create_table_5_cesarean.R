@@ -309,8 +309,8 @@ cesarean_output[9:11,3]<-unlist(trim3)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3NS_case_mat_outcome$CESAREA)
-trim3[[2]]<-length(T3NS_case_mat_outcome$CESAREA)
+trim3[[1]]<-sum(T3_NS_case_mat_outcome$CESAREA)
+trim3[[2]]<-length(T3_NS_case_mat_outcome$CESAREA)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 
