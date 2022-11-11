@@ -65,23 +65,23 @@ for(i in 1:length(preg_cohort_folders)){
   # Use the SURVEY_OBSERVATION table to search for this outcome using the person_id of the child or the survey_id of the pregnancy 
   # which is from the pregnancy algorithm.. The so_date for all variables in the SO table is the end date of pregnancy.
   
-  my_rows1<-which(SURV_OB$so_source_column=="dodkat"&SURV_OB$so_source_value%in%c(7,8,9))
-  
-  my_rows2<-which(SURV_OB$so_source_column=="svlen_dg"&SURV_OB$so_source_value<=154)
-  
-  my_rows<-unique(c(my_rows1, my_rows2))
-  
-  SA_SO_ID<-(SURV_OB$person_id[my_rows])
-  SA_SO_Date<- (SURV_OB$so_date[my_rows])
-  
-  
+  # my_rows1<-which(SURV_OB$so_source_column=="dodkat"&SURV_OB$so_source_value%in%c(7,8,9))
+  # 
+  # my_rows2<-which(SURV_OB$so_source_column=="svlen_dg"&SURV_OB$so_source_value<=154)
+  # 
+  # my_rows<-unique(c(my_rows1, my_rows2))
+  # 
+  # SA_SO_ID<-(SURV_OB$person_id[my_rows])
+  # SA_SO_Date<- (SURV_OB$so_date[my_rows])
+  # 
+  # 
   
   
   SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
   SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
   
-  SA_ID<-c(SA_SO_ID, SA_alg_ID)
-  SA_Date<-c(SA_SO_Date, SA_alg_Date)
+  SA_ID<-c(SA_alg_ID)
+  SA_Date<-c(SA_alg_Date)
   
   SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
   
