@@ -181,8 +181,8 @@ SA_output[c(4, 8, 12), 4]<-unlist(nonsevere_cox_SA_results)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_22_case_mat_outcome$Spont_Abort)
-trim1[[2]]<-length(T1_22_case_mat_outcome$Spont_Abort)
+trim1[[1]]<-sum(T1_case_mat_outcome$Spont_Abort)
+trim1[[2]]<-length(T1_case_mat_outcome$Spont_Abort)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -190,8 +190,8 @@ SA_output[1:3,2]<-unlist(trim1)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_22S_case_mat_outcome$Spont_Abort)
-trim1[[2]]<-length(T1_22S_case_mat_outcome$Spont_Abort)
+trim1[[1]]<-sum(T1_S_case_mat_outcome$Spont_Abort)
+trim1[[2]]<-length(T1_S_case_mat_outcome$Spont_Abort)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -199,8 +199,8 @@ SA_output[1:3,3]<-unlist(trim1)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_22NS_case_mat_outcome$Spont_Abort)
-trim1[[2]]<-length(T1_22NS_case_mat_outcome$Spont_Abort)
+trim1[[1]]<-sum(T1_NS_case_mat_outcome$Spont_Abort)
+trim1[[2]]<-length(T1_NS_case_mat_outcome$Spont_Abort)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -210,8 +210,8 @@ SA_output[1:3,4]<-unlist(trim1)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2_22_case_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2_22_case_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_SA_case_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_SA_case_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -221,8 +221,8 @@ SA_output[5:7,2]<-unlist(trim2)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2_22S_case_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2_22S_case_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_SA_S_case_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_SA_S_case_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -232,8 +232,8 @@ SA_output[5:7,3]<-unlist(trim2)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2_22NS_case_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2_22NS_case_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_SA_NS_case_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_SA_NS_case_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -251,8 +251,8 @@ SA_output[9:11,2]<-unlist(trim3)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3_22S_case_mat_outcome$Spont_Abort)
-trim3[[2]]<-length(T3_22S_case_mat_outcome$Spont_Abort)
+trim3[[1]]<-sum(T3_S_case_mat_outcome$Spont_Abort)
+trim3[[2]]<-length(T3_S_case_mat_outcome$Spont_Abort)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 
@@ -260,8 +260,8 @@ SA_output[9:11,3]<-unlist(trim3)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3_22NS_case_mat_outcome$Spont_Abort)
-trim3[[2]]<-length(T3_22NS_case_mat_outcome$Spont_Abort)
+trim3[[1]]<-sum(T3_NS_case_mat_outcome$Spont_Abort)
+trim3[[2]]<-length(T3_NS_case_mat_outcome$Spont_Abort)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 
@@ -270,8 +270,8 @@ SA_output[9:11,4]<-unlist(trim3)
 
 trim1<-list()
 
-trim1[[1]]<-sum(T1_22_control_mat_outcome$Spont_Abort)
-trim1[[2]]<-length(T1_22_control_mat_outcome$Spont_Abort)
+trim1[[1]]<-sum(T1_control_mat_outcome$Spont_Abort)
+trim1[[2]]<-length(T1_control_mat_outcome$Spont_Abort)
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
 trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
 
@@ -279,8 +279,8 @@ SA_output[1:3,5]<-unlist(trim1)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2_22_control_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2_22_control_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_control_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_control_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
@@ -288,8 +288,8 @@ SA_output[5:7,5]<-unlist(trim2)
 
 trim3<-list()
 
-trim3[[1]]<-sum(T3_22_control_mat_outcome$Spont_Abort)
-trim3[[2]]<-length(T3_22_control_mat_outcome$Spont_Abort)
+trim3[[1]]<-sum(T3_control_mat_outcome$Spont_Abort)
+trim3[[2]]<-length(T3_control_mat_outcome$Spont_Abort)
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
 trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
 
@@ -369,7 +369,6 @@ t3_model_data_nonsevere<-(model_data_nonsevere[model_data_nonsevere$cov_trimeste
 T3_nonsevere_case_cox<-summary(coxph(Surv(duration, SB) ~ cohort+any_cov+any_mat , data=t3_model_data_nonsevere))
 T3_nonsevere_confint<-round(T3_nonsevere_case_cox$conf.int, 2)
 nonsevere_cox_SB_results[[1]]<-paste0(T3_nonsevere_confint[1,1], " (", T3_nonsevere_confint[1,3], "-", T3_nonsevere_confint[1,4], ")")
-
 
 
 ######################################################################
