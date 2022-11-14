@@ -103,6 +103,12 @@ T2_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester=
 T3_control_mat_outcome<-control_mat_outcome[control_mat_outcome$covid_trimester==3,]
 
 ############################################3
+# spont abort 
+
+T2_SA_case_mat_outcome<-case_mat_outcome[(case_mat_outcome$covid_trimester==2 &(case_mat_outcome$gest_age_cov<(20*7))),]
+T2_SA_S_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==1,]
+T2_SA_NS_case_mat_outcome<-T2_case_mat_outcome[T2_case_mat_outcome$severity==0,]
+
 #at least 20 gest_weeks
 
 # maternal outcomes
