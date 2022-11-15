@@ -37,7 +37,7 @@ colnames(DU_preeclamp_outcome)<-c("drug group", "(a) Exposed to medication in 30
 # only trimeser 1
 
 my_preeclamp_data<- T1_20_case_mat_outcome[,c("person_id", "Preeclampsia")]
-my_cohort_size<-nrow(my_GD_data)
+my_cohort_size<-nrow(my_preeclamp_data)
 
 
 for(i in 1:length(my_drug_names)){
