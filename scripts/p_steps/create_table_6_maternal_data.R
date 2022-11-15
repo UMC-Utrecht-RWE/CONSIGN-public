@@ -27,6 +27,10 @@ if(DAP=="TEST"){
   source(paste0(pre_dir, "/impute_drug_util_data.R"))
 }
 
+# only non-severe for table 6
+
+case_mat_outcome<-case_mat_outcome[case_mat_outcome$severity==0,]
+
 # SEPARTE OUT TRIMESTERS AND SEVERITY
 
 # maternal outcomes
