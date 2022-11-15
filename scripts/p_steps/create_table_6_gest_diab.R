@@ -42,7 +42,7 @@ my_cohort_size<-nrow(my_GD_data)
 
 for(i in 1:length(my_drug_names)){
 results<-list()
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[1]]))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
 # select trimester
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==1,]
 # make sure drug exposure columns are numeric
