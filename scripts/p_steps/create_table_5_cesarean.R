@@ -385,14 +385,14 @@ if(nrow(T3_S_case_mat_outcome)>0){
 trim3_model[[2]]<-CESAREA_severe_results
 # nonsevere to match 
 
-if(nrow(T3NS_case_mat_outcome)>0){
-  case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3NS_case_mat_outcome)))
+if(nrow(T3_NS_case_mat_outcome)>0){
+  case_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3_NS_case_mat_outcome)))
   colnames(case_model_data)<-c("outcome", "cohort", "any_cov", "any_mat")
   
-  case_model_data$outcome<-T3NS_case_mat_outcome$CESAREA
-  case_model_data$cohort<-T3NS_case_mat_outcome$cohort
-  case_model_data$any_cov<-T3NS_case_mat_outcome$any_cov
-  case_model_data$any_mat<-T3NS_case_mat_outcome$any_mat
+  case_model_data$outcome<-T3_NS_case_mat_outcome$CESAREA
+  case_model_data$cohort<-T3_NS_case_mat_outcome$cohort
+  case_model_data$any_cov<-T3_NS_case_mat_outcome$any_cov
+  case_model_data$any_mat<-T3_NS_case_mat_outcome$any_mat
   
   
   control_model_data<-as.data.frame(matrix(ncol=4, nrow=nrow(T3_control_mat_outcome)))
