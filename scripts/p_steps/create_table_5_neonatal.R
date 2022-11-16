@@ -27,7 +27,7 @@ trim1[[1]]<-sum(T1_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1_case_neo_outcome[[my_var]])
 if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
-trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
+trim1[[3]]<-paste0((round(trim1_prop$estimate,5)*100)," (", (round(trim1_prop$conf.int[1],5)*100),"-",(round(trim1_prop$conf.int[2],5)*100),")")
 }else{trim1[[3]]<-"no observations"}
 my_output[1:3,2]<-unlist(trim1)
 
@@ -38,7 +38,7 @@ trim1[[1]]<-sum(T1S_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1S_case_neo_outcome[[my_var]])
 if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
-trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
+trim1[[3]]<-paste0((round(trim1_prop$estimate,5)*100)," (", (round(trim1_prop$conf.int[1],5)*100),"-",(round(trim1_prop$conf.int[2],5)*100),")")
 }else{trim1[[3]]<-"no observations"}
 my_output[1:3,3]<-unlist(trim1)
 
@@ -48,7 +48,7 @@ trim1[[1]]<-sum(T1NS_case_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1NS_case_neo_outcome[[my_var]])
 if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
-trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
+trim1[[3]]<-paste0((round(trim1_prop$estimate,5)*100)," (", (round(trim1_prop$conf.int[1],5)*100),"-",(round(trim1_prop$conf.int[2],5)*100),")")
 }else{trim1[[3]]<-"no observations"}
 my_output[1:3,4]<-unlist(trim1)
 
@@ -165,7 +165,7 @@ trim2[[1]]<-sum(T2_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2_case_neo_outcome[[my_var]])
 if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
-trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
+trim2[[3]]<-paste0((round(trim2_prop$estimate,5)*100)," (", (round(trim2_prop$conf.int[1],5)*100),"-",(round(trim2_prop$conf.int[2],5)*100),")")
 }else{trim2[[3]]<-"no observations"}
 my_output[5:7,2]<-unlist(trim2)
 
@@ -177,7 +177,7 @@ trim2[[1]]<-sum(T2S_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2S_case_neo_outcome[[my_var]])
 if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
-trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
+trim2[[3]]<-paste0((round(trim2_prop$estimate,5)*100)," (", (round(trim2_prop$conf.int[1],5)*100),"-",(round(trim2_prop$conf.int[2],5)*100),")")
 }else{trim2[[3]]<-"no observations"}
 my_output[5:7,3]<-unlist(trim2)
 
@@ -189,7 +189,7 @@ trim2[[1]]<-sum(T2NS_case_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2NS_case_neo_outcome[[my_var]])
 if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
-trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
+trim2[[3]]<-paste0((round(trim2_prop$estimate,5)*100)," (", (round(trim2_prop$conf.int[1],5)*100),"-",(round(trim2_prop$conf.int[2],5)*100),")")
 }else{trim2[[3]]<-"no observations"}
 my_output[5:7,4]<-unlist(trim2)
 
@@ -306,7 +306,7 @@ trim3[[1]]<-sum(T3_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3_case_neo_outcome[[my_var]])
 if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
-trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
+trim3[[3]]<-paste0((round(trim3_prop$estimate,5)*100)," (", (round(trim3_prop$conf.int[1],5)*100),"-",(round(trim3_prop$conf.int[2],5)*100),")")
 }else{trim3[[3]]<-"no observations"}
 my_output[9:11,2]<-unlist(trim3)
 
@@ -316,7 +316,7 @@ trim3[[1]]<-sum(T3S_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3S_case_neo_outcome[[my_var]])
 if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
-trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
+trim3[[3]]<-paste0((round(trim3_prop$estimate,5)*100)," (", (round(trim3_prop$conf.int[1],5)*100),"-",(round(trim3_prop$conf.int[2],5)*100),")")
 }else{trim3[[3]]<-"no observations"}
 my_output[9:11,3]<-unlist(trim3)
 
@@ -326,7 +326,7 @@ trim3[[1]]<-sum(T3NS_case_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3NS_case_neo_outcome[[my_var]])
 if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
-trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
+trim3[[3]]<-paste0((round(trim3_prop$estimate,5)*100)," (", (round(trim3_prop$conf.int[1],5)*100),"-",(round(trim3_prop$conf.int[2],5)*100),")")
 }else{trim3[[3]]<-"no observations"}
 my_output[9:11,4]<-unlist(trim3)
 
@@ -443,7 +443,7 @@ trim1[[1]]<-sum(T1_control_neo_outcome[[my_var]])
 trim1[[2]]<-length(T1_control_neo_outcome[[my_var]])
 if(trim1[[2]]>0){
 trim1_prop<-prop.test(trim1[[1]], trim1[[2]])
-trim1[[3]]<-paste0((round(trim1_prop$estimate,3)*100)," (", (round(trim1_prop$conf.int[1],3)*100),"-",(round(trim1_prop$conf.int[2],3)*100),")")
+trim1[[3]]<-paste0((round(trim1_prop$estimate,5)*100)," (", (round(trim1_prop$conf.int[1],5)*100),"-",(round(trim1_prop$conf.int[2],5)*100),")")
 }else{trim1[[3]]<-"no observations"}
 my_output[1:3,5]<-unlist(trim1)
 
@@ -453,7 +453,7 @@ trim2[[1]]<-sum(T2_control_neo_outcome[[my_var]])
 trim2[[2]]<-length(T2_control_neo_outcome[[my_var]])
 if(trim2[[2]]>0){
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
-trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
+trim2[[3]]<-paste0((round(trim2_prop$estimate,5)*100)," (", (round(trim2_prop$conf.int[1],5)*100),"-",(round(trim2_prop$conf.int[2],5)*100),")")
 }else{trim2[[3]]<-"no observations"}
 my_output[5:7,5]<-unlist(trim2)
 
@@ -463,7 +463,7 @@ trim3[[1]]<-sum(T3_control_neo_outcome[[my_var]])
 trim3[[2]]<-length(T3_control_neo_outcome[[my_var]])
 if(trim3[[2]]>0){
 trim3_prop<-prop.test(trim3[[1]], trim3[[2]])
-trim3[[3]]<-paste0((round(trim3_prop$estimate,3)*100)," (", (round(trim3_prop$conf.int[1],3)*100),"-",(round(trim3_prop$conf.int[2],3)*100),")")
+trim3[[3]]<-paste0((round(trim3_prop$estimate,5)*100)," (", (round(trim3_prop$conf.int[1],5)*100),"-",(round(trim3_prop$conf.int[2],5)*100),")")
 }else{trim3[[3]]<-"no observations"}
 my_output[9:11,5]<-unlist(trim3)
 

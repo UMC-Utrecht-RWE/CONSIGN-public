@@ -59,9 +59,9 @@ my_perc<-vector()
 
 for(i in 1:length(outcomes)){
   raw<-prop.test(outcomes[i], denominators[i])
-  perc<-(round(raw$estimate,3))*100
-  lo<-(round(raw$conf.int[1],3))*100
-  hi<-(round(raw$conf.int[2],3))*100
+  perc<-(round(raw$estimate,5))*100
+  lo<-(round(raw$conf.int[1],5))*100
+  hi<-(round(raw$conf.int[2],5))*100
   result<-paste0(perc," (",lo,"-", hi,")")
   my_perc[i]<-result
 }
