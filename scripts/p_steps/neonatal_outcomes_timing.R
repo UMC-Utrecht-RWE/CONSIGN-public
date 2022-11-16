@@ -34,7 +34,9 @@ for(i in 1:length(cohort_covariate_folders)){
   
   for(j in 1:length(my_tables)){
     my_covariate_data<-fread(paste0(cohort_covariate_folders[i], my_tables[j]))
-    date<-as.Date(as.character(my_covariate_data$date), format = "%Y%m%d")
+    date <- ifelse(my_covariate_data$date>19000000,
+                   as.Date(as.character(my_covariate_data$date), format = "%Y%m%d"),
+                   my_covariate_data$date)
     date_num<-as.numeric(date)
     my_covariate_data$date<-date_num
     print(my_names[j])
