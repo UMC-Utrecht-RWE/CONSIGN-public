@@ -36,11 +36,14 @@ my_preterm_data_list<- list(T1_LB_case_mat_outcome[,c("person_id", "PRETERM")],
 my_cols<-list(c(2:4), c(5:7), c(8:10))
 for(j in 1:3){
 input_col<-my_cols[[j]]
-my_preterm_data<-my_preterm_data_list[[j]]
-my_cohort_size<-nrow(my_preterm_data)
+
 
 for(i in 1:length(my_drug_names)){
 results<-list()
+# prevent overwrite
+my_preterm_data<-my_preterm_data_list[[j]]
+my_cohort_size<-nrow(my_preterm_data)
+
 my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==j,]
 # make sure drug exposure columns are numeric

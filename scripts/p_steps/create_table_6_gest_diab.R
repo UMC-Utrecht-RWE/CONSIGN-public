@@ -36,11 +36,12 @@ colnames(DU_gest_diab_outcome)<-c("drug group", "(a) Exposed to medication in 30
 # restrict to pregnancies with 20 weeks
 # only trimeser 1
 
-my_GD_data<- T1_20_case_mat_outcome[,c("person_id", "gest_diab")]
-my_cohort_size<-nrow(my_GD_data)
+
 
 
 for(i in 1:length(my_drug_names)){
+  my_GD_data<- T1_20_case_mat_outcome[,c("person_id", "gest_diab")]
+  my_cohort_size<-nrow(my_GD_data)
 results<-list()
 my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
 # select trimester
