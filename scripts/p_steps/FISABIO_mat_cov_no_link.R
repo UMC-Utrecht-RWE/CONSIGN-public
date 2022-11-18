@@ -49,25 +49,74 @@ for(i in 1:length(preg_cohort_folders)){
   colnames(GEST_DIAB_cov)<-c("id", "date")
   fwrite(GEST_DIAB_cov, paste0(output_folder,"gest_diab.csv"))
   
-  #################################################################################
+  #############################################################################
   # CAESARIAN
   
+  # Implementation of c-section procedures and codes---------------------------
+  my_event_name <- "TP_CESAREA_COV"
+  my_file_name <- "CESAREA"
   
-  my_event_name<-"TP_CESAREA_COV"
+  # filter events
+  c_section_event_codes <- c(
+    "^O82",
+    "^O82.0",
+    "^O82.1",
+    "^O82.2",
+    "^O82.8",
+    "^O82.9",
+    "^O84.2",
+    "^O75.82",
+    "^Z38.01",
+    "^Z38.31",
+    "^Z38.62",
+    "^Z38.64",
+    "^Z38.66",
+    "^Z38.69",
+    "^669.7")
   
-  my_file_name<-"CESAREA"
+  CESAREA_EV <- EVENTS |> 
+    filter(str_detect(event_code, 
+                      paste(c_section_event_codes, collapse = "|")) == TRUE)
+  # check codes
+  CESAREA_EV |> count(event_code)
+  # save it because maybe is used in another scripts later
+  saveRDS(CESAREA_EV, paste0(maternal_covariates_events,my_file_name,".rds"))
   
-  CESAREA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  CreateConceptDatasets(codesheet = CESAREA_codelist, fil=EVENTS, path = maternal_covariates_events)
+  CESAREA_EV_ID <- CESAREA_EV |> pull(person_id)
+  CESAREA_EV_Date <- CESAREA_EV |> pull(start_date_record)
   
-  CESAREA_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
-  CESAREA_EV_ID<-(CESAREA_EV$person_id)
-  CESAREA_EV_Date<- (GEST_DIAB_EV$start_date_record)
+  # filter procedures
+  c_section_procedure_codes <- c(
+    "^74$",
+    "^74.9",
+    "^74.91",
+    "^74.99",
+    "^74.0",
+    "^74.1",
+    "^74.2",
+    "^74.3",
+    "^74.4", 
+    "10D00Z0", "10D00Z1", "10D00Z2")
   
-  CESAREA_cov<-as.data.frame(cbind(CESAREA_EV_ID, CESAREA_EV_Date))
-  colnames(CESAREA_cov)<-c("id", "date")
+  CESAREA_PROC <- PROC |> 
+    filter(str_detect(procedure_code, 
+               paste(c_section_procedure_codes, collapse = "|")) == TRUE)
+  # check codes
+  CESAREA_PROC |> count(procedure_code)
+  # save it because maybe is used in another scripts later
+  saveRDS(CESAREA_PROC, 
+          paste0(maternal_covariates_events,my_file_name,"_PROC.rds"))
+  
+  CESAREA_PROC_ID <- CESAREA_PROC |> pull(person_id)
+  CESAREA_PROC_Date <- CESAREA_PROC |> 
+    mutate(procedure_date = as.numeric(ymd(procedure_date))) |> 
+    pull(procedure_date)
+  
+  CESAREA_cov <- tibble(id = c(CESAREA_EV_ID, CESAREA_PROC_ID),
+                        date = c(CESAREA_EV_Date, CESAREA_PROC_Date))
+  
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
-
+  
  #################################################################################
   # SPONTANEOUS ABORTION
   
@@ -220,6 +269,7 @@ maternal_death_id<-c( maternal_death_pers_ID)
 maternal_death_date<-c( maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
 colnames(maternal_death_outcome)<-c("id", "date")
-fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
+fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))
+}
 
 

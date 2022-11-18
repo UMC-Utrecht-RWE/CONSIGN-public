@@ -35,19 +35,19 @@ for(i in 1:length(neonate_cohort_folders)){
   #################################################################################
   # SGA or FGR
   
-  my_event_name<-c("P_FGR_AESI")
-  
-  FGR_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  
-  CreateConceptDatasets(codesheet = FGR_codelist, fil=EVENTS, path = output_folder)
-  
-  FGR_EV<-readRDS(paste0(output_folder,"FGR.rds"))
-  FGR_EV_ID<-(FGR_EV$person_id)
-  FGR_EV_Date<- (FGR_EV$start_date_record)
- 
-  FGR_cov<-as.data.frame(cbind(FGR_EV_ID, FGR_EV_Date))
-  colnames(FGR_cov)<-c("id", "date")
-  fwrite(FGR_cov, paste0(output_folder,"SGA_FGR.csv"))
+  # my_event_name<-c("P_FGR_AESI")
+  # 
+  # FGR_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  # 
+  # CreateConceptDatasets(codesheet = FGR_codelist, fil=EVENTS, path = output_folder)
+  # 
+  # FGR_EV<-readRDS(paste0(output_folder,"FGR.rds"))
+  # FGR_EV_ID<-(FGR_EV$person_id)
+  # FGR_EV_Date<- (FGR_EV$start_date_record)
+  # 
+  # FGR_cov<-as.data.frame(cbind(FGR_EV_ID, FGR_EV_Date))
+  # colnames(FGR_cov)<-c("id", "date")
+  # fwrite(FGR_cov, paste0(output_folder,"SGA_FGR.csv"))
   
   #################################################################################
   # LBW
@@ -60,70 +60,72 @@ for(i in 1:length(neonate_cohort_folders)){
   
   CreateConceptDatasets(codesheet = LBW_codelist, fil=EVENTS, path = output_folder)
   
-  LBW_EV<-readRDS(paste0(output_folder,"LBW.rds"))
-  LBW_EV_ID<-(LBW_EV$person_id)
-  LBW_EV_Date<- (LBW_EV$start_date_record)
-  
+  # LBW_EV<-readRDS(paste0(output_folder,"LBW.rds"))
+  # LBW_EV_ID<-(LBW_EV$person_id)
+  # LBW_EV_Date<- (LBW_EV$start_date_record)
+  # 
   # so_source_table= "MDR" AND so_source_column == "peso"  AND so_source_value= <2500
   
-  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
-  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&(SURV_OB$so_source_value<=2500))]
+  LBW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&
+                                  (as.numeric(SURV_OB$so_source_value)<=2500))]
+  LBW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_table=="MDR")&(SURV_OB$so_source_column=="peso")&
+                                  (as.numeric(SURV_OB$so_source_value)<=2500))]
   
-  LBW_cov<-as.data.frame(cbind(c(LBW_EV_ID, LBW_SO_ID), c(LBW_EV_Date, LBW_SO_Date)))
+  LBW_cov <- as.data.frame(cbind(LBW_SO_ID, LBW_SO_Date))
   colnames(LBW_cov)<-c("id", "date")
   fwrite(LBW_cov, paste0(output_folder,"LBW.csv"))
   
 #####################################################################
 # low apgar
 
-  my_event_name<-c("P_APGARLOW_AESI")
-  
-  APGARLOW_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  
-  CreateConceptDatasets(codesheet = APGARLOW_codelist, fil=EVENTS, path = output_folder)
-  
-  APGARLOW_EV<-readRDS(paste0(output_folder,"APGARLOW.rds"))
-  APGARLOW_EV_ID<-(APGARLOW_EV$person_id)
-  APGARLOW_EV_Date<- (APGARLOW_EV$start_date_record)
-  
-  APGARLOW_cov<-as.data.frame(cbind(APGARLOW_EV_ID, APGARLOW_EV_Date))
-  colnames(APGARLOW_cov)<-c("id", "date")
-  fwrite(APGARLOW_cov, paste0(output_folder,"APGARLOW.csv"))
+  # my_event_name<-c("P_APGARLOW_AESI")
+  # 
+  # APGARLOW_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  # 
+  # CreateConceptDatasets(codesheet = APGARLOW_codelist, fil=EVENTS, path = output_folder)
+  # 
+  # APGARLOW_EV<-readRDS(paste0(output_folder,"APGARLOW.rds"))
+  # APGARLOW_EV_ID<-(APGARLOW_EV$person_id)
+  # APGARLOW_EV_Date<- (APGARLOW_EV$start_date_record)
+  # 
+  # APGARLOW_cov<-as.data.frame(cbind(APGARLOW_EV_ID, APGARLOW_EV_Date))
+  # colnames(APGARLOW_cov)<-c("id", "date")
+  # fwrite(APGARLOW_cov, paste0(output_folder,"APGARLOW.csv"))
 
 ##########################################################################    
   # microcephaly
   
-  my_event_name<-c("P_MICROCEPHALY_AESI")
-  
-  MICROCEPHALY_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  
-  CreateConceptDatasets(codesheet = MICROCEPHALY_codelist, fil=EVENTS, path = output_folder)
-  
-  MICROCEPHALY_EV<-readRDS(paste0(output_folder,"MICROCEPHALY.rds"))
-  MICROCEPHALY_EV_ID<-(MICROCEPHALY_EV$person_id)
-  MICROCEPHALY_EV_Date<- (MICROCEPHALY_EV$start_date_record)
-  
-  MICROCEPHALY_cov<-as.data.frame(cbind(MICROCEPHALY_EV_ID, MICROCEPHALY_EV_Date))
-  colnames(MICROCEPHALY_cov)<-c("id", "date")
-  fwrite(MICROCEPHALY_cov, paste0(output_folder,"MICROCEPHALY.csv"))
+  # my_event_name<-c("P_MICROCEPHALY_AESI")
+  # 
+  # MICROCEPHALY_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  # 
+  # CreateConceptDatasets(codesheet = MICROCEPHALY_codelist, fil=EVENTS, path = output_folder)
+  # 
+  # MICROCEPHALY_EV<-readRDS(paste0(output_folder,"MICROCEPHALY.rds"))
+  # MICROCEPHALY_EV_ID<-(MICROCEPHALY_EV$person_id)
+  # MICROCEPHALY_EV_Date<- (MICROCEPHALY_EV$start_date_record)
+  # 
+  # MICROCEPHALY_cov<-as.data.frame(cbind(MICROCEPHALY_EV_ID, MICROCEPHALY_EV_Date))
+  # colnames(MICROCEPHALY_cov)<-c("id", "date")
+  # fwrite(MICROCEPHALY_cov, paste0(output_folder,"MICROCEPHALY.csv"))
   
 ###################################################################################  
   
   # major congenital anomoly P_MAJORCA_AESI
   
-  my_event_name<-c("P_MAJORCA_AESI")
-  
-  MAJORCA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  
-  CreateConceptDatasets(codesheet = MAJORCA_codelist, fil=EVENTS, path = output_folder)
-  
-  MAJORCA_EV<-readRDS(paste0(output_folder,"MAJORCA.rds"))
-  MAJORCA_EV_ID<-(MAJORCA_EV$person_id)
-  MAJORCA_EV_Date<- (MAJORCA_EV$start_date_record)
-  
-  MAJORCA_cov<-as.data.frame(cbind(MAJORCA_EV_ID, MAJORCA_EV_Date))
-  colnames(MAJORCA_cov)<-c("id", "date")
-  fwrite(MAJORCA_cov, paste0(output_folder,"MAJORCA.csv"))
+  # my_event_name<-c("P_MAJORCA_AESI")
+  # 
+  # MAJORCA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  # 
+  # CreateConceptDatasets(codesheet = MAJORCA_codelist, fil=EVENTS, path = output_folder)
+  # 
+  # MAJORCA_EV<-readRDS(paste0(output_folder,"MAJORCA.rds"))
+  # MAJORCA_EV_ID<-(MAJORCA_EV$person_id)
+  # MAJORCA_EV_Date<- (MAJORCA_EV$start_date_record)
+  # 
+  # MAJORCA_cov<-as.data.frame(cbind(MAJORCA_EV_ID, MAJORCA_EV_Date))
+  # colnames(MAJORCA_cov)<-c("id", "date")
+  # fwrite(MAJORCA_cov, paste0(output_folder,"MAJORCA.csv"))
   
 #NEONATAL DEATH
   # PERSONS$year_of_death[1:20]<-PERSONS$year_of_birth[1:20]
