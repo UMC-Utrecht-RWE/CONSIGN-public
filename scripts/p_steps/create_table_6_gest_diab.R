@@ -43,7 +43,8 @@ for(i in 1:length(my_drug_names)){
   my_GD_data<- T1_20_case_mat_outcome[,c("person_id", "gest_diab")]
   my_cohort_size<-nrow(my_GD_data)
 results<-list()
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "trimester"))
+if(nrow(my_drug_data)>0){
 # select trimester
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==1,]
 # make sure drug exposure columns are numeric
@@ -74,7 +75,9 @@ if(my_denom_B>0){
 if(my_denom_C>0){ 
   my_prop_test_plus30<-prop.test(my_numer_plus30, my_denom_C)
   results[[3]]<-paste0((round(my_prop_test_plus30$estimate,3)*100)," (", (round(my_prop_test_plus30$conf.int[1],3)*100),"-",(round(my_prop_test_plus30$conf.int[2],3)*100),")")
-  }else{results[[3]]<-"no matches"}
+}else{results[[3]]<-"no matches"}else{results[[1]]<-NA
+results[[2]]<-NA
+results[[3]]<-NA}
 DU_gest_diab_outcome[i,2:4]<-unlist(results)
 }
 

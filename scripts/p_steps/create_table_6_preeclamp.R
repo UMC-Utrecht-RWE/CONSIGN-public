@@ -45,7 +45,9 @@ results<-list()
 my_preeclamp_data<- T1_20_case_mat_outcome[,c("person_id", "Preeclampsia")]
 my_cohort_size<-nrow(my_preeclamp_data)
 
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "trimester"))
+if(nrow(my_drug_data)>0){
+summary(my_drug_data)
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==1,]
 # make sure drug exposure columns are numeric
 my_drug_data$minus_30<-as.numeric(my_drug_data$minus_30)
@@ -59,6 +61,7 @@ my_denom_C<-sum(my_drug_data$plus_30)
 # select only those with maternal outcome
 my_preeclamp_data<-my_preeclamp_data[my_preeclamp_data$Preeclampsia==1,]
 my_preeclamp_drug<-merge(my_preeclamp_data, my_drug_data, by="person_id")
+print(my_drug_names[i])
 my_numer_minus30<-nrow(my_preeclamp_drug[my_preeclamp_drug$minus_30==1,])
 my_numer_plus30<-nrow(my_preeclamp_drug[my_preeclamp_drug$plus_30==1,])
 my_numer_nonexposed_plus30<-nrow(my_preeclamp_drug[my_preeclamp_drug$plus_30==0,])
@@ -74,7 +77,9 @@ if(my_denom_B>0){
 if(my_denom_C>0){  
   my_prop_test_plus30<-prop.test(my_numer_plus30, my_denom_C)
   results[[3]]<-paste0((round(my_prop_test_plus30$estimate,3)*100)," (", (round(my_prop_test_plus30$conf.int[1],3)*100),"-",(round(my_prop_test_plus30$conf.int[2],3)*100),")")
-  }else{results[[3]]<-"no matches"}
+}else{results[[3]]<-"no matches"}}else{results[[1]]<-NA
+    results[[2]]<-NA
+    results[[3]]<-NA}
 DU_preeclamp_outcome[i,2:4]<-unlist(results)
 }
 
