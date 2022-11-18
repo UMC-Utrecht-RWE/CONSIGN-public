@@ -279,8 +279,8 @@ SA_output[1:3,5]<-unlist(trim1)
 
 trim2<-list()
 
-trim2[[1]]<-sum(T2_control_mat_outcome$Spont_Abort)
-trim2[[2]]<-length(T2_control_mat_outcome$Spont_Abort)
+trim2[[1]]<-sum(T2_SA_control_mat_outcome$Spont_Abort)
+trim2[[2]]<-length(T2_SA_control_mat_outcome$Spont_Abort)
 trim2_prop<-prop.test(trim2[[1]], trim2[[2]])
 trim2[[3]]<-paste0((round(trim2_prop$estimate,3)*100)," (", (round(trim2_prop$conf.int[1],3)*100),"-",(round(trim2_prop$conf.int[2],3)*100),")")
 
