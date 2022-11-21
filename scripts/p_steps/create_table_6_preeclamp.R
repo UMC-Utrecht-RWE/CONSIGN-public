@@ -78,7 +78,10 @@ if(my_denom_C>0){
   my_prop_test_plus30<-prop.test(my_numer_plus30, my_denom_C)
   results[[3]]<-paste0((round(my_prop_test_plus30$estimate,3)*100)," (", (round(my_prop_test_plus30$conf.int[1],3)*100),"-",(round(my_prop_test_plus30$conf.int[2],3)*100),")")
 }else{results[[3]]<-"no matches"}}else{results[[1]]<-NA
-    results[[2]]<-NA
+
+my_prop_test_nonexposed_plus30<-prop.test(0, my_cohort_size)
+results[[2]]<-paste0((round(my_prop_test_nonexposed_plus30$estimate,3)*100)," (", (round(my_prop_test_nonexposed_plus30$conf.int[1],3)*100),"-",(round(my_prop_test_nonexposed_plus30$conf.int[2],3)*100),")")
+
     results[[3]]<-NA}
 DU_preeclamp_outcome[i,2:4]<-unlist(results)
 }
