@@ -6,11 +6,15 @@
 # for historical group, no outcome (no pandemic pregnancy to have an outcome from)--> covariate is the event from historical pregnancies from the last 2 years
 
 hist_maternal_events<-fread(paste0(g_output_mat_cov_hist, "historical.csv"))
+hist_maternal_events<-hist_maternal_events[(duplicated(hist_maternal_events$person_id, fromLast = T)==F),]
+
 
 hist_preg<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
 hist_preg$gest_weeks<-(hist_preg$pregnancy_end_date-hist_preg$pregnancy_start_date)/7
 
 hist_neonates<-fread(paste0(output_neonates_hist, "hist_neonates_outcomes.csv"))
+hist_neonates<-hist_neonates[(duplicated(hist_neonates$person_id, fromLast = T)==F),]
+
 
 my_rownames<- c("Maternal death", 
 "Gestational diabetes",
