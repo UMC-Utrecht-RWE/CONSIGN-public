@@ -12,6 +12,8 @@ hist_preg<-fread(paste0(hist_preg_folder, "my_PREG.csv"))
 hist_preg$gest_weeks<-(hist_preg$pregnancy_end_date-hist_preg$pregnancy_start_date)/7
 
 hist_neonates<-fread(paste0(output_neonates_hist, "hist_neonates_outcomes.csv"))
+# in case of multiple records of the same event/diagnosis per neonate
+hist_neonates<-hist_neonates[(duplicated(hist_neonates$person_id, fromLast = T)==F),]
 
 
 my_rownames<- c("Maternal death", 
