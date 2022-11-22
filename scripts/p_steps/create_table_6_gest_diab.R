@@ -43,7 +43,7 @@ for(i in 1:length(my_drug_names)){
   my_GD_data<- T1_20_case_mat_outcome[,c("person_id", "gest_diab")]
   my_cohort_size<-nrow(my_GD_data)
 results<-list()
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "trimester"))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "cov_trimester"))
 if(nrow(my_drug_data)>0){
 # select trimester
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==1,]
