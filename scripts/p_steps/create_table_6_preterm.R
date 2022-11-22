@@ -44,7 +44,7 @@ results<-list()
 my_preterm_data<-my_preterm_data_list[[j]]
 my_cohort_size<-nrow(my_preterm_data)
 
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "trimester"))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "cov_trimester"))
 if(nrow(my_drug_data)>0){
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==j,]
 # make sure drug exposure columns are numeric
