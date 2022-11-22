@@ -34,7 +34,7 @@ for(j in 1:length(my_tables)){
     my_id<-hist_preg$person_id[p]
     my_date_end<-hist_preg$pregnancy_end_date[p]
     my_date_start<-hist_preg$pregnancy_start_date[p]
-    my_id_covariate_data<-my_covariate_data[my_covariate_data$person_id==my_id,]
+    my_id_covariate_data<-my_covariate_data[my_covariate_data$id==my_id,]
     # event date needs to be greater than start date and less than end date
     time_window_end<-my_id_covariate_data$date-my_date_end 
     time_window_start<-my_id_covariate_data$date-my_date_start
