@@ -69,7 +69,7 @@ case_mat_outcome$cohort<-1
 control_other_vars<-merge(control_mat_cov[,c("person_id", "any_mat")], 
                        control_cov_comorb[,c("person_id","any_cov")], by="person_id")
 
-control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end")], by="person_id")
+control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end", "gest_age_cov")], by="person_id")
 
 control_mat_outcome<-merge(control_mat_outcome, control_other_vars, by="person_id")
 control_mat_outcome$cohort<-0
