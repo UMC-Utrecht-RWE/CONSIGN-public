@@ -45,7 +45,7 @@ results<-list()
 my_preeclamp_data<- T1_20_case_mat_outcome[,c("person_id", "Preeclampsia")]
 my_cohort_size<-nrow(my_preeclamp_data)
 
-my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "trimester"))
+my_drug_data<-fread(paste0(output_cov_window_atc_2, my_drug_files[[i]]), select = c("person_id","minus_30", "plus_30", "severity", "cov_trimester"))
 if(nrow(my_drug_data)>0){
 summary(my_drug_data)
 my_drug_data<-my_drug_data[my_drug_data$cov_trimester==1,]
