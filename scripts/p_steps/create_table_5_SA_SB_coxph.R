@@ -362,13 +362,13 @@ nonsevere_cox_SB_results[[1]]<-paste0(T1_nonsevere_confint[1,1], " (", T1_nonsev
 t2_model_data_nonsevere<-(model_data_nonsevere[model_data_nonsevere$cov_trimester==2,])
 T2_nonsevere_case_cox<-summary(coxph(Surv(duration, SB) ~ cohort+any_cov+any_mat , data=t2_model_data_nonsevere))
 T2_nonsevere_confint<-round(T2_nonsevere_case_cox$conf.int, 2)
-nonsevere_cox_SB_results[[1]]<-paste0(T2_nonsevere_confint[1,1], " (", T2_nonsevere_confint[1,3], "-", T2_nonsevere_confint[1,4], ")")
+nonsevere_cox_SB_results[[2]]<-paste0(T2_nonsevere_confint[1,1], " (", T2_nonsevere_confint[1,3], "-", T2_nonsevere_confint[1,4], ")")
 
 
 t3_model_data_nonsevere<-(model_data_nonsevere[model_data_nonsevere$cov_trimester==3,])
 T3_nonsevere_case_cox<-summary(coxph(Surv(duration, SB) ~ cohort+any_cov+any_mat , data=t3_model_data_nonsevere))
 T3_nonsevere_confint<-round(T3_nonsevere_case_cox$conf.int, 2)
-nonsevere_cox_SB_results[[1]]<-paste0(T3_nonsevere_confint[1,1], " (", T3_nonsevere_confint[1,3], "-", T3_nonsevere_confint[1,4], ")")
+nonsevere_cox_SB_results[[3]]<-paste0(T3_nonsevere_confint[1,1], " (", T3_nonsevere_confint[1,3], "-", T3_nonsevere_confint[1,4], ")")
 
 
 ######################################################################
