@@ -18,6 +18,9 @@ case_preg_data$gest_weeks<-((case_preg_data$pregnancy_end_date)-(case_preg_data$
 control_mat_outcome<-fread(paste0(g_output_mat_out_pan_neg, "covid_negative_pregnant_control.csv"))
 control_preg_data<-fread(paste0(matched_folder, "matches_pregnant_cov_neg.csv"))
 control_preg_data$gest_weeks<-((control_preg_data$pregnancy_end_date)-(control_preg_data$pregnancy_start_date))/7  
+#control gest_cov_age needs to be calculated
+control_preg_data$gest_age_cov<- (control_preg_data$covid_date)-(control_preg_data$pregnancy_start_date)
+
 
 # import maternal covariate data and compute "any" column
 
@@ -69,11 +72,10 @@ case_mat_outcome$cohort<-1
 control_other_vars<-merge(control_mat_cov[,c("person_id", "any_mat")], 
                        control_cov_comorb[,c("person_id","any_cov")], by="person_id")
 
-control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end", "gest_age_cov")], by="person_id")
+control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id","gest_weeks", "type_of_pregnancy_end")], by="person_id")
 
 control_mat_outcome<-merge(control_mat_outcome, control_other_vars, by="person_id")
 control_mat_outcome$cohort<-0
-
 
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
