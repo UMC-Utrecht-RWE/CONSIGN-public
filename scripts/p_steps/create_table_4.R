@@ -56,7 +56,7 @@ apgar<-sum(hist_neonates$APGARLOW)
 majorca<-sum(hist_neonates$MAJORCA)
 micro<-sum(hist_neonates$MICROCEPHALY)
 
-denominators<-c(denom_all, denom_20_weeks, denom_20_weeks, denom_all, denom_all, denom_all, denom_LB, denom_22_weeks, rep(denom_LB,6))
+denominators<-c(denom_all, denom_20_weeks, denom_20_weeks, denom_all, denom_all, denom_LB, denom_LB, denom_22_weeks, rep(denom_LB,6))
 
 outcomes<-c(mat_death, gest_diab, preeclamp,  spontabort, topfa, casearean,preterm,still_birth, neonatal_death, LBW, FGA, apgar, majorca, micro)
 my_perc<-vector()
