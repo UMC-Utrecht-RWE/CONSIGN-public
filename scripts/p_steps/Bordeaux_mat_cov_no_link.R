@@ -133,16 +133,16 @@ for(i in 1:length(preg_cohort_folders)){
   # mo_source_value = "AGE_GES" AND mo_unit = "weeks" AND mo_source_column >= 22
   # so_cource_column="DIAG" AND so_source_value = "PRE10"
   
-  my_event_name<-"P_STILLBIRTH_AESI"
+  #my_event_name<-"P_STILLBIRTH_AESI"
   
-  my_file_name<-"STILLBIRTH"
+  #my_file_name<-"STILLBIRTH"
   
-  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
+  $SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  $CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name, ".rds"))
-  SB_EV_ID<-(SB_EV$person_id)
-  SB_EV_Date<- (SB_EV$start_date_record)
+  #SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name, ".rds"))
+  #SB_EV_ID<-(SB_EV$person_id)
+  #SB_EV_Date<- (SB_EV$start_date_record)
   
   
   my_rows<-which(SURV_OB$so_source_column=="DIAG" & SURV_OB$so_source_value=="PRE10")
@@ -152,11 +152,11 @@ for(i in 1:length(preg_cohort_folders)){
   SB_SO_Date<-SURV_OB$so_date[my_rows]
 
   
-  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
-  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
+  #SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
+  #SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
   
-  SB_ID<-c(SB_EV_ID, SB_SO_ID, SB_alg_ID)
-  SB_Date<-c(SB_EV_Date, SB_SO_Date, SB_alg_Date)
+  SB_ID<-c( SB_SO_ID)
+  SB_Date<-c(SB_SO_Date)
   
   SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
   colnames(SB_cov)<-c("id", "date")
