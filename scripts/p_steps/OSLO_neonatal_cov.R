@@ -61,8 +61,8 @@ for(i in 1:length(neonate_cohort_folders)){
   
   # so_source_column= "apgar5"  AND so_source_value= "0" or "1" or "2" or "3"
   
-  APGARLOW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="apgar5")&(SURV_OB$so_source_value%in%c(0,1,2,3)))]
-  APGARLOW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="apgar5")&(SURV_OB$so_source_value%in%c(0,1,2,3)))]
+  APGARLOW_SO_ID<-SURV_OB$person_id[((SURV_OB$so_source_column=="apgar5")&(SURV_OB$so_source_value%in%c(0,1,2,3,4,5,6)))]
+  APGARLOW_SO_Date<-SURV_OB$so_date[((SURV_OB$so_source_column=="apgar5")&(SURV_OB$so_source_value%in%c(0,1,2,3,4,5,6)))]
   
   APGARLOW_cov<-as.data.frame(cbind( APGARLOW_SO_ID, APGARLOW_SO_Date))
   colnames(APGARLOW_cov)<-c("id", "date")
