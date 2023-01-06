@@ -78,8 +78,13 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_SO_ID<-SURV_OB$person_id[(SURV_OB$so_source_column=="CESAREO_ARSNEW"& SURV_OB$so_source_value==1)]
   CESAREA_SO_Date<- SURV_OB$so_date[(SURV_OB$so_source_column=="CESAREO_ARSNEW"& SURV_OB$so_source_value==1)]
   
-  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
-  CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date)
+  #origin_of_procedure = "SDO" and procedure_code in ("740" "741" "742" "744" "7499")
+  
+  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740" "741" "742" "744" "7499")]
+  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740" "741" "742" "744" "7499")]
+  
+  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID, CESAREA_PROC_ID)
+  CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date, CESAREA_PROC_Date)
   
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
