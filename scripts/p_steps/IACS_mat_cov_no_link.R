@@ -68,7 +68,7 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_EV_ID<-(CESAREA_EV$person_id)
   CESAREA_EV_Date<- (CESAREA_EV$start_date_record)
   
-  my_rows<-which(PROC$origin_of_procedure=="CMBD"&PROC$procedure_code%in%CESAREA_codelist)
+  my_rows<-which(PROC$origin_of_procedure=="CMBD"&PROC$procedure_code%in% c("10D00Z0" ,"10D00Z1" ,"10D00Z2")
   CESAREA_PROC_ID<-PROC$person_id[my_rows]
   CESAREA_PROC_Date<-PROC$procedure_date[my_rows]
   
