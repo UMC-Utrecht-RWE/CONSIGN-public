@@ -80,8 +80,8 @@ for(i in 1:length(preg_cohort_folders)){
   
   #origin_of_procedure = "SDO" and procedure_code in ("740" "741" "742" "744" "7499")
   
-  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740" "741" "742" "744" "7499")]
-  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740" "741" "742" "744" "7499")]
+  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740", "741", "742", "744", "7499")]
+  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="SDO"& PROC$procedure_code%in%c("740", "741", "742", "744", "7499")]
   
   CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID, CESAREA_PROC_ID)
   CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date, CESAREA_PROC_Date)
