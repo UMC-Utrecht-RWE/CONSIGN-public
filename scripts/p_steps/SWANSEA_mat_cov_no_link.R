@@ -71,9 +71,15 @@ for(i in 1:length(preg_cohort_folders)){
   CESAREA_SO_ID<-(SURV_OB$person_id[my_rows])
   CESAREA_SO_Date<- (SURV_OB$so_date[my_rows])
   
-  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID)
-  CESAREA_Date<-c(CESAREA_EV_Date, CESAREA_SO_Date)
+  #origin_of_procedure = "g" and procedure_code in (“L2132”  “7F12z” “7F12. ” “7F121” “L398z” “L3980” “L398. ” “L3982” “L3981” “L3983”)
   
+  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="g"& PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
+  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="g"& PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
+  
+  CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID, CESAREA_PROC_ID)
+  CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date, CESAREA_PROC_Date)
+  
+
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
