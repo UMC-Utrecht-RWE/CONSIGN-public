@@ -10,7 +10,8 @@
 
 # dates to determine cohorts (pandemic and before the pandemic)
 start_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
-historical_end_date<-as.Date(as.character("20200101"), format = "%Y%m%d")
+# update request from Oslo change historical end date to 31.12.2019
+historical_end_date<-as.Date(as.character("20191231"), format = "%Y%m%d")
 covid_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
 
 '%exclude%' <- function(x,y)!('%in%'(x,y))
@@ -114,6 +115,7 @@ hist(my_PREG$age_at_start_of_pregnancy)
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy? 
+# "updates" resquested by Oslo pregnancies that ended between 1.1.2018 and 31.12.2019
 
 my_PREG$cohort<-NA
 
