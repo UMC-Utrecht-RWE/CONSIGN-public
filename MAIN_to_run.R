@@ -30,12 +30,14 @@ DAP<-CDM_source$data_access_provider_name
 ##############
 #load functions
 ##############
+
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
 source(paste0(pre_dir, "/covid_detect_function.R"))
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
+source(paste0(pre_dir, "/function_standard_difference.R"))
 
 ##############################
 #pregnancy-independent section
@@ -166,5 +168,174 @@ source(paste0(pre_dir,"/create_match_CDM.R"))
 ###################
 
 source(paste0(pre_dir,"/mother_child_linkage.R" ))
+
+###################
+#timing of each covariate date against each covid/pregnancy date
+###################
+
+source(paste0(pre_dir, "/covid_covariates_timing.R"))
+
+source(paste0(pre_dir, "/maternal_covariates_timing.R"))
+
+source(paste0(pre_dir, "/maternal_outcomes_timing.R"))
+
+source(paste0(pre_dir, "/neonatal_outcomes_timing.R"))
+
+source(paste0(pre_dir, "/historical_maternal_timing.R"))
+
+source(paste0(pre_dir, "/trimester_drug_exposure_PREG_matches.R"))
+
+source(paste0(pre_dir, "/trimester_drug_exposure_NP_matches.R"))
+
+###############
+#TABLES
+###############
+
+source(paste0(pre_dir, "/create_table0_cohort_description.R"))
+
+
+###############
+#TABLE 1abc
+##############
+
+source(paste0(pre_dir, "/create_table_1abc.R"))
+
+
+source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
+
+
+################
+#TABLE 2abc
+#baseline characteristics of covid+ pregnancy cohort
+# tabulated and stored in g_output/final/
+###############
+source(paste0(pre_dir, "/create_table_2abc.R"))
+
+source(paste0(pre_dir, "/create_table_2def.R"))
+
+source(paste0(pre_dir, "/create_table_2abc_comorbidities.R"))
+
+source(paste0(pre_dir, "/create_table_2abc_maternal.R"))
+
+
+################
+#TABLE 3
+################
+
+source(paste0(pre_dir, "/create_table_3abc.R"))
+
+source(paste0(pre_dir, "/create_table_3def.R"))
+
+###########################################################
+
+source(paste0(pre_dir, "/create_table_3abc_comorbidities.R"))
+
+source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
+
+
+##############
+#TABLE 4
+##############
+
+source(paste0(pre_dir, "/create_table_4.R"))
+
+##############
+#TABLE 5
+##############
+
+# you may see this message in RED- it's OK- it just means that this outcome has no observations
+# Error in prop.test(trim1[[1]], trim1[[2]]) : 
+#   elements of 'n' must be positive
+# In addition: Warning messages:
+#   1: In prop.test(trim1[[1]], trim1[[2]]) :
+#   Chi-squared approximation may be incorrect
+# 2: In prop.test(trim1[[1]], trim1[[2]]) :
+#   Chi-squared approximation may be incorrect
+
+source(paste0(pre_dir, "/create_table_5_maternal_data.R"))
+
+# when there are 0 observations- prop.test prints a warning- it's OK
+
+source(paste0(pre_dir, "/create_table_5_mat_death.R"))
+
+source(paste0(pre_dir, "/create_table_5_cesarean.R"))
+
+source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
+
+source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
+
+source(paste0(pre_dir, "/create_table_5_preterm.R"))
+
+source(paste0(pre_dir,"/create_table_5_SA_SB_coxph.R" ))
+
+if(DAP=="SWANSEA"){
+  source(paste0(pre_dir, "/Create_table_5_topfa.R"))
+}
+
+
+# clear environment between maternal and neonatal to prevent incorrect object assignment
+
+rm(list=ls())
+if(!require(rstudioapi)){install.packages("rstudioapi")}
+library(rstudioapi)
+
+projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(projectFolder)
+
+# CHECK/ FILL IN YOUR PARAMETERS 
+
+source("params.R")
+
+source("99_path.R")
+
+source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
+
+source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
+
+source(paste0(pre_dir, "/create_table_5_neonatal.R"))
+
+#############
+#TABLE 6
+#############
+
+source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
+
+# when there are 0 observations- prop.test prints a warning about Chi squared test- it's OK
+
+source(paste0(pre_dir, "/create_table_6_gest_diab.R"))
+
+source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
+
+source(paste0(pre_dir, "/create_table_6_preterm.R"))
+
+# clear environment between maternal and neonatal to prevent incorrect object assignment
+
+rm(list=ls())
+if(!require(rstudioapi)){install.packages("rstudioapi")}
+library(rstudioapi)
+
+projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(projectFolder)
+
+# CHECK/ FILL IN YOUR PARAMETERS 
+
+source("params.R")
+
+source("99_path.R")
+
+source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
+
+source(paste0(pre_dir, "/create_table_6_LBW.R"))
+
+source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
+
+
+
+
+
+
+
+
+
 
 
