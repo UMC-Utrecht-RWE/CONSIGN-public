@@ -117,11 +117,6 @@ source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
 source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 
-###############
-#TABLE 1abc
-##############
-
-source(paste0(pre_dir, "/create_table_1abc.R"))
 
 ############################
 # lower ATC for supplement
@@ -131,16 +126,6 @@ source(paste0(pre_dir, "/create_table_1abc.R"))
 
 
 source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
-
-source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
-
-################
-#TABLE 2abc
-#baseline characteristics of covid+ pregnancy cohort
-# tabulated and stored in g_output/final/
-###############
- source(paste0(pre_dir, "/create_table_2abc.R"))
-
 
 #############
 #MATCHING
