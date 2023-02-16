@@ -34,7 +34,7 @@ DAP<-CDM_source$data_access_provider_name
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
-source(paste0(pre_dir, "/covid_detect_function.R"))
+source(paste0(pre_dir, "/covid_detect_function_BPE.R"))
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/function_standard_difference.R"))
@@ -60,19 +60,20 @@ source(paste0(pre_dir,"/CreateSpells.R"))
 source(paste0(pre_dir,"/preselect_study_period.R"))
 
 # DRUG UTILIZATION:  RESULTS STORED IN G_INTERMEDIATE
+#aarhus does not do this step
 
 # finds all drug utilization of ATC level 2 
-source(paste0(pre_dir, "/ATC_2_detect.R"))
+#source(paste0(pre_dir, "/ATC_2_detect.R"))
 
 # for supplement section of report
 # finds all drug utilization of ATC level 3
-source(paste0(pre_dir, "/ATC_3_detect.R"))
+#source(paste0(pre_dir, "/ATC_3_detect.R"))
 
 # finds all drug utilization of ATC level 4
-source(paste0(pre_dir, "/ATC_4_detect.R"))
+#source(paste0(pre_dir, "/ATC_4_detect.R"))
 
 # finds all drug utilization of ATC level 5
-source(paste0(pre_dir, "/ATC_5_detect.R"))
+#source(paste0(pre_dir, "/ATC_5_detect.R"))
 
 
 ##########################
@@ -88,15 +89,15 @@ source(paste0(pre_dir, "/trimester_create.R"))
 source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 ###################
-#COVID steps
+#COVID steps: NOT applicable for AARHUS
 # find diagnoses
 # group COVID dates into episodes
 #assign a severity to each episode
 ###################
 
-source(paste0(pre_dir, "/DAP_covid_detection.R"))
+#source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
-source(paste0(pre_dir,"/severity_detect.R"))
+#source(paste0(pre_dir,"/severity_detect_BPE.R"))
 
 #######################
 #PREGNANCY*COVID
@@ -104,16 +105,16 @@ source(paste0(pre_dir,"/severity_detect.R"))
 # if covid_date is during pregnancy, cov_trim shows which trimester the first covid_date was in
 #sorts cohorts according to pregnancy and covid status
 #######################
-source(paste0(pre_dir, "/trimester_covid.R"))
+#source(paste0(pre_dir, "/trimester_covid.R"))
 
-source(paste0(pre_dir, "/create_covid_cohorts.R"))
+#source(paste0(pre_dir, "/create_covid_cohorts.R"))
 
 ######################
 # drug exposures by timing relative to COVID and pregancy
 # checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 #####################
 
-source(paste0(pre_dir, "/trimester_drug_exposure.R"))
+#source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 
 
 ############################
@@ -123,27 +124,27 @@ source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 #####################
 
 
-source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
+#source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
 
 #############
-#MATCHING
+#MATCHING: NOT applicable for AARHUS
 #COV+ PREGNANT matched 1:3 to COV+ non pregnant and pregnant COV-
 # matched cohorts in projectFolder/matched/
 #############
 
-source(paste0(pre_dir,"/match_pregnant_cohorts.R"))
+#source(paste0(pre_dir,"/match_pregnant_cohorts.R"))
 
 # matches covid positive non-pregnant women to cases (cov+preg) by age group and date of covid infection (using first date of covid infection in controls)
 
-source(paste0(pre_dir,"/match_covid_cohorts.R"))
+#source(paste0(pre_dir,"/match_covid_cohorts.R"))
 
 # script to copy over case_dates to their controls
 
-source(paste0(pre_dir,"/matching_dates_transfer.R"))
+#source(paste0(pre_dir,"/matching_dates_transfer.R"))
 
 # make CDM subset for matched cohort to be used for covariates
 
-source(paste0(pre_dir,"/create_match_CDM.R"))
+#source(paste0(pre_dir,"/create_match_CDM.R"))
 
 ###################
 #pregnancy-child linkage
@@ -156,35 +157,35 @@ source(paste0(pre_dir,"/mother_child_linkage.R" ))
 #timing of each covariate date against each covid/pregnancy date
 ###################
 
-source(paste0(pre_dir, "/covid_covariates_timing.R"))
+#source(paste0(pre_dir, "/covid_covariates_timing.R"))
 
-source(paste0(pre_dir, "/maternal_covariates_timing.R"))
+#source(paste0(pre_dir, "/maternal_covariates_timing.R"))
 
-source(paste0(pre_dir, "/maternal_outcomes_timing.R"))
+#source(paste0(pre_dir, "/maternal_outcomes_timing.R"))
 
 source(paste0(pre_dir, "/neonatal_outcomes_timing.R"))
 
 source(paste0(pre_dir, "/historical_maternal_timing.R"))
 
-source(paste0(pre_dir, "/trimester_drug_exposure_PREG_matches.R"))
+#source(paste0(pre_dir, "/trimester_drug_exposure_PREG_matches.R"))
 
-source(paste0(pre_dir, "/trimester_drug_exposure_NP_matches.R"))
+#source(paste0(pre_dir, "/trimester_drug_exposure_NP_matches.R"))
 
 ###############
 #TABLES
 ###############
 
-source(paste0(pre_dir, "/create_table0_cohort_description.R"))
+#source(paste0(pre_dir, "/create_table0_cohort_description.R"))
 
-
+#AARHUS ONLY TABLE 4
 ###############
 #TABLE 1abc
 ##############
 
-source(paste0(pre_dir, "/create_table_1abc.R"))
+#source(paste0(pre_dir, "/create_table_1abc.R"))
 
 
-source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
+#source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
 
 
 ################
@@ -192,30 +193,30 @@ source(paste0(pre_dir, "/create_supplement_atc_tables.R"))
 #baseline characteristics of covid+ pregnancy cohort
 # tabulated and stored in g_output/final/
 ###############
-source(paste0(pre_dir, "/create_table_2abc.R"))
+#source(paste0(pre_dir, "/create_table_2abc.R"))
 
-source(paste0(pre_dir, "/create_table_2def.R"))
+#source(paste0(pre_dir, "/create_table_2def.R"))
 
-source(paste0(pre_dir, "/create_table_2abc_comorbidities.R"))
+#source(paste0(pre_dir, "/create_table_2abc_comorbidities.R"))
 
-source(paste0(pre_dir, "/create_table_2abc_maternal.R"))
+#source(paste0(pre_dir, "/create_table_2abc_maternal.R"))
 
 
 ################
 #TABLE 3
 ################
 
-source(paste0(pre_dir, "/create_table_3abc.R"))
+#source(paste0(pre_dir, "/create_table_3abc.R"))
 
-source(paste0(pre_dir, "/create_table_3def.R"))
+#source(paste0(pre_dir, "/create_table_3def.R"))
 
-source(paste0(pre_dir, "/create_table_3abc_comorbidities.R"))
+#source(paste0(pre_dir, "/create_table_3abc_comorbidities.R"))
 
-source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
+#source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
 
 
 ##############
-#TABLE 4
+#TABLE 4 HISTORICAL
 ##############
 
 source(paste0(pre_dir, "/create_table_4.R"))
@@ -233,84 +234,84 @@ source(paste0(pre_dir, "/create_table_4.R"))
 # 2: In prop.test(trim1[[1]], trim1[[2]]) :
 #   Chi-squared approximation may be incorrect
 
-source(paste0(pre_dir, "/create_table_5_maternal_data.R"))
+#source(paste0(pre_dir, "/create_table_5_maternal_data.R"))
 
 # when there are 0 observations- prop.test prints a warning- it's OK
 
-source(paste0(pre_dir, "/create_table_5_mat_death.R"))
+#source(paste0(pre_dir, "/create_table_5_mat_death.R"))
 
-source(paste0(pre_dir, "/create_table_5_cesarean.R"))
+#source(paste0(pre_dir, "/create_table_5_cesarean.R"))
 
-source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
+#source(paste0(pre_dir, "/create_table_5_gest_diab.R"))
 
-source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
+#source(paste0(pre_dir, "/create_table_5_preeclamp.R"))
 
-source(paste0(pre_dir, "/create_table_5_preterm.R"))
+#source(paste0(pre_dir, "/create_table_5_preterm.R"))
 
-source(paste0(pre_dir,"/create_table_5_SA_SB_coxph.R" ))
+#source(paste0(pre_dir,"/create_table_5_SA_SB_coxph.R" ))
 
-source(paste0(pre_dir,"/create_table_5_SA_SB_coxph_UNADJUSTED.R" ))
+#source(paste0(pre_dir,"/create_table_5_SA_SB_coxph_UNADJUSTED.R" ))
 
-if(DAP=="SWANSEA"){
-  source(paste0(pre_dir, "/create_table_5_topfa.R"))
-}
+#if(DAP=="SWANSEA"){
+ # source(paste0(pre_dir, "/create_table_5_topfa.R"))
+#}
 
 
 # clear environment between maternal and neonatal to prevent incorrect object assignment
 
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
+#rm(list=ls())
+#if(!require(rstudioapi)){install.packages("rstudioapi")}
+#library(rstudioapi)
 
-projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectFolder)
+#projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
+#setwd(projectFolder)
 
 # CHECK/ FILL IN YOUR PARAMETERS 
 
-source("params.R")
+#source("params.R")
 
-source("99_path.R")
+#source("99_path.R")
 
-source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
+#source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
 
-source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
+#source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
 
-source(paste0(pre_dir, "/create_table_5_neonatal.R"))
+#source(paste0(pre_dir, "/create_table_5_neonatal.R"))
 
 #############
 #TABLE 6
 #############
 
-source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
+#source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
 
 # when there are 0 observations- prop.test prints a warning about Chi squared test- it's OK
 
-source(paste0(pre_dir, "/create_table_6_gest_diab.R"))
+#source(paste0(pre_dir, "/create_table_6_gest_diab.R"))
 
-source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
+#source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
 
-source(paste0(pre_dir, "/create_table_6_preterm.R"))
+#source(paste0(pre_dir, "/create_table_6_preterm.R"))
 
 # clear environment between maternal and neonatal to prevent incorrect object assignment
 
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
+#rm(list=ls())
+#if(!require(rstudioapi)){install.packages("rstudioapi")}
+#library(rstudioapi)
 
-projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectFolder)
+#projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
+#setwd(projectFolder)
 
 # CHECK/ FILL IN YOUR PARAMETERS 
 
-source("params.R")
+#source("params.R")
 
-source("99_path.R")
+#source("99_path.R")
 
-source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
+#source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
-source(paste0(pre_dir, "/create_table_6_LBW.R"))
+#source(paste0(pre_dir, "/create_table_6_LBW.R"))
 
-source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
+#source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
 
 
 

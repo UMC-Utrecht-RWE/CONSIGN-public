@@ -34,7 +34,7 @@ DAP<-CDM_source$data_access_provider_name
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
-source(paste0(pre_dir, "/covid_detect_function.R"))
+source(paste0(pre_dir, "/covid_detect_function_BPE.R"))
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/function_standard_difference.R"))
@@ -60,19 +60,21 @@ source(paste0(pre_dir,"/CreateSpells.R"))
 source(paste0(pre_dir,"/preselect_study_period.R"))
 
 # DRUG UTILIZATION:  RESULTS STORED IN G_INTERMEDIATE
+#aarhus does not do this step
+#Bordeaux uses different data structure
 
 # finds all drug utilization of ATC level 2 
-source(paste0(pre_dir, "/ATC_2_detect.R"))
+source(paste0(pre_dir, "/ATC_2_detect_loop.R"))
 
 # for supplement section of report
 # finds all drug utilization of ATC level 3
-source(paste0(pre_dir, "/ATC_3_detect.R"))
+source(paste0(pre_dir, "/ATC_3_detect_loop.R"))
 
 # finds all drug utilization of ATC level 4
-source(paste0(pre_dir, "/ATC_4_detect.R"))
+source(paste0(pre_dir, "/ATC_4_detect_loop.R"))
 
 # finds all drug utilization of ATC level 5
-source(paste0(pre_dir, "/ATC_5_detect.R"))
+source(paste0(pre_dir, "/ATC_5_detect_loop.R"))
 
 
 ##########################
@@ -96,7 +98,7 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
-source(paste0(pre_dir,"/severity_detect.R"))
+source(paste0(pre_dir,"/severity_detect_BPE.R"))
 
 #######################
 #PREGNANCY*COVID
@@ -113,7 +115,7 @@ source(paste0(pre_dir, "/create_covid_cohorts.R"))
 # checks ATC dates against covid_date (first during pregnancy) and +30 days and -30 days windows
 #####################
 
-source(paste0(pre_dir, "/trimester_drug_exposure.R"))
+source(paste0(pre_dir, "/trimester_drug_exposure_BPE.R"))
 
 
 ############################
@@ -123,7 +125,7 @@ source(paste0(pre_dir, "/trimester_drug_exposure.R"))
 #####################
 
 
-source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
+#source(paste0(pre_dir, "/trimester_drug_exposure_ATC_supplement.R"))
 
 #############
 #MATCHING
