@@ -34,7 +34,6 @@ DAP<-CDM_source$data_access_provider_name
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
-source(paste0(pre_dir, "/covid_detect_function_BPE.R"))
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/function_standard_difference.R"))
@@ -95,6 +94,8 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 # group COVID dates into episodes
 #assign a severity to each episode
 ###################
+
+source(paste0(pre_dir, "/covid_detect_function_BPE.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 

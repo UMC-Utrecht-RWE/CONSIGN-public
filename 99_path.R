@@ -14,14 +14,6 @@ setwd(projectFolder)
 # set the name of the study
 StudyName <- "CONSIGN"
 
-if(set_my_CDM==F){
-  path_CDM<-paste0(projectFolder,"/CDMInstances/")
-  invisible(if(dir.exists(path_CDM)==F)
-  {dir.create(path_CDM)})}
-
-if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
-  invisible(if(dir.exists(path_CDM)==F)
-  {dir.create(path_CDM)})}
 
 
 path_dir<-paste0(projectFolder,"/scripts/")

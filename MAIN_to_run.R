@@ -7,7 +7,7 @@
 #############################
 #BASIC SETUP
 #working directory (default file location)
-#parameters
+#parameters SEARCH FOR "USER INPUT" to find all actions you must take 
 #create folders, and shortcuts, to access and store data
 #############################
 
@@ -18,11 +18,57 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
-source("params.R")
+############################
+#PARAMETERS#################
+#USER INPUT!################
+############################
+
+#USER INPUT
+#if your CDM is stored in a different folder than the projectFolder set to TRUE
+set_my_CDM<-FALSE
+
+if(set_my_CDM==F){
+  path_CDM<-paste0(projectFolder,"/CDMInstances/")
+  invisible(if(dir.exists(path_CDM)==F)
+  {dir.create(path_CDM)})}
+
+#if set_my_CDM<-TRUE enter the location of of your CDM 
+my_path_CDM<-"text string with location of your CDM"
+
+if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
+invisible(if(dir.exists(path_CDM)==F)
+{dir.create(path_CDM)})}
+
 
 source("99_path.R")
-
 source(paste0(pre_dir, "/packages.R"))
+
+preg_path<-preselect_folder
+
+# USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
+preg_data<-"imputed_pregnancy.csv"
+
+#USER INPUT
+# CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
+# if you have a different format, please change it to .csv OR .rds
+
+preg_format<-"csv"
+
+# preg_format<-".RData"
+
+#######################
+#STUDY PARAMETERS######
+#######################
+
+start_study_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
+
+end_study_date<-as.Date(as.character("20211231"), format = "%Y%m%d")
+
+pan_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
+
+start_covariate_window<-as.Date(as.character("20190101"), format = "%Y%m%d")
+
+
 
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
@@ -34,7 +80,6 @@ DAP<-CDM_source$data_access_provider_name
 source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
 source(paste0(pre_dir,"/CreateSpells_function.R"))
 source(paste0(pre_dir, "/CreateConceptDatasets.R"))
-source(paste0(pre_dir, "/covid_detect_function.R"))
 source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/function_standard_difference.R"))
@@ -93,6 +138,7 @@ source(paste0(pre_dir, "/pregnancy_filter.R"))
 # group COVID dates into episodes
 #assign a severity to each episode
 ###################
+source(paste0(pre_dir, "/covid_detect_events.R"))
 
 source(paste0(pre_dir, "/DAP_covid_detection.R"))
 
@@ -104,6 +150,8 @@ source(paste0(pre_dir,"/severity_detect.R"))
 # if covid_date is during pregnancy, cov_trim shows which trimester the first covid_date was in
 #sorts cohorts according to pregnancy and covid status
 #######################
+
+#check trimester covid - source function
 source(paste0(pre_dir, "/trimester_covid.R"))
 
 source(paste0(pre_dir, "/create_covid_cohorts.R"))
@@ -175,7 +223,6 @@ source(paste0(pre_dir, "/trimester_drug_exposure_NP_matches.R"))
 ###############
 
 source(paste0(pre_dir, "/create_table0_cohort_description.R"))
-
 
 ###############
 #TABLE 1abc
