@@ -6,6 +6,7 @@ Users should open the MAIN_to_run file and find all instances of USER INPUT, fil
 
 The g_ouput folder will have all the results you need.
 
+updated flowchart in progress
 ![consign scripts](https://user-images.githubusercontent.com/40298610/200269682-decdad16-4559-4656-a6c1-523f00c14839.jpeg)
 
 SAP Documents:
