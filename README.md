@@ -1,4 +1,10 @@
+Update: previously scripts were grouped in functional sets (numbered to_run_ files)
+To simplify usage, all scripts have been reorganized into a central MAIN_to_run
+This includes setting parameters, which are "tagged" #USER INPUT 
+If you search for the words  USER INPUT you will be guided to every place where an action is required from you.
+Users should open the MAIN_to_run file and find all instances of USER INPUT, fill in the required fields, then run the whole script. Depending on the size of your data, this may take several hours, it is probably best to leave it overnight.
 
+The g_ouput folder will have all the results you need.
 
 ![consign scripts](https://user-images.githubusercontent.com/40298610/200269682-decdad16-4559-4656-a6c1-523f00c14839.jpeg)
 
