@@ -46,9 +46,9 @@ FC_OG_mom<-length(unique(OG_PREG_ID))
 
 print("are there pregnancies longer than 44 weeks?")
 print(table(my_PREG$gestage_greater_44))
-FC_exclude_44<-nrow(my_PREG[my_PREG$gestage_greater_44==1,])
+FC_exclude_44<-nrow(my_PREG[as.numeric(my_PREG$gestage_greater_44)==1,])
 print("exclude any pregnancies with gestage_greater_44 == 1")
-my_PREG<-my_PREG[my_PREG$gestage_greater_44==0,]
+my_PREG<-my_PREG[as.numeric(my_PREG$gestage_greater_44)==0,]
 
 #############################################################################
 
