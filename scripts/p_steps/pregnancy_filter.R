@@ -102,6 +102,8 @@ table(my_PREG$elligible_pandemic)
 # 25-39 years of age
 # 40-55 years of age
 
+my_PREG$age_at_start_of_pregnancy<-as.numeric(my_PREG$age_at_start_of_pregnancy)
+
 my_PREG$age_group<-my_PREG$age_at_start_of_pregnancy
 
 my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, 12,24)]<-1
