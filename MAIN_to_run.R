@@ -46,7 +46,7 @@ source(paste0(pre_dir, "/packages.R"))
 preg_path<-preselect_folder
 
 # USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
-preg_data<-"imputed_pregnancy.csv"
+preg_data<-"preg_trim.csv"
 
 #USER INPUT
 # CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
@@ -200,6 +200,72 @@ source(paste0(pre_dir,"/create_match_CDM.R"))
 
 source(paste0(pre_dir,"/mother_child_linkage.R" ))
 
+##################
+#covariates
+#################
+
+# # finds covariates for covid severity (pre-existing conditions) for each of the cohorts (PP+, PP-, NP+)
+# # written to cohort folders in g_output/covariates/...
+if(DAP!="Bordeaux"){
+  source(paste0(pre_dir,"/covariates_detect.R" ))}else{source(paste0(pre_dir,"/covariates_detect_BPE.R" ))}
+
+
+# covariate timing combining to pregnancy/covid
+
+# source(paste0(pre_dir,"/preterm_birth.R" ))
+
+if(DAP=="ARS"){
+  source(paste0(pre_dir,"/ARS_mat_cov_no_link.R" ))}
+if(DAP=="ARS"){
+  source(paste0(pre_dir,"/ARS_neonatal_cov.R" ))}
+
+if(DAP=="Aarhus"){
+  source(paste0(pre_dir,"/Aarhus_mat_cov_no_link.R" ))}
+if(DAP=="Aarhus"){
+  source(paste0(pre_dir,"/Aarhus_neonatal_cov.R" ))}
+
+
+# only using data from matched cohorts... so bordeaux data SHOULD load with IMPORT_PATTERN
+if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_mat_cov_no_link.R" ))}
+if(DAP=="Bordeaux"){
+  source(paste0(pre_dir,"/Bordeaux_neonatal_cov.R" ))}
+
+
+if(DAP=="TEST"){
+  source(paste0(pre_dir,"/OSLO_mat_cov_no_link.R" ))
+  source(paste0(pre_dir,"/OSLO_neonatal_cov.R" ))}
+
+if(DAP=="FISABIO"){
+  source(paste0(pre_dir,"/FISABIO_mat_cov_no_link.R" ))}
+
+if(DAP=="FISABIO"){
+  source(paste0(pre_dir,"/FISABIO_neonatal_cov.R" ))}
+
+if(DAP=="IACS"){
+  source(paste0(pre_dir,"/IACS_mat_cov_no_link.R" ))}
+if(DAP=="IACS"){
+  source(paste0(pre_dir,"/IACS_neonatal_cov.R" ))}
+
+if(DAP=="Karolinska"){
+  source(paste0(pre_dir,"/Karolinska_mat_cov_no_link.R" ))}
+if(DAP=="Karolinska"){
+  source(paste0(pre_dir,"/Karolinska_neonatal_cov.R" ))}
+
+if(DAP=="UOSL"){
+  source(paste0(pre_dir,"/OSLO_mat_cov_no_link.R" ))}
+
+if(DAP=="UOSL"){
+  source(paste0(pre_dir,"/OSLO_neonatal_cov.R" ))}
+
+
+if(DAP=="USWAN"){
+  source(paste0(pre_dir,"/SWANSEA_mat_cov_no_link.R" ))}
+if(DAP=="USWAN"){
+  source(paste0(pre_dir,"/SWANSEA_neonatal_cov.R" ))}
+
+
+
 ###################
 #timing of each covariate date against each covid/pregnancy date
 ###################
@@ -312,9 +378,6 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
-# CHECK/ FILL IN YOUR PARAMETERS 
-
-source("params.R")
 
 source("99_path.R")
 
