@@ -113,7 +113,7 @@ my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy, lower=25, upper=39)
 my_PREG$age_group[between(my_PREG$age_at_start_of_pregnancy,40,55)]<-3
 
 table(my_PREG$age_group)
-hist(my_PREG$age_at_start_of_pregnancy)
+#hist(my_PREG$age_at_start_of_pregnancy)
 
 # establish pregnancy cohorts (historical or pandemic)
 #help- eimir should this be based on start or end of pregnancy? 
