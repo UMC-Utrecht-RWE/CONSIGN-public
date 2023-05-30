@@ -69,6 +69,20 @@ personsfilter<-function(personstable=PERSONS, caseid="person_id", sex="sex_at_in
 #run personsfilter on PERSONS table (PERSONS USUALLY* one table)
 PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir = path_CDM)
 
+#AGE GROUP FOR MATCHING: CATEGORIZED AGE AT START PANDEMIC
+
+PERSONS$age_at_start_pandemic<-2020-as.numeric(PERSONS$year_of_birth)
+
+PERSONS$age_group<-PERSONS$age_at_start_pandemic
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, 12,24)]<-1
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic, lower=25, upper=39)]<-2
+
+PERSONS$age_group[between(PERSONS$age_at_start_pandemic,40,55)]<-3
+
+fwrite(PERSONS, paste0(path_CDM,"PERSONS.csv"))
+
 personsfilter_output<-as.vector((personsfilter(personstable=PERSONS, caseid="person_id", sex="sex_at_instance_creation", female="F", dob= "year_of_birth", dobmin=(2018-55), dobmax=(2020-12))))
 personsfilter_ID<-personsfilter_output[[1]]
 
