@@ -77,11 +77,11 @@ control_other_vars<- merge(control_other_vars, control_preg_data[,c("person_id",
 control_mat_outcome<-merge(control_mat_outcome, control_other_vars, by="person_id")
 control_mat_outcome$cohort<-0
 
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
-if(DAP=="TEST"){
-  source(paste0(pre_dir, "/impute_model_data.R"))
-}
+# CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+# DAP<-CDM_source$data_access_provider_name
+# if(DAP=="TEST"){
+#   source(paste0(pre_dir, "/impute_model_data.R"))
+# }
 
 # SEPARTE OUT TRIMESTERS AND SEVERITY
 

@@ -27,11 +27,11 @@ case_neo_outcome<-merge(case_mom_data, case_neo_outcome, by="person_id")
 
 case_neo_outcome<-case_neo_outcome[case_neo_outcome$severity==0,]
 
-CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
-DAP<-CDM_source$data_access_provider_name
-if(DAP=="TEST"){
-  source(paste0(pre_dir, "/impute_NEO_DU_data.R"))
-}
+# CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+# DAP<-CDM_source$data_access_provider_name
+# if(DAP=="TEST"){
+#   source(paste0(pre_dir, "/impute_NEO_DU_data.R"))
+# }
 
 
 
