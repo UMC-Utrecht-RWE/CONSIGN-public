@@ -43,6 +43,7 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
+#USER INPUT where is your pregnancy algorithm output stored?
 preg_path<-preselect_folder
 
 # USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
