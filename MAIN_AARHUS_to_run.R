@@ -32,6 +32,7 @@ if(set_my_CDM==F){
   invisible(if(dir.exists(path_CDM)==F)
   {dir.create(path_CDM)})}
 
+#USER INPUT
 #if set_my_CDM<-TRUE enter the location of of your CDM 
 my_path_CDM<-"text string with location of your CDM"
 
@@ -43,6 +44,7 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
+#USER INPUT
 preg_path<-preselect_folder
 
 # USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 

@@ -31,6 +31,7 @@ if(set_my_CDM==F){
   invisible(if(dir.exists(path_CDM)==F)
   {dir.create(path_CDM)})}
 
+#USER INPUT
 #if set_my_CDM<-TRUE enter the location of of your CDM 
 my_path_CDM<-"text string with location of your CDM"
 
@@ -42,6 +43,7 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
+#USER INPUT
 preg_path<-preselect_folder
 
 # USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
@@ -340,7 +342,7 @@ source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
 
 source(paste0(pre_dir, "/create_table_6_preterm.R"))
 
-# clear environment between maternal and neonatal to prevent incorrect object assignment
+# USER INPUT needed due to clear environment between maternal and neonatal to prevent incorrect object assignment
 
 rm(list=ls())
 if(!require(rstudioapi)){install.packages("rstudioapi")}
@@ -351,9 +353,49 @@ setwd(projectFolder)
 
 # CHECK/ FILL IN YOUR PARAMETERS 
 
+############################
+#PARAMETERS#################
+#USER INPUT!################
+############################
+
+#USER INPUT
+#if your CDM is stored in a different folder than the projectFolder set to TRUE
+set_my_CDM<-FALSE
+
+if(set_my_CDM==F){
+  path_CDM<-paste0(projectFolder,"/CDMInstances/")
+  invisible(if(dir.exists(path_CDM)==F)
+  {dir.create(path_CDM)})}
+
+#if set_my_CDM<-TRUE enter the location of of your CDM 
+my_path_CDM<-"text string with location of your CDM"
+
+if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
+invisible(if(dir.exists(path_CDM)==F)
+{dir.create(path_CDM)})}
+
+
+source("99_path.R")
+source(paste0(pre_dir, "/packages.R"))
+
+#USER INPUT where is your pregnancy algorithm output stored?
+preg_path<-preselect_folder
+
+# USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
+preg_data<-"preg_trim.csv"
+
+#USER INPUT
+# CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
+# if you have a different format, please change it to .csv OR .rds
+
+preg_format<-"csv"
+
+# preg_format<-".RData"
+
 source("params.R")
 
 source("99_path.R")
+
 
 source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
