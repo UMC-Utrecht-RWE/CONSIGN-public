@@ -404,6 +404,16 @@ source(paste0(pre_dir, "/create_table_6_LBW.R"))
 source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
 
 
+#META ANANLYSIS RAW COUNTS TABLES
+
+source(paste0(pre_dir,"/meta_table_1a.R"))
+
+
+source(paste0(pre_dir,"/meta_table_2def.R"))
+
+source(paste0(pre_dir,"/meta_table_3def.R"))
+
+
 
 
 
