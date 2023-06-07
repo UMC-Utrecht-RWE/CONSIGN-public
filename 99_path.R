@@ -19,6 +19,10 @@ StudyName <- "CONSIGN"
 path_dir<-paste0(projectFolder,"/scripts/")
 if(dir.exists(path_dir)==F){dir.create(path_dir)}
 
+
+meta_dir<-paste0(projectFolder,"/meta_analysis_tables/")
+if(dir.exists(meta_dir)==F){dir.create(meta_dir)}
+
 matched_folder<-paste0(projectFolder,"/matched/")
 invisible(if(dir.exists(matched_folder)==F)
 {dir.create(matched_folder)})
