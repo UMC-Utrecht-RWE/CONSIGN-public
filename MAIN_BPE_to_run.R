@@ -375,7 +375,34 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
-source("params.R")
+#######################
+#STUDY PARAMETERS######
+#######################
+
+start_study_date<-as.Date(as.character("20180101"), format = "%Y%m%d")
+
+end_study_date<-as.Date(as.character("20211231"), format = "%Y%m%d")
+
+pan_start_date<-as.Date(as.character("20200301"), format = "%Y%m%d")
+
+start_covariate_window<-as.Date(as.character("20190101"), format = "%Y%m%d")
+
+
+
+CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
+DAP<-CDM_source$data_access_provider_name
+
+##############
+#load functions
+##############
+
+source(paste0(pre_dir,"/IMPORT_PATTERN_FUNC.R"))
+source(paste0(pre_dir,"/CreateSpells_function.R"))
+source(paste0(pre_dir, "/CreateConceptDatasets.R"))
+source(paste0(pre_dir, "/cov_trimester_function.R"))
+source(paste0(pre_dir, "/cov_window_exposure_function.R"))
+source(paste0(pre_dir, "/function_standard_difference.R"))
+
 
 source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
