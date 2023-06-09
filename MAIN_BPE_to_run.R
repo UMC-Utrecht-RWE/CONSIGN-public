@@ -227,7 +227,6 @@ source(paste0(pre_dir, "/trimester_drug_exposure_NP_matches.R"))
 
 source(paste0(pre_dir, "/create_table0_cohort_description.R"))
 
-
 ###############
 #TABLE 1abc
 ##############
@@ -263,6 +262,16 @@ source(paste0(pre_dir, "/create_table_3def.R"))
 source(paste0(pre_dir, "/create_table_3abc_comorbidities.R"))
 
 source(paste0(pre_dir, "/create_table_3abc_maternal.R"))
+
+
+#META ANANLYSIS RAW COUNTS TABLES
+
+source(paste0(pre_dir,"/meta_table_1a.R"))
+
+source(paste0(pre_dir,"/meta_table_2def.R"))
+
+source(paste0(pre_dir,"/meta_table_3def.R"))
+
 
 
 ##############
@@ -316,9 +325,6 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
-# CHECK/ FILL IN YOUR PARAMETERS 
-
-source("params.R")
 
 source("99_path.R")
 
@@ -342,15 +348,6 @@ source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
 
 source(paste0(pre_dir, "/create_table_6_preterm.R"))
 
-# USER INPUT needed due to clear environment between maternal and neonatal to prevent incorrect object assignment
-
-rm(list=ls())
-if(!require(rstudioapi)){install.packages("rstudioapi")}
-library(rstudioapi)
-
-projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
-setwd(projectFolder)
-
 # CHECK/ FILL IN YOUR PARAMETERS 
 
 ############################
@@ -367,7 +364,7 @@ if(set_my_CDM==F){
   invisible(if(dir.exists(path_CDM)==F)
   {dir.create(path_CDM)})}
 
-#if set_my_CDM<-TRUE enter the location of of your CDM 
+#USER INPUT if set_my_CDM<-TRUE enter the location of of your CDM 
 my_path_CDM<-"text string with location of your CDM"
 
 if(set_my_CDM==T){path_CDM<-paste0(my_path_CDM)
@@ -378,45 +375,13 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
-#USER INPUT where is your pregnancy algorithm output stored?
-preg_path<-preselect_folder
-
-# USER INPUT the exact name of YOUR pregnancy algorithm output, including file extension 
-preg_data<-"preg_trim.csv"
-
-#USER INPUT
-# CHOOSE one of the following (csv OR rds) by commenting out (#) the format you are not using, and un-commenting the one you are using 
-# if you have a different format, please change it to .csv OR .rds
-
-preg_format<-"csv"
-
-# preg_format<-".RData"
-
 source("params.R")
-
-source("99_path.R")
-
 
 source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
 source(paste0(pre_dir, "/create_table_6_LBW.R"))
 
 source(paste0(pre_dir, "/create_table_6_MAJORCA.R"))
-
-
-#META ANANLYSIS RAW COUNTS TABLES
-
-source(paste0(pre_dir,"/meta_table_1a.R"))
-
-
-source(paste0(pre_dir,"/meta_table_2def.R"))
-
-source(paste0(pre_dir,"/meta_table_3def.R"))
-
-
-
-
-
 
 
 

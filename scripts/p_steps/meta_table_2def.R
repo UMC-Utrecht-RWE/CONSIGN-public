@@ -1,7 +1,7 @@
 #Author: Ema Alsina, M.Sc.
 #e.m.alsina-2@umcutrecht.nl
 #University Medical Center Utrecht
-#21/9/2022
+#7/6/2023
 
 
 #This script pulls drug exposure window results from trimester_drug_exposure.R 
