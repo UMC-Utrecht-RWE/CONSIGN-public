@@ -162,7 +162,7 @@ fwrite(liver_cov, paste0(output_folder,"liver.csv"))
 # HIV
 
 
-HIV_names<-c("I_HIVNOAIDS_CH")
+HIV_names<-c("I_HIVNOAIDS_COV")
 HIV_codelist<-all_codes[all_codes$event_match_name%in%HIV_names,]
 HIV_codelist$event_abbreviation<-"HIV"
 CreateConceptDatasets(codesheet = HIV_codelist, fil=EVENTS, path = cov_comorbid_events)
