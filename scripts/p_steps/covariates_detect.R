@@ -135,7 +135,7 @@ fwrite(resp_cov, paste0(output_folder,"respiratory.csv"))
 liver_names<-c("D_ALCOHOLICLIVER_COV" ,
                "D_HEPATITISAUTOIMMUNE_COV" ,
                "D_LIVERCHRONICALONE_COV" ,
-               "D_MILDLIVERDISEASE_CH" ,
+               "D_MILDLIVERDISEASE_COV" ,
                "D_NONALCOHOLICLIVER_COV")
 liver_codelist<-all_codes[all_codes$event_match_name%in%liver_names,]
 liver_codelist$event_abbreviation<-"liver"
