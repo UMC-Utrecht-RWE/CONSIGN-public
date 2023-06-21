@@ -106,13 +106,13 @@ for(i in 1:length(neonate_cohort_folders)){
   
   # major congenital anomoly P_MAJORCA_AESI
   
-  my_event_name<-c("P_MAJORCA_AESI")
+  my_event_name<-c("P_CAABD_AESI")
   
   MAJORCA_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
   
   CreateConceptDatasets(codesheet = MAJORCA_codelist, fil=EVENTS, path = output_folder)
   
-  MAJORCA_EV<-readRDS(paste0(output_folder,"MAJORCA.rds"))
+  MAJORCA_EV<-readRDS(paste0(output_folder,"CAABD.rds"))
   MAJORCA_EV_ID<-(MAJORCA_EV$person_id)
   MAJORCA_EV_Date<- (MAJORCA_EV$start_date_record)
   
