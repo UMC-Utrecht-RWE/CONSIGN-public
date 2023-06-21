@@ -22,7 +22,7 @@ DAP<-CDM_source$data_access_provider_name
 # number of days "persons date of birth" can vary from "end of pregnancy"
 if(DAP!="Bordeaux"){buffer<-30} else{buffer<-(366/2)}
 
-PERSONS_RELATIONS<- IMPORT_PATTERN(dir = path_CDM, pat="PERSONS_RELATIONSHIP")
+PERSONS_RELATIONS<- IMPORT_PATTERN(dir = path_CDM, pat="PERSON_RELATIONSHIP")
 
 
 PERSONS<-fread(paste0(path_CDM,"PERSONS.csv"), select = c("person_id", "day_of_birth", "month_of_birth", "year_of_birth"))
