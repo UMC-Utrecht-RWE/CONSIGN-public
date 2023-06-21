@@ -55,7 +55,7 @@ my_denom_C<-sum(my_drug_data$plus_30)
 
 # select MARJORCA cases from neonate data
 my_MAJORCA_data<-my_MAJORCA_data[my_MAJORCA_data$MAJORCA==1,]
-my_MAJORCA_drug<-merge(my_MAJORCA_data, my_drug_data, by="mom_id")
+my_MAJORCA_drug<-unique(merge(my_MAJORCA_data, my_drug_data, by="mom_id"))
 my_numer_minus30<-nrow(my_MAJORCA_drug[my_MAJORCA_drug$minus_30==1,])
 my_numer_plus30<-nrow(my_MAJORCA_drug[my_MAJORCA_drug$plus_30==1,])
 my_numer_nonexposed_plus30<-nrow(my_MAJORCA_drug[my_MAJORCA_drug$plus_30==0,])

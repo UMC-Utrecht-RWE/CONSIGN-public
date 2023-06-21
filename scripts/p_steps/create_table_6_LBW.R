@@ -67,7 +67,7 @@ my_denom_C<-sum(my_drug_data$plus_30)
 
 # select LBW cases from neonate data
   my_LBW_data<-my_LBW_data[my_LBW_data$LBW==1,]
-my_LBW_drug<-merge(my_LBW_data, my_drug_data, by="mom_id")
+my_LBW_drug<-unique(merge(my_LBW_data, my_drug_data, by="mom_id"))
 my_numer_minus30<-nrow(my_LBW_drug[my_LBW_drug$minus_30==1,])
 my_numer_plus30<-nrow(my_LBW_drug[my_LBW_drug$plus_30==1,])
 my_numer_nonexposed_plus30<-nrow(my_LBW_drug[my_LBW_drug$plus_30==0,])
