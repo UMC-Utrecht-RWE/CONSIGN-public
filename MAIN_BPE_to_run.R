@@ -325,36 +325,6 @@ library(rstudioapi)
 projectFolder<-dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(projectFolder)
 
-
-source("99_path.R")
-
-source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
-
-source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
-
-source(paste0(pre_dir, "/create_table_5_neonatal.R"))
-
-#############
-#TABLE 6
-#############
-
-source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
-
-# when there are 0 observations- prop.test prints a warning about Chi squared test- it's OK
-
-source(paste0(pre_dir, "/create_table_6_gest_diab.R"))
-
-source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
-
-source(paste0(pre_dir, "/create_table_6_preterm.R"))
-
-# CHECK/ FILL IN YOUR PARAMETERS 
-
-############################
-#PARAMETERS#################
-#USER INPUT!################
-############################
-
 #USER INPUT
 #if your CDM is stored in a different folder than the projectFolder set to TRUE
 set_my_CDM<-FALSE
@@ -375,6 +345,12 @@ invisible(if(dir.exists(path_CDM)==F)
 source("99_path.R")
 source(paste0(pre_dir, "/packages.R"))
 
+############################
+#PARAMETERS#################
+#USER INPUT!################
+############################
+
+
 #######################
 #STUDY PARAMETERS######
 #######################
@@ -392,6 +368,7 @@ start_covariate_window<-as.Date(as.character("20190101"), format = "%Y%m%d")
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
+
 ##############
 #load functions
 ##############
@@ -403,6 +380,26 @@ source(paste0(pre_dir, "/cov_trimester_function.R"))
 source(paste0(pre_dir, "/cov_window_exposure_function.R"))
 source(paste0(pre_dir, "/function_standard_difference.R"))
 
+
+source(paste0(pre_dir, "/neonate_mom_covariate_link.R"))
+
+source(paste0(pre_dir, "/create_table_5_neonate_data.R"))
+
+source(paste0(pre_dir, "/create_table_5_neonatal.R"))
+
+#############
+#TABLE 6
+#############
+
+source(paste0(pre_dir, "/create_table_6_maternal_data.R"))
+
+# when there are 0 observations- prop.test prints a warning about Chi squared test- it's OK
+
+source(paste0(pre_dir, "/create_table_6_gest_diab.R"))
+
+source(paste0(pre_dir, "/create_table_6_preeclamp.R"))
+
+source(paste0(pre_dir, "/create_table_6_preterm.R"))
 
 source(paste0(pre_dir, "/create_table_6_neonate_data.R"))
 
