@@ -40,44 +40,36 @@ for(i in 1:length(my_tables)){
   # 30 days BEFORE COVID infection date
   
   # TRIMESTER 1
-  if(denom_trim_1_all>0){
+ 
   num_minus_1[i]<-sum(as.numeric(my_data$minus_30[my_data$cov_trimester==1]))
-  #denom_minus_1[i]<-denom_trim_1_all
-  
-  }else{print("no covid infections in trimester 1, denominator=0")}
   
   
   # TRIMESTER 2
-  if(denom_trim_2_all>0){
+  
   num_minus_2[i]<-sum(as.numeric(my_data$minus_30[my_data$cov_trimester==2]))
   
-  }else{print("no covid infections in trimester 2, denominator=0")}
   
   # TRIMESTER 3
-  if(denom_trim_3_all>0){
+  
   num_minus_3[i]<-sum(as.numeric(my_data$minus_30[my_data$cov_trimester==3]))
   
-  }else{print("no covid infections in trimester 3, denominator=0")}
   
   # 30 days AFTER COVID infection date
   
   # TRIMESTER 1
-  if(denom_trim_1_all>0){
+ 
   num_plus_1[i]<-sum(as.numeric(my_data$plus_30[my_data$cov_trimester==1]))
   
-  }else{print("no covid infections in trimester 1, denominator=0")
-    num_plus_trim_1[i]<-NA}
-
+  
   # TRIMESTER 2
-  if(denom_trim_2_all>0){
+  
   num_plus_2[i]<-sum(as.numeric(my_data$plus_30[my_data$cov_trimester==2]))
-  }else{print("no covid infections in trimester 2, denominator=0")}
+  
   
   # TRIMESTER 3
-  if(denom_trim_3_all>0){
+  
   num_plus_3[i]<-sum(as.numeric(my_data$plus_30[my_data$cov_trimester==3]))
-  }else{print("no covid infections in trimester 3, denominator=0")}
-
+  
 }
 
 table_3def<-as.data.frame(cbind((my_names), rep(denom_trim_1_all, length(my_names)),(num_minus_1),(num_plus_1), 
@@ -91,5 +83,119 @@ colnames(table_3def)<-c("Drug", "trimester 1 denominator"," -30 days (controls)"
 
 
 
-fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def.csv"))
+fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_total.csv"))
 
+###############################################################################
+#1b" non-severe
+
+
+my_PREG_NS<-my_PREG[my_PREG$severity==0,]
+denom_trim_1_NS<-nrow(my_PREG_NS[my_PREG_NS$cov_trimester==1,])
+denom_trim_2_NS<-nrow(my_PREG_NS[my_PREG_NS$cov_trimester==2,])
+denom_trim_3_NS<-nrow(my_PREG_NS[my_PREG_NS$cov_trimester==3,])
+
+for(i in 1:length(my_tables)){
+  my_data<-fread(paste0(output_CONTROL_NP_window_atc_2,my_tables[i]))
+  my_data<-my_data[complete.cases(my_data)==T,]
+  my_data<-my_data[my_data$severity=="0"]
+  print(my_names[[i]])
+  # 30 days BEFORE COVID infection date
+  
+  # TRIMESTER 1
+ 
+    num_minus_1<-sum(my_data$minus_30[my_data$cov_trimester==1])
+    
+  
+  # TRIMESTER 2
+  
+    num_minus_2<-sum(my_data$minus_30[my_data$cov_trimester==2])
+    
+  # TRIMESTER 3
+  
+    num_minus_3<-sum(my_data$minus_30[my_data$cov_trimester==3])
+    
+  # 30 days AFTER COVID infection date
+  
+  # TRIMESTER 1
+ 
+    num_plus_1<-sum(my_data$plus_30[my_data$cov_trimester==1])
+    
+  
+  # TRIMESTER 2
+ 
+    num_plus_2<-sum(my_data$plus_30[my_data$cov_trimester==2])
+    
+  # TRIMESTER 3
+ 
+    num_plus_3<-sum(my_data$plus_30[my_data$cov_trimester==3])
+}
+    
+
+table_3def<-as.data.frame(cbind((my_names), rep(denom_trim_1_NS, length(my_names)),(num_minus_1),(num_plus_1), 
+                                rep(denom_trim_2_NS, length(my_names)),(num_minus_2),(num_plus_2), 
+                                rep(denom_trim_3_NS, length(my_names)),(num_minus_3), (num_plus_3)))
+
+
+colnames(table_3def)<-c("Drug", "NS trimester 1 denominator"," -30 days (controls)", "+30 days (controls)", 
+                        "NS trimester 2 denominator","-30 days (controls)", "+30 days (controls)",
+                        "NS trimester 3 denominator","-30 days (controls)", "+30 days (controls)")
+
+
+fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_nonsevere.csv"))
+#############################################################################################
+#1b" non-severe
+
+
+my_PREG_S<-my_PREG[my_PREG$severity==1,]
+denom_trim_1_S<-nrow(my_PREG_S[my_PREG_S$cov_trimester==1,])
+denom_trim_2_S<-nrow(my_PREG_S[my_PREG_S$cov_trimester==2,])
+denom_trim_3_S<-nrow(my_PREG_S[my_PREG_S$cov_trimester==3,])
+
+for(i in 1:length(my_tables)){
+  my_data<-fread(paste0(output_CONTROL_NP_window_atc_2,my_tables[i]))
+  my_data<-my_data[complete.cases(my_data)==T,]
+  my_data<-my_data[my_data$severity=="1"]
+  print(my_names[[i]])
+  # 30 days BEFORE COVID infection date
+  
+  # TRIMESTER 1
+  
+  num_minus_1<-sum(my_data$minus_30[my_data$cov_trimester==1])
+  
+  
+  # TRIMESTER 2
+  
+  num_minus_2<-sum(my_data$minus_30[my_data$cov_trimester==2])
+  
+  # TRIMESTER 3
+  
+  num_minus_3<-sum(my_data$minus_30[my_data$cov_trimester==3])
+  
+  # 30 days AFTER COVID infection date
+  
+  # TRIMESTER 1
+  
+  num_plus_1<-sum(my_data$plus_30[my_data$cov_trimester==1])
+  
+  
+  # TRIMESTER 2
+  
+  num_plus_2<-sum(my_data$plus_30[my_data$cov_trimester==2])
+  
+  # TRIMESTER 3
+  
+  num_plus_3<-sum(my_data$plus_30[my_data$cov_trimester==3])
+}
+
+
+table_3def<-as.data.frame(cbind((my_names), rep(denom_trim_1_S, length(my_names)),(num_minus_1),(num_plus_1), 
+                                rep(denom_trim_2_S, length(my_names)),(num_minus_2),(num_plus_2), 
+                                rep(denom_trim_3_S, length(my_names)),(num_minus_3), (num_plus_3)))
+
+
+colnames(table_3def)<-c("Drug", "S trimester 1 denominator"," -30 days (controls)", "+30 days (controls)", 
+                        "S trimester 2 denominator","-30 days (controls)", "+30 days (controls)",
+                        "S trimester 3 denominator","-30 days (controls)", "+30 days (controls)")
+
+
+fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_severe.csv"))
