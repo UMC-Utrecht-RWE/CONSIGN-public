@@ -10,7 +10,7 @@
 CDM_source<-fread(paste0(path_CDM,"CDM_SOURCE.csv"))
 DAP<-CDM_source$data_access_provider_name
 
-my_tables<-list.files(path=output_cov_window_atc_2)
+my_tables<-list.files(path=output_CONTROL_PREG_window_atc_2)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-22)
 
 # denominator is all covid+ pregnancies by trimester
