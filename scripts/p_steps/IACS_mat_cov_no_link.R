@@ -244,6 +244,6 @@ maternal_death_pers_ID<-maternal_death$person_id
 maternal_death_id<-c( maternal_death_pers_ID)
 maternal_death_date<-c( maternal_death_pers_Date)
 maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
-colnames(maternal_death)<-c("id", "date")
+colnames(maternal_death_outcome)<-c("id", "date")
 fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
 
