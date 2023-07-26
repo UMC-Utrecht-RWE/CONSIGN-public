@@ -11,6 +11,9 @@ output_folders<-list(output_mat_cov_hist, output_mat_cov_pan_neg, output_mat_cov
 my_preg_data<-c("my_PREG.csv", "preg_trim.csv", "preg_trim.csv", "preg_trim.csv")
 
 all_codes<-IMPORT_PATTERN(pat="codelist_CONSIGN", dir=projectFolder)
+all_codes<-all_codes[tags=="narrow",]
+
+
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
 
@@ -121,13 +124,14 @@ for(i in 1:length(preg_cohort_folders)){
 #################################################################################
   # STILL BIRTH
   
-  # ARS USES PREGNANCY OUTPUT type_of_end=="SB" AND events data
+  # ARS USES PREGNANCY OUTPUT type_of_end=="SB" 
   
   my_event_name<-"P_STILLBIRTH_AESI"
   
   my_file_name<-"STILLBIRTH"
   
   SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+
   CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
   SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
@@ -137,12 +141,13 @@ for(i in 1:length(preg_cohort_folders)){
   
  SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
  SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
- 
-SB_ID<-c(SB_EV_ID, SB_alg_ID)
-SB_Date<-c(SB_EV_Date, SB_alg_Date)
-   
- SB_cov<-as.data.frame(cbind(c(SB_EV_ID, SB_alg_ID),c(SB_EV_Date, SB_alg_Date)))
- colnames(SB_cov)<-c("id", "date")
+SB_cov<-as.data.frame(cbind(c( SB_alg_ID),c( SB_alg_Date)))
+#Changes by Olga:
+#SB_cov made up of SB_alg_ID and SB_alg_Date (do not include SB_ID and SB_Date ) comment the following 3 lines
+# SB_ID<-c(SB_EV_ID, SB_alg_ID)
+# SB_Date<-c(SB_EV_Date, SB_alg_Date)
+#  SB_cov<-as.data.frame(cbind(c(SB_EV_ID, SB_alg_ID),c(SB_EV_Date, SB_alg_Date)))
+ colnames(SB_cov)<-c("id", "date")  
   fwrite(SB_cov, paste0(output_folder,"Still_Birth.csv"))
   
   

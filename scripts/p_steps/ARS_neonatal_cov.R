@@ -11,6 +11,7 @@ output_folders<-list(output_neonates_case, output_neonates_control, output_neona
 # my_neonate_data<-c("cov_pos_preg.csv", "cov_neg_preg.csv", "my_PREG.csv")
 
 all_codes<-fread(paste0(projectFolder,"/codelist_CONSIGN.csv"))
+all_codes<-all_codes[tags=="narrow",]
 
 # only events within 1 year before covid+ pregnancy start date
 # filter source data events everything before Jan 1 2019 (too old to be within covid preg window)
