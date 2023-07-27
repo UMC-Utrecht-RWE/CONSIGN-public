@@ -18,8 +18,8 @@ cohort_preg_data<-c(paste0(matched_folder, "matches_pregnant_cov_neg.csv"),
                              paste0(hist_preg_folder,"my_PREG.csv"))
 
 
-output_folders<-c(g_output_mat_out_pan_neg, g_output_mat_out_pan_pos)
-cohort_names<-c("covid_negative_pregnant_control.csv", "cases.csv")
+output_folders<-c(g_output_mat_out_pan_neg, g_output_mat_out_pan_pos,g_output_mat_out_hist )
+cohort_names<-c("covid_negative_pregnant_control.csv","covid_positive_pregnant_control.csv", "cases.csv")
 # output should have the person_id of the control, and a column for each covariate with a 0/1 if they have this event within 1 year before covid_date
 
 # historical cohort doesn't have severity and cov_trimester
