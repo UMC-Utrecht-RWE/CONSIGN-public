@@ -14,8 +14,9 @@ my_tables<-list.files(path=output_cov_window_atc_2)
 my_names<-str_sub(unlist(my_tables), 1, str_length(unlist(my_tables))-22)
 
 # denominator is all covid+ pregnancies by trimester
+#11/8/23 UPDATE: cases from matched folder see if denominator lines up
 
-my_PREG<-fread(paste0(matched_folder,"cases.csv"))
+my_PREG<-fread(paste0(matched_folder,"matches_cases.csv"))
 
 denom_trim_1_all<-nrow(my_PREG[my_PREG$cov_trimester==1,])
 denom_trim_2_all<-nrow(my_PREG[my_PREG$cov_trimester==2,])
@@ -83,7 +84,7 @@ colnames(table_3def)<-c("Drug", "trimester 1 denominator"," -30 days (controls)"
 
 
 
-fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_total.csv"))
+fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_MATCHED_CASES_total.csv"))
 
 ###############################################################################
 #1b" non-severe
