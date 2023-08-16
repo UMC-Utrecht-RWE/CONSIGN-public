@@ -142,7 +142,7 @@ colnames(table_3def)<-c("Drug", "NS trimester 1 denominator"," -30 days (control
                         "NS trimester 3 denominator","-30 days (controls)", "+30 days (controls)")
 
 
-fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_nonsevere.csv"))
+fwrite(table_3def, paste0(meta_dir,DAP, "_cases_def_nonsevere.csv"))
 #############################################################################################
 #1b" non-severe
 
@@ -199,4 +199,4 @@ colnames(table_3def)<-c("Drug", "S trimester 1 denominator"," -30 days (controls
                         "S trimester 3 denominator","-30 days (controls)", "+30 days (controls)")
 
 
-fwrite(table_3def, paste0(meta_dir,DAP, "_raw_table_3def_severe.csv"))
+fwrite(table_3def, paste0(meta_dir,DAP, "_cases_def_severe.csv"))
