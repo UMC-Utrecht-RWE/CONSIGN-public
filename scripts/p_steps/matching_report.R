@@ -32,4 +32,4 @@ report_titles<-c("% person id in both cases and matched cases", "% pregnancy id 
                  "% matched cases with covid+ match", "% matched cases with pregnant match")
 report<-as.data.frame(rbind(report_titles, matching_report))
 
-fwrite(report, paste0(final_output_dir, "matching_procedure_report.csv"))
+fwrite(report, paste0(meta_dir, "matching_procedure_report.csv"))
