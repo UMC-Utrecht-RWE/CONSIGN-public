@@ -42,6 +42,7 @@ actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg
   actual_tables_CDM$EUROCAT<-list.files(paste0(preselect_folder), pattern="^EUROCAT")
   actual_tables_CDM$PERSONS<-list.files(paste0(preselect_folder), pattern="^PERSONS.csv")
   actual_tables_CDM$PREGNANCY<-list.files(paste0(preselect_folder), pattern="^preg_trim")
+  actual_tables_CDM$PROCEDURES <- list.files(paste0(preselect_folder), pattern="^PROC") 
 }
 
 
