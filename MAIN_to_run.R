@@ -194,6 +194,8 @@ source(paste0(pre_dir,"/matching_dates_transfer.R"))
 
 source(paste0(pre_dir,"/create_match_CDM.R"))
 
+source(paste0(pre_dir,"/matching_report.R"))
+
 ###################
 #pregnancy-child linkage
 #identifies which child (children) result from the cohort pregnancy
