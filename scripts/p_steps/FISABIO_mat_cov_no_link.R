@@ -122,23 +122,26 @@ for(i in 1:length(preg_cohort_folders)){
   
   # FISABIO USES events and pregnancy algorithm
   
-  my_event_name<-"P_SPONTABO_AESI"
+  #my_event_name<-"P_SPONTABO_AESI"
   
-  my_file_name<-"SPONTABO"
+  #my_file_name<-"SPONTABO"
   
-  SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
+  #SPONTABO_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  #CreateConceptDatasets(codesheet = SPONTABO_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
-  SA_EV_ID<-(SPONTABO_EV$person_id)
-  SA_EV_Date<- (SPONTABO_EV$start_date_record)
+  #SPONTABO_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
+  #SA_EV_ID<-(SPONTABO_EV$person_id)
+  #SA_EV_Date<- (SPONTABO_EV$start_date_record)
   
   
   SA_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SA"]
   SA_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SA"]
   
-  SA_ID<-c(SA_EV_ID, SA_alg_ID)
-  SA_Date<-c(SA_EV_Date, SA_alg_Date)
+  #SA_ID<-c(SA_EV_ID, SA_alg_ID)
+  #SA_Date<-c(SA_EV_Date, SA_alg_Date)
+
+  SA_ID<-SA_alg_ID
+  SA_Date<-SA_alg_date
   
   SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
 
@@ -151,23 +154,26 @@ for(i in 1:length(preg_cohort_folders)){
   
   # FISABIO USES events and pregrancy algorithm
   
-  my_event_name<-"P_STILLBIRTH_AESI"
+ # my_event_name<-"P_STILLBIRTH_AESI"
   
-  my_file_name<-"STILLBIRTH"
+ # my_file_name<-"STILLBIRTH"
   
-  SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
-  CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
+  #SB_codelist<-all_codes[all_codes$event_match_name==my_event_name,]
+  #CreateConceptDatasets(codesheet = SB_codelist, fil=EVENTS, path = maternal_covariates_events)
   
-  SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
-  SB_EV_ID<-(SB_EV$person_id)
-  SB_EV_Date<- (SB_EV$start_date_record)
+  #SB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
+  #SB_EV_ID<-(SB_EV$person_id)
+  #SB_EV_Date<- (SB_EV$start_date_record)
   
   
   SB_alg_ID<-df_preg$person_id[df_preg$type_of_pregnancy_end=="SB"]
   SB_alg_Date<-df_preg$pregnancy_end_date[df_preg$type_of_pregnancy_end=="SB"]
   
-  SB_ID<-c(SB_EV_ID, SB_alg_ID)
-  SB_Date<-c(SB_EV_Date, SB_alg_Date)
+  #SB_ID<-c(SB_EV_ID, SB_alg_ID)
+  #SB_Date<-c(SB_EV_Date, SB_alg_Date)
+
+  SB_ID<-SB_alg_ID
+  SB_Date<-SB_alg_Date
   
   SB_cov<-as.data.frame(cbind(SB_ID,SB_Date))
   colnames(SB_cov)<-c("id", "date")
