@@ -28,7 +28,7 @@ for(i in 1:length(preg_cohort_folders)){
   MED<-IMPORT_PATTERN(pat="MEDICINES_SLIM", dir=cohort_folder)
   PROC<-IMPORT_PATTERN(pat="PROCEDURE", dir=cohort_folder)
   PERSONS<-IMPORT_PATTERN(pat="PERSONS", dir=cohort_folder)
-
+  
   
   MED$drug_date<-MED$date_prescription
   MED$drug_date<-as.numeric(as.Date(MED$drug_date, format="%Y%m%d"))
@@ -46,7 +46,7 @@ for(i in 1:length(preg_cohort_folders)){
   GEST_DIAB_EV<-readRDS(paste0(maternal_covariates_events,my_file_name,".rds"))
   GEST_DIAB_EV_ID<-(GEST_DIAB_EV$person_id)
   GEST_DIAB_EV_Date<- (GEST_DIAB_EV$start_date_record)
- 
+  
   GEST_DIAB_cov<-as.data.frame(cbind(GEST_DIAB_EV_ID, GEST_DIAB_EV_Date))
   colnames(GEST_DIAB_cov)<-c("id", "date")
   fwrite(GEST_DIAB_cov, paste0(output_folder,"gest_diab.csv"))
@@ -73,18 +73,24 @@ for(i in 1:length(preg_cohort_folders)){
   
   #origin_of_procedure = "g" and procedure_code in (“L2132”  “7F12z” “7F12. ” “7F121” “L398z” “L3980” “L398. ” “L3982” “L3981” “L3983”)
   
-  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="g"&PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
-  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="g"& PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
+  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="g"&
+                                     PROC$procedure_code%in% c("L2132", "7F12z","7F12.",
+                                                               "7F121","L398z","L3980",
+                                                               "L398.","L3982","L3981","L3983"))]
+  CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="g"& PROC$
+                                             procedure_code%in%c("L2132", "7F12z","7F12.",
+                                                                 "7F121","L398z","L3980",
+                                                                 "L398.","L3982","L3981","L3983"))]
   
   CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID, CESAREA_PROC_ID)
   CESAREA_Date<-c(CESAREA_EV_Date,CESAREA_SO_Date, CESAREA_PROC_Date)
   
-
+  
   CESAREA_cov<-as.data.frame(cbind(CESAREA_ID, CESAREA_Date))
   colnames(CESAREA_cov)<-c("id", "date")
   fwrite(CESAREA_cov, paste0(output_folder,"CESAREA.csv"))
-
- #################################################################################
+  
+  #################################################################################
   # SPONTANEOUS ABORTION
   
   # SWANSEA unavailable
@@ -99,12 +105,12 @@ for(i in 1:length(preg_cohort_folders)){
   SA_Date<-c(SA_alg_Date)
   
   SA_cov<-as.data.frame(cbind(SA_ID, SA_Date))
-
+  
   colnames(SA_cov)<-c("id", "date")
   fwrite(SA_cov, paste0(output_folder,"Spont_Abort.csv"))
   
-    
-#################################################################################
+  
+  #################################################################################
   # STILL BIRTH
   
   # all daps use preg alg
@@ -152,7 +158,7 @@ for(i in 1:length(preg_cohort_folders)){
   PREECLAMP_cov<-as.data.frame(cbind(PREECLAMP_EV_ID,PREECLAMP_EV_Date))
   colnames(PREECLAMP_cov)<-c("id", "date")
   fwrite(PREECLAMP_cov, paste0(output_folder,"Preeclampsia.csv"))
-
+  
   #################################################################################
   # TOPFA
   
@@ -186,7 +192,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   # SWANSEA USES  pregnancy algorithm output
   
- 
+  
   
   
   df_preg$gest_weeks<-(df_preg$pregnancy_end_date-df_preg$pregnancy_start_date)/7
@@ -200,44 +206,44 @@ for(i in 1:length(preg_cohort_folders)){
   PRETERM_cov<-as.data.frame(cbind(PRETERM_ID,PRETERM_Date))
   colnames(PRETERM_cov)<-c("id","date")
   fwrite(PRETERM_cov, paste0(output_folder,"PRETERM.csv"))
-   
   
-#####################################################################
-
-#MATERNAL DEATH
-
-
-# SWANSEA uses EVENTS codes tagged as P_MATERNALDEATH_AESI in VAC4EU all_codes and so_source_table='adde_deaths', so_date is death date
-
-# maternal_death_names<-"P_MATERNALDEATH_AESI"
-# my_rows<-which(Reduce(`|`, lapply(maternal_death_names, startsWith, x = as.character(all_codes$full_name))))
-# 
-# maternal_death_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
-# 
-# my_rows<-which(Reduce(`|`, lapply(maternal_death_codes, startsWith, x = as.character(EVENTS$event_code))))
-# maternal_death_EV_ID<-(EVENTS$person_id[my_rows])
-# maternal_death_EV_Date<- (EVENTS$start_date_record[my_rows])
-# 
-# my_rows<-which(SURV_OB$so_source_table=="adde_deaths")
-# maternal_death_SO_ID<-(SURV_OB$person_id[my_rows])
-# maternal_death_SO_Date<- (SURV_OB$so_date[my_rows])
-
-dead_PERSONS<-PERSONS[is.na(PERSONS$year_of_death)==F,]
-dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]<-paste0(0,(dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]))
-dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]))
-dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_of_death,dead_PERSONS$day_of_death)
-dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
-
-dead_mother<-my_PREG[my_PREG$person_id%in%dead_PERSONS$person_id]
-dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
-maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
-maternal_death_pers_Date<-maternal_death$death_date
-maternal_death_pers_ID<-maternal_death$person_id
-
-maternal_death_id<-c( maternal_death_pers_ID)
-maternal_death_date<-c( maternal_death_pers_Date)
-
-maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
-colnames(maternal_death_outcome)<-c("id","date")
-fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))}
-
+  
+  #####################################################################
+  
+  #MATERNAL DEATH
+  
+  
+  # SWANSEA uses EVENTS codes tagged as P_MATERNALDEATH_AESI in VAC4EU all_codes and so_source_table='adde_deaths', so_date is death date
+  
+  # maternal_death_names<-"P_MATERNALDEATH_AESI"
+  # my_rows<-which(Reduce(`|`, lapply(maternal_death_names, startsWith, x = as.character(all_codes$full_name))))
+  # 
+  # maternal_death_codes<- unique(c(all_codes$code[my_rows], all_codes$code_no_dots[my_rows]))
+  # 
+  # my_rows<-which(Reduce(`|`, lapply(maternal_death_codes, startsWith, x = as.character(EVENTS$event_code))))
+  # maternal_death_EV_ID<-(EVENTS$person_id[my_rows])
+  # maternal_death_EV_Date<- (EVENTS$start_date_record[my_rows])
+  # 
+  # my_rows<-which(SURV_OB$so_source_table=="adde_deaths")
+  # maternal_death_SO_ID<-(SURV_OB$person_id[my_rows])
+  # maternal_death_SO_Date<- (SURV_OB$so_date[my_rows])
+  
+  dead_PERSONS<-PERSONS[is.na(PERSONS$year_of_death)==F,]
+  dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]<-paste0(0,(dead_PERSONS$day_of_death[nchar(dead_PERSONS$day_of_death)==1]))
+  dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]<-paste0(0,(dead_PERSONS$month_of_death[nchar(dead_PERSONS$month_of_death)==1]))
+  dead_PERSONS$death_date<-paste0(dead_PERSONS$year_of_death, dead_PERSONS$month_of_death,dead_PERSONS$day_of_death)
+  dead_PERSONS$death_date<-as.numeric(as.Date(dead_PERSONS$death_date, format="%Y%m%d"))
+  
+  dead_mother<-my_PREG[my_PREG$person_id%in%dead_PERSONS$person_id]
+  dead_mother<-dead_mother[(duplicated(dead_mother$person_id, fromLast = TRUE)==F),]
+  maternal_death<-dead_PERSONS[between(dead_PERSONS$death_date, dead_mother$pregnancy_start_date, (dead_mother$pregnancy_end_date)+42),]
+  maternal_death_pers_Date<-maternal_death$death_date
+  maternal_death_pers_ID<-maternal_death$person_id
+  
+  maternal_death_id<-c( maternal_death_pers_ID)
+  maternal_death_date<-c( maternal_death_pers_Date)
+  
+  maternal_death_outcome<-as.data.frame(cbind(maternal_death_id, maternal_death_date))
+  colnames(maternal_death_outcome)<-c("id","date")
+  fwrite(maternal_death_outcome, paste0(output_folder,"maternal_death.csv"))
+}
