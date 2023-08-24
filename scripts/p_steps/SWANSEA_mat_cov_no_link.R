@@ -73,7 +73,7 @@ for(i in 1:length(preg_cohort_folders)){
   
   #origin_of_procedure = "g" and procedure_code in (“L2132”  “7F12z” “7F12. ” “7F121” “L398z” “L3980” “L398. ” “L3982” “L3981” “L3983”)
   
-  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="CMBD"&PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
+  CESAREA_PROC_ID<-PROC$person_id[(PROC$origin_of_procedure=="g"&PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
   CESAREA_PROC_Date<- PROC$procedure_date[(PROC$origin_of_procedure=="g"& PROC$procedure_code%in%c(“L2132” , “7F12z” ,“7F12.”, “7F121”, “L398z”, “L3980”, “L398.”, “L3982”, “L3981”, “L3983”)]
   
   CESAREA_ID<-c(CESAREA_EV_ID, CESAREA_SO_ID, CESAREA_PROC_ID)
