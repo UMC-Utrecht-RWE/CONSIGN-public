@@ -179,6 +179,7 @@ actual_tables_CDM<-list()
     actual_tables_CDM$SURVEY_ID<-list.files(paste0(path_CDM,"/"), pattern="^SURVEY_ID")
     actual_tables_CDM$EUROCAT<-list.files(paste0(path_CDM,"/"), pattern="^EUROCAT")
     actual_tables_CDM$PERSONS<-list.files(paste0(path_CDM,"/"), pattern="^PERSONS")
+    actual_tables_CDM$PERSONS<-list.files(paste0(path_CDM,"/"), pattern="^PROC")
 
 all_actual_tables<-list.files(paste0(path_CDM,"/"), pattern = "\\.csv$")
 table_list<-unlist(actual_tables_CDM)
